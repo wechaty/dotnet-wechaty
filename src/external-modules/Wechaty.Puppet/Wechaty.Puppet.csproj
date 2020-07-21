@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventEmitter\EventEmitter.csproj" />
+    <ProjectReference Include="..\FileBox\FileBox.csproj" />
+    <ProjectReference Include="..\MemoryCard\MemoryCard.csproj" />
+    <ProjectReference Include="..\ReactiveQueue\ReactiveQueue.csproj" />
+    <ProjectReference Include="..\Watchdog\Watchdog.csproj" />
+  </ItemGroup>
+
+</Project>
