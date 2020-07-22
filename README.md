@@ -236,10 +236,11 @@ dotnet restore ./src/Wechaty.sln
 ## Related Projects
 
 - [Wechaty](https://github.com/wechaty/wechaty) - Conversatioanl AI Chatot SDK for Wechaty Individual Accounts (TypeScript)
-- [.NET Core Wechaty](https://github.com/wechaty/dotnet-wechaty) - .NET Core WeChaty Conversational AI Chatbot SDK for Wechat Individual Accounts (C#)
-- [Go Wechaty](https://github.com/wechaty/go-wechaty) - Go WeChaty Conversational AI Chatbot SDK for Wechat Individual Accounts (Go)
-- [Java Wechaty](https://github.com/wechaty/java-wechaty) - Java WeChaty Conversational AI Chatbot SDK for Wechat Individual Accounts (Java)
-- [Scala Wechaty](https://github.com/wechaty/scala-wechaty) - Scala WeChaty Conversational AI Chatbot SDK for WechatyIndividual Accounts (Scala)
+- [.NET Core Wechaty](https://github.com/wechaty/dotnet-wechaty) - .NET Core Wechaty Conversational AI Chatbot SDK for Wechat Individual Accounts (C#)
+- [Go Wechaty](https://github.com/wechaty/go-wechaty) - Go Wechaty Conversational AI Chatbot SDK for Wechat Individual Accounts (Go)
+- [Java Wechaty](https://github.com/wechaty/java-wechaty) - Java Wechaty Conversational AI Chatbot SDK for Wechat Individual Accounts (Java)
+- [Scala Wechaty](https://github.com/wechaty/scala-wechaty) - Scala Wechaty Conversational AI Chatbot SDK for WechatyIndividual Accounts (Scala)
+- [PHP Wechaty](https://github.com/wechaty/php-wechaty) - PHP Wechaty Conversational AI Chatbot SDK for WechatyIndividual Accounts (PHP)
 
 ## Badge
 
