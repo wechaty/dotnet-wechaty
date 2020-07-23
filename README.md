@@ -2,11 +2,13 @@
 dotnet-wechaty is a Conversational AI RPA SDK for Chatbot written in C#
 
 ![.NET Core version support](https://img.shields.io/badge/.NET%20Core-3.1-brightgreen)
-![.NET Core](https://github.com/echofool/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
+![.NET Core](https://github.com/wechaty/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
+
+![PHP Wechaty](https://wechaty.github.io/dotnet-wechaty/images/dotnet-wechaty.png)
 
 ## Connecting Chatbots
 
-[![Powered by Wechaty](https://img.shields.io/badge/Powered%20By-Wechaty-brightgreen.svg)](https://github.com/Wechaty/wechaty)
+[![Powered by Wechaty](https://img.shields.io/badge/Powered%20By-Wechaty-brightgreen.svg)](https://github.com/wechaty/wechaty)
 
 Wechaty is a RPA SDK for Wechat **Individual** Account that can help you create a chatbot in 6 lines of C#
 
@@ -27,7 +29,7 @@ Wechaty is a RPA SDK for Wechat **Individual** Account that can help you create 
 > "If you know js ... try Wechaty, it's easy to use."  
 > &mdash; <cite>@Urinx Uri Lee, Author of [WeixinBot(Python)](https://github.com/Urinx/WeixinBot)</cite>
 
-See more at [Wiki:Voice Of Developer](https://github.com/Wechaty/wechaty/wiki/Voice%20Of%20Developer)
+See more at [Wiki:Voice Of Developer](https://github.com/wechaty/wechaty/wiki/Voice%20Of%20Developer)
 
 ## Join Us
 
@@ -42,8 +44,7 @@ Scan now, because other Wechaty dotnet developers want to talk with you too! (se
 ### C#
 
 ```csharp
-var wechaty = new Wechaty(options, logger);
-wechaty.onScan((qrcode, status) => {
+var wechaty = new Wechaty(options, logger).onScan((qrcode, status) => {
     Console.WriteLine($"Scan QR Code to login: {status} https://wechaty.github.io/qrcode/{(qrcode)}`");
 }).OnLogin( user => {
     Console.WriteLine("User {user} logined");
@@ -102,7 +103,7 @@ It is a great example for demonstrating how do we translate the TypeScript to C#
 ### Image Class Source Code
 
 - TypeScript: <https://github.com/wechaty/wechaty/blob/master/src/user/image.ts>
-- C#: <https://github.com/echofool/dotnet-wechaty/blob/master/src/Wechaty/User/Image.cs>
+- C#: <https://github.com/wechaty/dotnet-wechaty/blob/master/src/Wechaty/User/Image.cs>
 
 If you are interested in the translation and want to look at how it works, it will be a good start from reading and comparing those two `Image` class files in TypeScript and C# at the same time.
 
@@ -245,11 +246,11 @@ dotnet restore ./src/Wechaty.sln
 ## Badge
 
 ![.NET Core version support](https://img.shields.io/badge/.NET%20Core-3.1-brightgreen)
-![.NET Core](https://github.com/echofool/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
+![.NET Core](https://github.com/wechaty/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
 
 ```md
 ![.NET Core version support](https://img.shields.io/badge/.NET%20Core-3.1-brightgreen)
-![.NET Core](https://github.com/echofool/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
+![.NET Core](https://github.com/wechaty/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
 ```
 
 ## Contributors
