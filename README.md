@@ -35,7 +35,7 @@ See more at [Wiki:Voice Of Developer](https://github.com/wechaty/wechaty/wiki/Vo
 
 Wechaty is used in many ChatBot projects by thousands of developers. If you want to talk with other developers, just scan the following QR Code in WeChat with secret code _dotnet wechaty_, join our **Wechaty dotnet Developers' Home**.
 
-![Wechaty dotnet Developers' Home](https://wechaty.github.io/wechaty/images/bot-qr-code.png)
+![Wechaty Friday.BOT QR Code](https://wechaty.js.org/img/friday-qrcode.svg)
 
 Scan now, because other Wechaty dotnet developers want to talk with you too! (secret code: _dotnet wechaty_)
 
