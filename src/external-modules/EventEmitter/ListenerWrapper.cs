@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Wechaty
+namespace EventEmitter
 {
     internal struct ListenerWrapper
     {

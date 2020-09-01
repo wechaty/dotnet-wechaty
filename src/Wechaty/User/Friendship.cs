@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -10,32 +8,52 @@ using Wechaty.Schemas;
 
 namespace Wechaty.User
 {
+    /// <summary>
+    /// friendship
+    /// </summary>
     public class Friendship : Accessory<Friendship>, IAcceptable
     {
+        /// <summary>
+        /// payload
+        /// </summary>
         protected FriendshipPayload? Payload { get; set; }
+
+        /// <summary>
+        /// id
+        /// </summary>
         public string Id { get; }
 
+        /// <summary>
+        /// init <see cref="Friendship"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="wechaty"></param>
+        /// <param name="logger"></param>
+        /// <param name="name"></param>
         public Friendship([DisallowNull] string id,
             [DisallowNull] Wechaty wechaty,
-            [DisallowNull] Puppet puppet,
             [DisallowNull] ILogger<Friendship> logger,
-            [AllowNull] string? name = default) : base(wechaty, puppet, logger, name)
+            [AllowNull] string? name = default) : base(wechaty, logger, name)
         {
             Id = id;
             if (Logger.IsEnabled(LogLevel.Trace))
             {
                 Logger.LogTrace($"constructor{id}");
             }
-            if (puppet == null)
-            {
-                throw new ArgumentNullException(nameof(puppet), "Friendship class can not be instanciated without a puppet!");
-            }
         }
 
+        ///<inheritdoc/>
         public override string ToString() => $"Friendship#{Payload?.Type}<{Payload?.ContactId}>";
 
+        /// <summary>
+        /// check payload is ready?
+        /// </summary>
         public bool IsReady => Payload != null;
 
+        /// <summary>
+        /// make sure payload is ready
+        /// </summary>
+        /// <returns></returns>
         public async Task Ready()
         {
             if (IsReady)
@@ -50,6 +68,10 @@ namespace Wechaty.User
             await Contact.Ready();
         }
 
+        /// <summary>
+        /// accept friendship
+        /// </summary>
+        /// <returns></returns>
         public async Task Accept()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -99,6 +121,9 @@ namespace Wechaty.User
             await contact.Sync();
         }
 
+        /// <summary>
+        /// hello
+        /// </summary>
         public string Hello
         {
             get
@@ -111,6 +136,9 @@ namespace Wechaty.User
             }
         }
 
+        /// <summary>
+        /// contact
+        /// </summary>
         public Contact Contact
         {
             get
@@ -123,8 +151,15 @@ namespace Wechaty.User
             }
         }
 
+        /// <summary>
+        /// firendship 
+        /// </summary>
         public FriendshipType Type => Payload?.Type ?? FriendshipType.Unknown;
 
+        /// <summary>
+        /// to json
+        /// </summary>
+        /// <returns></returns>
         public string ToJson()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -138,6 +173,7 @@ namespace Wechaty.User
             return JsonConvert.SerializeObject(Payload);
         }
 
-        public override Friendship ToImplement() => this;
+        ///<inheritdoc/>
+        public override Friendship ToImplement => this;
     }
 }

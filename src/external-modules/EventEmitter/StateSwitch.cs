@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Wechaty
+namespace EventEmitter
 {
     /// <summary>
     /// 状态开关
     /// </summary>
-    public class StateSwitch : EventEmitter
+    public class StateSwitch : EventEmitter<StateSwitch>
     {
         private static readonly object VoidResult = new object();
         private static int _counter;
@@ -27,7 +27,7 @@ namespace Wechaty
         private bool _onoff;
         private bool _pending;
 
-        public StateSwitch([AllowNull]string? name, [AllowNull]ILogger<StateSwitch>? logger = null)
+        public StateSwitch([AllowNull] string? name, [AllowNull] ILogger<StateSwitch>? logger = null)
         {
             Name = name ?? $"#{_counter++}";
             _logger = logger ?? NullLogger<StateSwitch>.Instance;
@@ -51,82 +51,50 @@ namespace Wechaty
 
         public void SetLog(ILogger<StateSwitch> logger) => _logger = logger ?? NullLogger<StateSwitch>.Instance;
 
-        public State? On(State? state = null)
+        public State IsOn
         {
-            if (state.HasValue && !state.Value)
+            get => _onoff ? (_pending ? State.Pending : State.On) : State.Off;
+
+            set
             {
-                if (_logger.IsEnabled(LogLevel.Trace))
-                {
-                    _logger.LogTrace($"{Name} On({state}) <- ({On()})");
-                }
                 _onoff = true;
-                _pending = state == State.Pending;
-                _ = Emit("on", state.Value);
-                /**
-                 * for ready()
-                 */
+                _pending = value == State.Pending;
+                _ = Emit("on", value);
                 if (_offResolver == NOP)
                 {
                     var source = new TaskCompletionSource<object>();
                     _offTask = source.Task;
                     _offResolver = () => source.SetResult(VoidResult);
                 }
-                if (state.Value == State.On && _onResolver != NOP)
+                if (value == State.On && _onResolver != NOP)
                 {
                     _onResolver();
                     _onResolver = NOP;
                 }
-                return null;
             }
-            /**
-             * Get
-             */
-            var on = _onoff ? (_pending ? State.Pending : State.On) : State.Off;
-            if (_logger.IsEnabled(LogLevel.Trace))
-            {
-                _logger.LogTrace($"{Name} On() is {on}");
-            }
-            return on;
         }
 
-        public State? Off(State? state = null)
+        public State IsOff
         {
-            if (state.HasValue && !state.Value)
+            get => !_onoff ? (_pending ? State.Pending : State.On) : State.Off;
+            set
             {
-                if (_logger.IsEnabled(LogLevel.Trace))
-                {
-                    _logger.LogTrace($"{Name} On({state}) <- ({Off()})");
-                }
                 _onoff = false;
-                _pending = state.Value == State.Pending;
+                _pending = value == State.Pending;
 
-                Emit("off", state);
-                /**
-                 * for ready()
-                 */
+                _ = Emit("off", value);
                 if (_onResolver == NOP)
                 {
                     var source = new TaskCompletionSource<object>();
                     _onTask = source.Task;
                     _onResolver = () => source.SetResult(VoidResult);
                 }
-                if (state == true && _offResolver != NOP)
+                if (value == true && _offResolver != NOP)
                 {
                     _offResolver();
                     _offResolver = NOP;
                 }
-                return null;
             }
-
-            /**
-             * Get
-             */
-            var off = !_onoff ? (_pending ? State.Pending : State.On) : State.Off;
-            if (_logger.IsEnabled(LogLevel.Trace))
-            {
-                _logger.LogTrace($"{Name} On() is {off}");
-            }
-            return off;
         }
 
         public Task Ready(bool noCross = false) => Ready(State.On, noCross);
@@ -162,5 +130,8 @@ namespace Wechaty
                 _logger.LogTrace($"{Name} ready({state}, {noCross}) resolved.");
             }
         }
+
+        ///<inheritdoc/>
+        public override StateSwitch ToImplement => this;
     }
 }

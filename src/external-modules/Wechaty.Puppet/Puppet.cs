@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ReactiveQueue;
 using Wechaty.Schemas;
+using EventEmitter;
 
 namespace Wechaty
 {
@@ -25,25 +26,13 @@ namespace Wechaty
         protected LRUCache<string, RoomInvitationPayload> CacheRoomInvitationPayload { get; }
 
         protected int Counter { get; }
-        protected MemoryCard Memory
-        {
-            get => _memory;
-            set
-            {
-                if (Logger.IsEnabled(LogLevel.Trace))
-                {
-                    Logger.LogTrace("set memory");
-                }
-                if (!string.IsNullOrEmpty(_memory.Name))
-                {
-                    throw new InvalidOperationException("puppet has already had a named memory: " + _memory.Name);
-                }
-                _memory = value;
-            }
-        }
 
-        protected IPuppetOptions Options { get; }
+        protected MemoryCard Memory { get; set; }
+
+        protected PuppetOptions Options { get; }
+
         protected ILogger<Puppet> Logger { get; }
+
         public string? SelfId
         {
             get
@@ -72,18 +61,18 @@ namespace Wechaty
                 _ = Emit(new EventLoginPayload { ContactId = value });
             }
         }
+
         protected Watchdog<object, EventHeartbeatPayload> Watchdog { get; }
 
-        private MemoryCard _memory;
         private string? _id;
         private readonly ThrottleQueue<string> _resetThrottleQueue;
 
-        protected Puppet(IPuppetOptions options, ILogger<Puppet> logger, ILoggerFactory loggerFactory)
+        protected Puppet(PuppetOptions options, ILogger<Puppet> logger, ILoggerFactory loggerFactory)
         {
             Options = options;
             Logger = logger;
             State = new StateSwitch(GetType().Name, loggerFactory.CreateLogger<StateSwitch>());
-            _memory = new MemoryCard(null, loggerFactory.CreateLogger<MemoryCard>(), loggerFactory);
+            Memory = new MemoryCard((MemoryCardOptions?)null, loggerFactory.CreateLogger<MemoryCard>(), loggerFactory);
             //load here is for testing only
             Memory.Load()
                 .ContinueWith(task =>
@@ -144,6 +133,15 @@ namespace Wechaty
         }
 
         public override string ToString() => string.Concat("Puppet#", Counter, "<", GetType().Name, ">", "(", Memory.Name ?? "", ")");
+
+        public void SetMemory(MemoryCard memory)
+        {
+            if (!string.IsNullOrEmpty(Memory.Name))
+            {
+                throw new InvalidOperationException("puppet has already had a named memory: " + Memory.Name);
+            }
+            Memory = memory;
+        }
 
         public virtual bool Emit(EventDongPayload payload) => Emit("dong", payload);
         public virtual bool Emit(EventErrorPayload payload) => Emit("error", payload);
@@ -377,9 +375,7 @@ namespace Wechaty
             {
                 try
                 {
-                    /**
-                     * Does LRU cache matter at here?
-                     */
+                    // Does LRU cache matter at here?
                     // const rawPayload = await this.contactRawPayload(id)
                     // const payload    = await this.contactRawPayloadParser(rawPayload)
                     var payload = await ContactPayload(id);
@@ -444,18 +440,14 @@ namespace Wechaty
                 throw new ArgumentException("no id");
             }
 
-            /**
-             * 1. Try to get from cache first
-             */
+            //1. Try to get from cache first
             var cachedPayload = ContactPayloadCache(contactId);
             if (cachedPayload != null)
             {
                 return cachedPayload;
             }
 
-            /**
-             * 2. Cache not found
-             */
+            //2. Cache not found
             var rawPayload = await ContactRawPayload(contactId);
             var payload = await ContactRawPayloadParser(rawPayload);
 
@@ -530,27 +522,25 @@ namespace Wechaty
             _ = CacheFriendshipPayload.Delete(friendshipId);
         }
 
-        /**
-         * Get & Set
-         */
+        /// <summary>
+        /// Get and Set
+        /// </summary>
+        /// <param name="friendshipId"></param>
+        /// <returns></returns>
         public async Task<FriendshipPayload> GetFriendshipPayload(string friendshipId)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
                 Logger.LogTrace($"friendshipPayload({friendshipId})");
             }
-            /**
-             * 1. Try to get from cache first
-             */
+            //1. Try to get from cache first
             var cachedPayload = FriendshipPayloadCache(friendshipId);
             if (cachedPayload != null)
             {
                 return cachedPayload;
             }
 
-            /**
-             * 2. Cache not found
-             */
+            //2. Cache not found
             var rawPayload = await FriendshipRawPayload(friendshipId);
             var payload = await FriendshipRawPayloadParser(rawPayload);
 
@@ -629,18 +619,14 @@ namespace Wechaty
                 throw new ArgumentException("no id");
             }
 
-            /**
-             * 1. Try to get from cache first
-             */
+            //1. Try to get from cache first
             var cachedPayload = MessagePayloadCache(messageId);
             if (cachedPayload != null)
             {
                 return cachedPayload;
             }
 
-            /**
-             * 2. Cache not found
-             */
+            //2. Cache not found
             var rawPayload = await MessageRawPayload(messageId);
             var payload = await MessageRawPayloadParser(rawPayload);
 
@@ -786,29 +772,33 @@ namespace Wechaty
         protected abstract Task<object> RoomInvitationRawPayload(string roomInvitationId);
         protected abstract Task<RoomInvitationPayload> RoomInvitationRawPayloadParser(object rawPayload);
 
-        /**
-         * Get & Set
-         */
+        /// <summary>
+        /// get room inviatation payload 
+        /// </summary>
+        /// <param name="roomInvitationId"></param>
+        /// <returns></returns>
         public async Task<RoomInvitationPayload> GetRoomInvitationPayload(string roomInvitationId)
         {
-            /**
-             * 1. Try to get from cache first
-             */
+            //1. Try to get from cache first
             var cachedPayload = RoomInvitationPayloadCache(roomInvitationId);
             if (cachedPayload != null)
             {
                 return cachedPayload;
             }
 
-            /**
-             * 2. Cache not found
-             */
-
+            //2. Cache not found
             var rawPayload = await RoomInvitationRawPayload(roomInvitationId);
             var payload = await RoomInvitationRawPayloadParser(rawPayload);
 
             return payload;
         }
+
+        /// <summary>
+        /// set room inviatation payload
+        /// </summary>
+        /// <param name="roomInvitationId"></param>
+        /// <param name="newPayload"></param>
+        /// <returns></returns>
 #pragma warning disable CS1998 // 异步方法缺少 "await" 运算符，将以同步方式运行
         public async Task SetRoomInvitationPayload(string roomInvitationId, RoomInvitationPayload newPayload) => CacheRoomInvitationPayload.Set(roomInvitationId, newPayload);
 #pragma warning restore CS1998 // 异步方法缺少 "await" 运算符，将以同步方式运行
@@ -981,18 +971,15 @@ namespace Wechaty
             {
                 throw new ArgumentException("no id", nameof(roomId));
             }
-            /**
-             * 1. Try to get from cache first
-             */
+
+            //1. Try to get from cache first
             var cached = RoomPayloadCache(roomId);
             if (cached != null)
             {
                 return cached;
             }
 
-            /**
-             * 2. Cache not found
-             */
+            //2. Cache not found
             var rawPayload = await RoomRawPayload(roomId);
             var payload = await RoomRawPayloadParser(rawPayload);
 
@@ -1032,9 +1019,7 @@ namespace Wechaty
                 throw new ArgumentException("no id");
             }
 
-            /**
-             * 1. Try to get from cache
-             */
+            //1. Try to get from cache
             var cacheKey = CacheKeyRoomMember(roomId, memberId);
             var cachedPayload = CacheRoomMemberPayload.Get(cacheKey);
 
@@ -1043,9 +1028,7 @@ namespace Wechaty
                 return cachedPayload;
             }
 
-            /**
-             * 2. Cache not found
-             */
+            //2. Cache not found
             var rawPayload = await RoomMemberRawPayload(roomId, memberId);
             if (rawPayload == null)
             {

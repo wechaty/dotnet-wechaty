@@ -9,9 +9,13 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wechaty.Schemas;
 
-
 namespace Wechaty.User
 {
+    /// <summary>
+    /// repository of <typeparamref name="TContact"/>
+    /// </summary>
+    /// <typeparam name="TContactRepository"></typeparam>
+    /// <typeparam name="TContact"></typeparam>
     public abstract class ContactRepository<TContactRepository, TContact> : Accessory<TContactRepository>
         where TContactRepository : ContactRepository<TContactRepository, TContact>
         where TContact : Contact
@@ -19,18 +23,32 @@ namespace Wechaty.User
         private readonly ILogger<TContact> _loggerForContact;
         private readonly string? _name;
 
+        /// <summary>
+        /// init <see cref="ContactRepository{TContactRepository, TContact}"/>
+        /// </summary>
+        /// <param name="loggerForContact"></param>
+        /// <param name="wechaty"></param>
+        /// <param name="logger"></param>
+        /// <param name="name"></param>
         protected ContactRepository([DisallowNull] ILogger<TContact> loggerForContact,
                                     [DisallowNull] Wechaty wechaty,
-                                    [DisallowNull] Puppet puppet,
                                     [DisallowNull] ILogger<TContactRepository> logger,
-                                    [AllowNull] string? name = null) : base(wechaty, puppet, logger, name)
+                                    [AllowNull] string? name = null) : base(wechaty, logger, name)
         {
             _loggerForContact = loggerForContact;
             _name = name;
         }
 
+        /// <summary>
+        /// cache for <typeparamref name="TContact"/>s
+        /// </summary>
         protected ConcurrentDictionary<string, TContact>? Pool { get; set; }
 
+        /// <summary>
+        /// load <typeparamref name="TContact"/> by <paramref name="id"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public TContact Load(string id)
         {
             if (Pool == null)
@@ -42,9 +60,14 @@ namespace Wechaty.User
                 Pool = new ConcurrentDictionary<string, TContact>();
             }
 
-            return Pool.GetOrAdd(id, key => New(key, WechatyInstance, Puppet, _loggerForContact, _name));
+            return Pool.GetOrAdd(id, key => New(key, WechatyInstance, _loggerForContact, _name));
         }
 
+        /// <summary>
+        /// find <typeparamref name="TContact"/> by <paramref name="query"/>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public async Task<TContact?> Find([DisallowNull] ContactQueryFilter query)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -85,6 +108,12 @@ namespace Wechaty.User
             return null;
         }
 
+        /// <summary>
+        /// find all <typeparamref name="TContact"/> by <paramref name="query"/> if <paramref name="query"/> is not null,
+        /// else find all <typeparamref name="TContact"/>s.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public async Task<IReadOnlyList<TContact>> FindAll([AllowNull] ContactQueryFilter? query = default)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -128,6 +157,11 @@ namespace Wechaty.User
             }
         }
 
+        /// <summary>
+        /// delete <paramref name="contact"/>
+        /// </summary>
+        /// <param name="contact"></param>
+        /// <returns></returns>
         [Obsolete("TODO")]
 #pragma warning disable CS1998 // 异步方法缺少 "await" 运算符，将以同步方式运行
         public async Task Delete(TContact contact)
@@ -163,9 +197,17 @@ namespace Wechaty.User
             }
         }
 
+        /// <summary>
+        /// new <typeparamref name="TContact"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="wechaty"></param>
+        /// <param name="puppet"></param>
+        /// <param name="logger"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         protected abstract TContact New([DisallowNull] string id,
             [DisallowNull] Wechaty wechaty,
-            [DisallowNull] Puppet puppet,
             [DisallowNull] ILogger<TContact> logger,
             [AllowNull] string? name = default);
     }

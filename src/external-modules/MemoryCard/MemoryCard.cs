@@ -29,6 +29,12 @@ namespace Wechaty
         private readonly ILoggerFactory _loggerFactory;
         private readonly Dictionary<string, object> _container;
 
+        public MemoryCard([AllowNull] string? name,
+                          [DisallowNull] ILogger<MemoryCard> logger,
+                          [DisallowNull] ILoggerFactory loggerFactory) :
+            this(new MemoryCardOptions { Name = name }, logger, loggerFactory)
+        { }
+
         public MemoryCard([AllowNull] MemoryCardOptions? options,
                           [DisallowNull] ILogger<MemoryCard> logger,
                           [DisallowNull] ILoggerFactory loggerFactory)

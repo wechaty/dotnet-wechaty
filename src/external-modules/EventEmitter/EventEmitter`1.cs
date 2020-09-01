@@ -5,16 +5,20 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 
-namespace Wechaty
+namespace EventEmitter
 {
+    /// <summary>
+    /// event emitter
+    /// </summary>
+    /// <typeparam name="TEventEmitter"></typeparam>
     public abstract class EventEmitter<TEventEmitter> : IEventEmitter<TEventEmitter>, IInheritance<TEventEmitter, EventEmitter<TEventEmitter>>
-    where TEventEmitter : EventEmitter<TEventEmitter>
+        where TEventEmitter : EventEmitter<TEventEmitter>
     {
         internal class Handler : IComparable<Handler>, IEquatable<Handler>
         {
             private int _processCount;
 
-            public Handler(Action<object[]> listener, bool once = false)
+            public Handler(Action<object?[]> listener, bool once = false)
             {
                 Listener = listener;
                 Once = once;
@@ -24,13 +28,13 @@ namespace Wechaty
 
             public int ProcessCount => _processCount;
 
-            public Action<object[]> Listener { get; }
+            public Action<object?[]> Listener { get; }
 
             public int CompareTo([AllowNull] Handler other) => Equals(other) ? 0 : (other == null ? Listener.GetHashCode() : Listener.GetHashCode() - other.Listener.GetHashCode());
 
             public bool Equals([AllowNull] Handler other) => other != null && other.Listener == Listener;
 
-            public void Process(object[] args)
+            public void Process(object?[] args)
             {
                 var incremented = Interlocked.Increment(ref _processCount);
                 if (Once && incremented != 1)
@@ -65,7 +69,7 @@ namespace Wechaty
         /// To change the default for all EventEmitter instances, the EventEmitter.defaultMaxListeners property can be used.
         /// If this value is not a positive number, a TypeError will be thrown.
         /// </summary>
-        public static int DefaultMaxListeners { get; }
+        public static int DefaultMaxListeners { get; set; } = 10;
 
         private readonly ConcurrentDictionary<string, List<Handler>> _listeners = new ConcurrentDictionary<string, List<Handler>>();
 
@@ -84,10 +88,10 @@ namespace Wechaty
         public virtual int MaxListeners { get; set; }
 
         ///<inheritdoc/>
-        public virtual TEventEmitter AddListener(string eventName, Action<object[]> listener) => On(eventName, listener);
+        public virtual TEventEmitter AddListener(string eventName, Action<object?[]> listener) => On(eventName, listener);
 
         ///<inheritdoc/>
-        public virtual bool Emit(string eventName, [AllowNull] params object[] args)
+        public virtual bool Emit(string eventName, [AllowNull] params object?[] args)
         {
             var registered = false;
             if (_listeners.TryGetValue(eventName, out var funcs))
@@ -112,20 +116,20 @@ namespace Wechaty
 
         ///<inheritdoc/>
         public virtual int ListenerCount(string eventName) =>
-            (_listeners.TryGetValue(eventName, out var funcs1) ? funcs1.Count : 0);
+            _listeners.TryGetValue(eventName, out var funcs1) ? funcs1.Count : 0;
 
         ///<inheritdoc/>
-        public virtual IReadOnlyList<Action<object[]>> Listeners(string eventName)
+        public virtual IReadOnlyList<Action<object?[]>> Listeners(string eventName)
         {
             _ = _listeners.TryGetValue(eventName, out var funcs);
-            return funcs?.Where(h => !h.Once).Select(h => h.Listener).ToList() ?? new List<Action<object[]>>();
+            return funcs?.Where(h => !h.Once).Select(h => h.Listener).ToList() ?? new List<Action<object?[]>>();
         }
 
         ///<inheritdoc/>
-        public virtual TEventEmitter Off(string eventName, Action<object[]> listener) => RemoveListener(eventName, listener);
+        public virtual TEventEmitter Off(string eventName, Action<object?[]> listener) => RemoveListener(eventName, listener);
 
         ///<inheritdoc/>
-        public virtual TEventEmitter On(string eventName, Action<object[]> listener)
+        public virtual TEventEmitter On(string eventName, Action<object?[]> listener)
         {
             if (_listeners.TryGetValue(eventName, out var funcs))
             {
@@ -137,13 +141,13 @@ namespace Wechaty
                 {
                     new Handler(listener)
                 };
-                _listeners.TryAdd(eventName, funcs);
+                _ = _listeners.TryAdd(eventName, funcs);
             }
-            return ToImplement();
+            return ToImplement;
         }
 
         ///<inheritdoc/>
-        public virtual TEventEmitter Once(string eventName, Action<object[]> listener)
+        public virtual TEventEmitter Once(string eventName, Action<object?[]> listener)
         {
             if (_listeners.TryGetValue(eventName, out var funcs))
             {
@@ -155,13 +159,13 @@ namespace Wechaty
                 {
                     new Handler(listener, true)
                 };
-                _listeners.TryAdd(eventName, funcs);
+                _ = _listeners.TryAdd(eventName, funcs);
             }
-            return ToImplement();
+            return ToImplement;
         }
 
         ///<inheritdoc/>
-        public virtual TEventEmitter PrependListener(string eventName, Action<object[]> listener)
+        public virtual TEventEmitter PrependListener(string eventName, Action<object?[]> listener)
         {
             if (_listeners.TryGetValue(eventName, out var funcs))
             {
@@ -173,13 +177,13 @@ namespace Wechaty
                 {
                     new Handler(listener)
                 };
-                _listeners.TryAdd(eventName, funcs);
+                _ = _listeners.TryAdd(eventName, funcs);
             }
-            return ToImplement();
+            return ToImplement;
         }
 
         ///<inheritdoc/>
-        public virtual TEventEmitter PrependOnceListener(string eventName, Action<object[]> listener)
+        public virtual TEventEmitter PrependOnceListener(string eventName, Action<object?[]> listener)
         {
             if (_listeners.TryGetValue(eventName, out var funcs))
             {
@@ -191,16 +195,16 @@ namespace Wechaty
                 {
                     new Handler(listener, true)
                 };
-                _listeners.TryAdd(eventName, funcs);
+                _ = _listeners.TryAdd(eventName, funcs);
             }
-            return ToImplement();
+            return ToImplement;
         }
 
         ///<inheritdoc/>
-        public virtual IReadOnlyList<Action<object[]>> RawListeners(string eventName)
+        public virtual IReadOnlyList<Action<object?[]>> RawListeners(string eventName)
         {
             _ = _listeners.TryGetValue(eventName, out var funcs);
-            return funcs?.Select(h => h.Listener).ToList() ?? new List<Action<object[]>>();
+            return funcs?.Select(h => h.Listener).ToList() ?? new List<Action<object?[]>>();
         }
 
         ///<inheritdoc/>
@@ -208,17 +212,17 @@ namespace Wechaty
         {
             if (!string.IsNullOrWhiteSpace(eventName))
             {
-                _listeners.TryRemove(eventName, out _);
+                _ = _listeners.TryRemove(eventName!, out _);
             }
             else
             {
                 _listeners.Clear();
             }
-            return ToImplement();
+            return ToImplement;
         }
 
         ///<inheritdoc/>
-        public virtual TEventEmitter RemoveListener(string eventName, Action<object[]> listener)
+        public virtual TEventEmitter RemoveListener(string eventName, Action<object?[]> listener)
         {
             if (_listeners.TryGetValue(eventName, out var funcs))
             {
@@ -229,15 +233,19 @@ namespace Wechaty
                         funcs.RemoveAt(i);
                         if (funcs.Count == 0)
                         {
-                            _listeners.TryRemove(eventName, out _);
+                            _ = _listeners.TryRemove(eventName, out _);
                         }
                         break;
                     }
                 }
             }
-            return ToImplement();
+            return ToImplement;
         }
 
-        public abstract TEventEmitter ToImplement();
+        /// <summary>
+        /// return this.
+        /// </summary>
+        /// <returns></returns>
+        public abstract TEventEmitter ToImplement { get; }
     }
 }

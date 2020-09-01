@@ -10,9 +10,8 @@ namespace Wechaty.User
     public class UrlLinkRepository : Accessory<UrlLinkRepository>
     {
         public UrlLinkRepository([DisallowNull] Wechaty wechaty,
-                                 [DisallowNull] Puppet puppet,
                                  [DisallowNull] ILogger<UrlLinkRepository> logger,
-                                 [AllowNull] string? name = null) : base(wechaty, puppet, logger, name)
+                                 [AllowNull] string? name = null) : base(wechaty, logger, name)
         {
         }
 
@@ -33,6 +32,6 @@ namespace Wechaty.User
             });
         }
 
-        public override UrlLinkRepository ToImplement() => this;
+        public override UrlLinkRepository ToImplement => this;
     }
 }

@@ -18,23 +18,23 @@ namespace Wechaty.User
 
         public RoomInvitation([DisallowNull] string id,
                               [DisallowNull] Wechaty wechaty,
-                              [DisallowNull] Puppet puppet,
                               [DisallowNull] ILogger<RoomInvitation> logger,
-                              [AllowNull] string? name = null) : base(wechaty, puppet, logger, name)
+                              [AllowNull] string? name = null) : base(wechaty, logger, name)
         {
             Id = id;
             if (Logger.IsEnabled(LogLevel.Trace))
             {
                 Logger.LogTrace($"constructor({id})");
             }
-            if (Puppet == null)
-            {
-                throw new ArgumentNullException(nameof(puppet), "RoomInvitation class can not be instanciated without a puppet!");
-            }
         }
 
+        ///<inheritdoc/>
         public override string ToString() => $"RoomInvitation#{Id ?? "loading"}";
 
+        /// <summary>
+        /// to string async
+        /// </summary>
+        /// <returns></returns>
         public async Task<string> ToStringAsync()
         {
             var payload = await Puppet.GetRoomInvitationPayload(Id);
@@ -95,6 +95,10 @@ namespace Wechaty.User
         [Obsolete("use topic() instead")]
         public Task<string> RoomTopic => Topic();
 
+        /// <summary>
+        /// member count of current <see cref="RoomInvitation"/>
+        /// </summary>
+        /// <returns></returns>
         public async Task<int> MemberCount()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -165,6 +169,6 @@ namespace Wechaty.User
             return JsonConvert.SerializeObject(payload);
         }
 
-        public override RoomInvitation ToImplement() => this;
+        public override RoomInvitation ToImplement => this;
     }
 }

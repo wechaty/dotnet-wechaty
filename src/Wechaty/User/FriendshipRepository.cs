@@ -7,24 +7,43 @@ using Wechaty.Schemas;
 
 namespace Wechaty.User
 {
+    /// <summary>
+    /// repository of <see cref="Friendship"/>
+    /// </summary>
     public class FriendshipRepository : Accessory<FriendshipRepository>
     {
         private readonly ILogger<Friendship> _loggerForFriendship;
         private readonly string? _name;
 
+        /// <summary>
+        /// init <see cref="FriendshipRepository"/>
+        /// </summary>
+        /// <param name="loggerForFriendship"></param>
+        /// <param name="wechaty"></param>
+        /// <param name="logger"></param>
+        /// <param name="name"></param>
         public FriendshipRepository([DisallowNull] ILogger<Friendship> loggerForFriendship,
                                     [DisallowNull] Wechaty wechaty,
-                                    [DisallowNull] Puppet puppet,
                                     [DisallowNull] ILogger<FriendshipRepository> logger,
-                                    [AllowNull] string? name = null) : base(wechaty, puppet, logger, name)
+                                    [AllowNull] string? name = null) : base(wechaty, logger, name)
         {
             _loggerForFriendship = loggerForFriendship;
             _name = name;
         }
 
+        /// <summary>
+        /// load <see cref="Friendship"/> by <paramref name="id"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Friendship Load(string id)
-            => new Friendship(id, WechatyInstance, Puppet, _loggerForFriendship, _name);
+            => new Friendship(id, WechatyInstance, _loggerForFriendship, _name);
 
+        /// <summary>
+        /// search <see cref="Contact"/> by <paramref name="query"/>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public async Task<Contact?> Search([DisallowNull] FriendshipSearchCondition query)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -72,6 +91,11 @@ namespace Wechaty.User
             return Puppet.FriendshipAdd(contact.Id, hello);
         }
 
+        /// <summary>
+        /// delete <paramref name="contact"/> from friendship
+        /// </summary>
+        /// <param name="contact"></param>
+        /// <returns></returns>
         public async Task Delete([DisallowNull] Contact contact)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -82,8 +106,18 @@ namespace Wechaty.User
             throw new NotImplementedException("to be implemented");
         }
 
+        /// <summary>
+        /// from json
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <returns></returns>
         public Task<Friendship> FromJson(string payload) => FromJson(JsonConvert.DeserializeObject<FriendshipPayload>(payload));
 
+        /// <summary>
+        /// from json
+        /// </summary>
+        /// <param name="payload"></param>
+        /// <returns></returns>
         public async Task<Friendship> FromJson(FriendshipPayload payload)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -96,6 +130,7 @@ namespace Wechaty.User
             return instance;
         }
 
-        public override FriendshipRepository ToImplement() => this;
+        ///<inheritdoc/>
+        public override FriendshipRepository ToImplement => this;
     }
 }

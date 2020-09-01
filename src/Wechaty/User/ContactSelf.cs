@@ -9,9 +9,8 @@ namespace Wechaty.User
     {
         public ContactSelf([DisallowNull] string id,
                            [DisallowNull] Wechaty wechaty,
-                           [DisallowNull] Puppet puppet,
                            [DisallowNull] ILogger<ContactSelf> logger,
-                           [AllowNull] string? name = null) : base(id, wechaty, puppet, logger, name)
+                           [AllowNull] string? name = null) : base(id, wechaty, logger, name)
         {
         }
 

@@ -37,7 +37,7 @@ namespace Wechaty.Schemas
         /// <summary>
         /// 将 正则表达 转化为一个 <see cref="StringOrRegex"/> 实例
         /// </summary>
-        /// <param name="regex">正则表达式</param>
+        /// <param name="value">正则表达式</param>
         public static implicit operator StringOrRegex?(Regex? value) => value == null ? default : new StringOrRegex(value);
 
         /// <summary>

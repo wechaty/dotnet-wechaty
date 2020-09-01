@@ -24,6 +24,6 @@ namespace Wechaty
         /// <param name="text">发送文本</param>
         /// <param name="replyTo">指定回复 @ 人员 </param>
         /// <returns></returns>
-        Task<Message> Say(string text, params Contact[]? replyTo);
+        Task<Message?> Say(string text, params Contact[]? replyTo);
     }
 }

@@ -125,12 +125,4 @@ namespace Wechaty.Schemas
         [EnumMember(Value = "scan")]
         Scan
     }
-
-    public interface IPuppetOptions
-    {
-        string? Endpoint { get; }
-        long? Timeout { get; }
-        string? Token { get; }
-        object this[string puppetOptionKey] { get; }
-    }
 }

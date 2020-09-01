@@ -20,9 +20,8 @@ namespace Wechaty.User
 
         public RoomRepository([DisallowNull] ILogger<Room> loggerForRoom,
                               [DisallowNull] Wechaty wechaty,
-                              [DisallowNull] Puppet puppet,
                               [DisallowNull] ILogger<RoomRepository> logger,
-                              [AllowNull] string? name = null) : base(wechaty, puppet, logger, name)
+                              [AllowNull] string? name = null) : base(wechaty, logger, name)
         {
             _loggerForRoom = loggerForRoom;
             _name = name;
@@ -128,6 +127,6 @@ namespace Wechaty.User
             return _pool.GetOrAdd(id, room);
         }
 
-        public override RoomRepository ToImplement() => this;
+        public override RoomRepository ToImplement => this;
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System.Timers;
 using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
+using EventEmitter;
 
 namespace Wechaty
 {
@@ -157,6 +158,6 @@ namespace Wechaty
             _ = Emit("sleep", _lastFood, Left());
         }
 
-        public override Watchdog<TFoodType, TData> ToImplement() => this;
+        public override Watchdog<TFoodType, TData> ToImplement => this;
     }
 }

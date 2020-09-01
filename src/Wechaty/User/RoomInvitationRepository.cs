@@ -13,15 +13,14 @@ namespace Wechaty.User
 
         public RoomInvitationRepository([DisallowNull] ILogger<RoomInvitation> loggerForRoomInvitation,
                                         [DisallowNull] Wechaty wechaty,
-                                        [DisallowNull] Puppet puppet,
                                         [DisallowNull] ILogger<RoomInvitationRepository> logger,
-                                        [AllowNull] string? name = null) : base(wechaty, puppet, logger, name)
+                                        [AllowNull] string? name = null) : base(wechaty, logger, name)
         {
             _loggerForRoomInvitation = loggerForRoomInvitation;
             _name = name;
         }
 
-        public RoomInvitation Load([DisallowNull] string id) => new RoomInvitation(id, WechatyInstance, Puppet, _loggerForRoomInvitation, _name);
+        public RoomInvitation Load([DisallowNull] string id) => new RoomInvitation(id, WechatyInstance, _loggerForRoomInvitation, _name);
 
         public Task<RoomInvitation> FromJson(string payload) => FromJson(JsonConvert.DeserializeObject<RoomInvitationPayload>(payload));
 
@@ -35,6 +34,6 @@ namespace Wechaty.User
             return WechatyInstance.RoomInvitation.Load(payload.Id);
         }
 
-        public override RoomInvitationRepository ToImplement() => this;
+        public override RoomInvitationRepository ToImplement => this;
     }
 }

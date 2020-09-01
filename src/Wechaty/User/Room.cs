@@ -7,32 +7,45 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wechaty.Schemas;
+using EventEmitter;
 
 namespace Wechaty.User
 {
+    /// <summary>
+    /// room
+    /// </summary>
     public class Room : Accessory<Room>, ISayable, ICoversation
     {
+        /// <summary>
+        /// payload
+        /// </summary>
         protected RoomPayload? Payload { get; set; }
 
+        /// <summary>
+        /// id
+        /// </summary>
         public string Id { get; }
 
+        /// <summary>
+        /// init <see cref="Room"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="wechaty"></param>
+        /// <param name="logger"></param>
+        /// <param name="name"></param>
         public Room([DisallowNull] string id,
                     [DisallowNull] Wechaty wechaty,
-                    [DisallowNull] Puppet puppet,
                     [DisallowNull] ILogger<Room> logger,
-                    [AllowNull] string? name = null) : base(wechaty, puppet, logger, name)
+                    [AllowNull] string? name = null) : base(wechaty, logger, name)
         {
             Id = id;
             if (Logger.IsEnabled(LogLevel.Trace))
             {
                 Logger.LogTrace($"constructor({Id})");
             }
-            if (puppet == null)
-            {
-                throw new ArgumentNullException(nameof(puppet), "Room class can not be instantiated without a puppet!");
-            }
         }
 
+        ///<inheritdoc/>
         public override string ToString() => Payload == null ? nameof(Room) : $"Room<{Payload.Topic ?? "loading..."}>";
 
         /// <summary>
@@ -91,8 +104,16 @@ namespace Wechaty.User
             }));
         }
 
+        /// <summary>
+        /// is ready?
+        /// </summary>
         public bool IsReady => Payload != null;
 
+        /// <summary>
+        /// try load <see cref="Message"/> by <paramref name="msgId"/>
+        /// </summary>
+        /// <param name="msgId"></param>
+        /// <returns></returns>
         private async Task<Message?> TryLoad(string? msgId)
         {
             if (string.IsNullOrWhiteSpace(msgId))
@@ -104,6 +125,12 @@ namespace Wechaty.User
             return msg;
         }
 
+        /// <summary>
+        /// send <paramref name="text"/> to this <see cref="Room"/> and @<paramref name="replyTo"/>.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="replyTo"></param>
+        /// <returns></returns>
         public async Task<Message?> Say(string text, params Contact[]? replyTo)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -119,8 +146,18 @@ namespace Wechaty.User
             return await TryLoad(msgId);
         }
 
+        /// <summary>
+        /// send <paramref name="message"/> to this <see cref="Room"/>
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public Task Say(Message message) => message.Forward(this);
 
+        /// <summary>
+        /// send <paramref name="file"/> to this <see cref="Room"/>
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         public async Task<Message?> Say(FileBox file)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -131,6 +168,11 @@ namespace Wechaty.User
             return await TryLoad(msgId);
         }
 
+        /// <summary>
+        /// send <paramref name="url"/> to this <see cref="Room"/>
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public async Task<Message?> Say(UrlLink url)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -141,6 +183,11 @@ namespace Wechaty.User
             return await TryLoad(msgId);
         }
 
+        /// <summary>
+        /// send <paramref name="mini"/> to this <see cref="Room"/>
+        /// </summary>
+        /// <param name="mini"></param>
+        /// <returns></returns>
         public async Task<Message?> Say(MiniProgram mini)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -151,6 +198,11 @@ namespace Wechaty.User
             return await TryLoad(msgId);
         }
 
+        /// <summary>
+        /// send <paramref name="contact"/> to this <see cref="Room"/>
+        /// </summary>
+        /// <param name="contact"></param>
+        /// <returns></returns>
         public async Task<Message?> Say(Contact contact)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -161,20 +213,49 @@ namespace Wechaty.User
             return await TryLoad(msgId);
         }
 
-        public virtual bool Emit(Contact inviter, RoomInvitation invitation) => Emit("invite", inviter, invitation);
+        /// <summary>
+        /// emit <paramref name="invitation"/> from <paramref name="inviter"/>
+        /// </summary>
+        /// <param name="inviter"></param>
+        /// <param name="invitation"></param>
+        /// <returns></returns>
+        public virtual bool EmitInvite(Contact inviter, RoomInvitation invitation) => Emit("invite", inviter, invitation);
 
-        public virtual bool EmitLeave(Contact[] leaverList, Contact remover, DateTime date) => Emit("leave", leaverList, remover, date);
+        /// <summary>
+        /// emit remove <paramref name="leaverList"/> from this <see cref="Room"/> at <paramref name="date"/>
+        /// </summary>
+        /// <param name="leaverList"></param>
+        /// <param name="remover"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public virtual bool EmitLeave(IReadOnlyList<Contact> leaverList, Contact remover, DateTime date) => Emit("leave", leaverList, remover, date);
 
-        public virtual bool Emit(Message message) => Emit("message", message);
+        /// <summary>
+        /// emit receive <paramref name="message"/> at this <see cref="Room"/>
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public virtual bool EmitMessage(Message message) => Emit("message", message);
 
-        public virtual bool EmitJoin(Contact[] inviteeList, Contact inviter, DateTime date) => Emit("join", inviteeList, inviter, date);
+        /// <summary>
+        /// emit <paramref name="inviter"/> invite <paramref name="inviteeList"/> to this <see cref="Room"/> at <paramref name="date"/>
+        /// </summary>
+        /// <param name="inviteeList"></param>
+        /// <param name="inviter"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public virtual bool EmitJoin(IReadOnlyList<Contact> inviteeList, Contact inviter, DateTime date) => Emit("join", inviteeList, inviter, date);
 
-        public virtual bool Emit(string topic, string oldTopic, Contact changer, DateTime date) => Emit("topic", topic, oldTopic, changer, date);
+        public virtual bool EmitTopic(string topic, string oldTopic, Contact changer, DateTime date) => Emit("topic", topic, oldTopic, changer, date);
 
         public virtual Room OnInvite(Action<Room, Contact, RoomInvitation> listener) => this.On("invite", listener);
-        public virtual Room OnLeave(Action<Room, Contact[], Contact, DateTime> listener) => this.On("leave", listener);
+
+        public virtual Room OnLeave(Action<Room, IReadOnlyList<Contact>, Contact, DateTime> listener) => this.On("leave", listener);
+
         public virtual Room OnMessage(Action<Room, Message> listener) => this.On("message", listener);
-        public virtual Room OnJoin(Action<Room, Contact[], Contact, DateTime> listener) => this.On("join", listener);
+
+        public virtual Room OnJoin(Action<Room, IReadOnlyList<Contact>, Contact, DateTime> listener) => this.On("join", listener);
+
         public virtual Room OnTopic(Action<Room, string, string, Contact, DateTime> listener) => this.On("topic", listener);
 
         public Task Add(Contact contact)
@@ -387,6 +468,6 @@ namespace Wechaty.User
             }
         }
 
-        public override Room ToImplement() => this;
+        public override Room ToImplement => this;
     }
 }

@@ -13,34 +13,52 @@ using Wechaty.Schemas;
 
 namespace Wechaty.User
 {
+    /// <summary>
+    /// message
+    /// </summary>
     public class Message : Accessory<Message>, ISayable
     {
+        /// <summary>
+        /// @someone seperator character
+        /// </summary>
         public const string AT_SEPARATOR = "\u2005|\u0020";
+
         /// <summary>
         /// mobile: \u2005, PC、mac: \u0020
         /// </summary>
         public static readonly Regex AT_SEPARATOR_REGEX = new Regex(AT_SEPARATOR, RegexOptions.Compiled);
 
+        /// <summary>
+        /// load all
+        /// </summary>
         private readonly AsyncLazy<object> _loadAll;
 
+        /// <summary>
+        /// payload
+        /// </summary>
         protected MessagePayload? Payload { get; set; }
 
+        /// <summary>
+        /// id
+        /// </summary>
         public string Id { get; }
 
+        /// <summary>
+        /// init <see cref="Message"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="wechaty"></param>
+        /// <param name="logger"></param>
+        /// <param name="name"></param>
         public Message([DisallowNull] string id,
             [DisallowNull] Wechaty wechaty,
-            [DisallowNull] Puppet puppet,
             [DisallowNull] ILogger<Message> logger,
-            [AllowNull] string? name = null) : base(wechaty, puppet, logger, name)
+            [AllowNull] string? name = null) : base(wechaty, logger, name)
         {
             Id = id;
             if (Logger.IsEnabled(LogLevel.Trace))
             {
                 Logger.LogTrace($"constructor({id}) for class {GetType().Name ?? nameof(Message)}");
-            }
-            if (Puppet == null)
-            {
-                throw new ArgumentNullException(nameof(puppet), "Message class can not be instanciated without a puppet!");
             }
             _loadAll = new AsyncLazy<object>(async () =>
             {
@@ -83,14 +101,23 @@ namespace Wechaty.User
             return stringBuilder.ToString();
         }
 
+        /// <summary>
+        /// talker
+        /// </summary>
 #pragma warning disable CS8603 // 可能的 null 引用返回。
         public Contact Talker => From;
 #pragma warning restore CS8603 // 可能的 null 引用返回。
 
+        /// <summary>
+        /// this message belong to which conversation
+        /// </summary>
 #pragma warning disable CS8603 // 可能的 null 引用返回。
         public ICoversation Coversation => Room ?? From as ICoversation;
 #pragma warning restore CS8603 // 可能的 null 引用返回。
 
+        /// <summary>
+        /// message sender
+        /// </summary>
         public Contact? From
         {
             get
@@ -104,10 +131,13 @@ namespace Wechaty.User
                 {
                     return null;
                 }
-                return base.WechatyInstance.Contact.Load(id);
+                return WechatyInstance.Contact.Load(id);
             }
         }
 
+        /// <summary>
+        /// message receiver
+        /// </summary>
         public Contact? To
         {
             get
@@ -121,10 +151,13 @@ namespace Wechaty.User
                 {
                     return null;
                 }
-                return base.WechatyInstance.Contact.Load(id);
+                return WechatyInstance.Contact.Load(id);
             }
         }
 
+        /// <summary>
+        /// message from room
+        /// </summary>
         public Room? Room
         {
             get
@@ -138,10 +171,13 @@ namespace Wechaty.User
                 {
                     return null;
                 }
-                return base.WechatyInstance.Room.Load(id);
+                return WechatyInstance.Room.Load(id);
             }
         }
 
+        /// <summary>
+        /// use <see cref="Text"/> instead.
+        /// </summary>
         [Obsolete("content() DEPRECATED. use text() instead.")]
         public string Content
         {
@@ -152,6 +188,9 @@ namespace Wechaty.User
             }
         }
 
+        /// <summary>
+        /// text presentation of this message
+        /// </summary>
         public string Text
         {
             get
@@ -164,6 +203,10 @@ namespace Wechaty.User
             }
         }
 
+        /// <summary>
+        /// get recalled message
+        /// </summary>
+        /// <returns></returns>
         public async Task<Message?> ToRecalled()
         {
             if (Type != MessageType.Recalled)
@@ -177,7 +220,7 @@ namespace Wechaty.User
             }
             try
             {
-                var message = base.WechatyInstance.Message.Load(originalMessageId);
+                var message = WechatyInstance.Message.Load(originalMessageId);
                 await message.Ready;
                 return message;
             }
@@ -188,6 +231,13 @@ namespace Wechaty.User
             }
         }
 
+        /// <summary>
+        /// send <paramref name="text"/> to <see cref="Room"/> or <see cref="From"/>
+        /// and @<paramref name="replyTo"/>
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="replyTo">@someone</param>
+        /// <returns></returns>
         public async Task<Message?> Say(string text, params Contact[]? replyTo)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -210,6 +260,12 @@ namespace Wechaty.User
             }
             return null;
         }
+
+        /// <summary>
+        /// send <paramref name="message"/> to <see cref="Room"/> or <see cref="From"/>
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public async Task<Message?> Say(Message message)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -232,6 +288,12 @@ namespace Wechaty.User
             }
             return null;
         }
+
+        /// <summary>
+        /// send <paramref name="contact"/> to <see cref="Room"/> or <see cref="From"/>
+        /// </summary>
+        /// <param name="contact"></param>
+        /// <returns></returns>
         public async Task<Message?> Say(Contact contact)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -254,6 +316,12 @@ namespace Wechaty.User
             }
             return null;
         }
+
+        /// <summary>
+        /// send <paramref name="fileBox"/> to <see cref="Room"/> or <see cref="From"/>
+        /// </summary>
+        /// <param name="fileBox"></param>
+        /// <returns></returns>
         public async Task<Message?> Say(FileBox fileBox)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -276,6 +344,12 @@ namespace Wechaty.User
             }
             return null;
         }
+
+        /// <summary>
+        /// send <paramref name="urlLink"/> to <see cref="Room"/> or <see cref="From"/>
+        /// </summary>
+        /// <param name="urlLink"></param>
+        /// <returns></returns>
         public async Task<Message?> Say(UrlLink urlLink)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -298,6 +372,12 @@ namespace Wechaty.User
             }
             return null;
         }
+
+        /// <summary>
+        /// send <paramref name="miniProgram"/> to <see cref="Room"/> or <see cref="From"/>
+        /// </summary>
+        /// <param name="miniProgram"></param>
+        /// <returns></returns>
         public async Task<Message?> Say(MiniProgram miniProgram)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -321,6 +401,9 @@ namespace Wechaty.User
             return null;
         }
 
+        /// <summary>
+        /// message type
+        /// </summary>
         public MessageType Type
         {
             get
@@ -333,6 +416,9 @@ namespace Wechaty.User
             }
         }
 
+        /// <summary>
+        /// check is from self
+        /// </summary>
         public bool Self => From?.Id == Puppet.SelfId;
 
         /// <summary>
@@ -341,7 +427,7 @@ namespace Wechaty.User
         /// |                                                                            | Web  |  Mac PC Client | iOS Mobile |  android Mobile |
         /// | :---                                                                       | :--: |     :----:     |   :---:    |     :---:       |
         /// | [You were mentioned] tip ([有人@我]的提示)                                  |  ✘   |        √       |     √      |       √         |
-        /// | Identify magic code (8197) by copy & paste in mobile                       |  ✘   |        √       |     √      |       ✘         |
+        /// | Identify magic code (8197) by copy and paste in mobile                       |  ✘   |        √       |     √      |       ✘         |
         /// | Identify magic code (8197) by programming                                  |  ✘   |        ✘       |     ✘      |       ✘         |
         /// | Identify two contacts with the same roomAlias by [You were  mentioned] tip |  ✘   |        ✘       |     √      |       √         |
         /// </summary>
@@ -363,7 +449,7 @@ namespace Wechaty.User
             {
                 return await Task.WhenAll(messagePayloadRoom.MentionIdList.Select(async id =>
                 {
-                    var contact = base.WechatyInstance.Contact.Load(id);
+                    var contact = WechatyInstance.Contact.Load(id);
                     await contact.Ready();
                     return contact;
                 }));
@@ -425,6 +511,10 @@ namespace Wechaty.User
             }
         }
 
+        /// <summary>
+        /// get metion text of this message
+        /// </summary>
+        /// <returns></returns>
         public async Task<string> MentionText()
         {
             var text = Text;
@@ -482,8 +572,14 @@ namespace Wechaty.User
             return mentionList.Any(contact => contact.Id == selfId);
         }
 
+        /// <summary>
+        /// check <see cref="Payload"/> is ready
+        /// </summary>
         public bool IsReady => Payload != null;
 
+        /// <summary>
+        /// ready task
+        /// </summary>
         public Task Ready => _loadAll.Task;
 
         /// <summary>
@@ -613,6 +709,10 @@ namespace Wechaty.User
             return contact;
         }
 
+        /// <summary>
+        /// convert to <see cref="UrlLink"/>
+        /// </summary>
+        /// <returns></returns>
         public async Task<UrlLink> ToUrlLink()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -635,6 +735,10 @@ namespace Wechaty.User
             return new UrlLink(urlPayload);
         }
 
+        /// <summary>
+        /// convert to <see cref="MiniProgram"/>
+        /// </summary>
+        /// <returns></returns>
         public async Task<MiniProgram> ToMiniProgram()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -657,6 +761,7 @@ namespace Wechaty.User
             return new MiniProgram(miniProgramPayload);
         }
 
-        public override Message ToImplement() => this;
+        ///<inheritdoc/>
+        public override Message ToImplement => this;
     }
 }

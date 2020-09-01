@@ -10,18 +10,13 @@ namespace Wechaty.User
         public string Id { get; }
         public Tag([DisallowNull] string id,
                    [DisallowNull] Wechaty wechaty,
-                   [DisallowNull] Puppet puppet,
                    [DisallowNull] ILogger<Tag> logger,
-                   [AllowNull] string? name = null) : base(wechaty, puppet, logger, name)
+                   [AllowNull] string? name = null) : base(wechaty, logger, name)
         {
             Id = id;
             if (Logger.IsEnabled(LogLevel.Trace))
             {
                 Logger.LogTrace($"constructor({id})");
-            }
-            if (puppet == null)
-            {
-                throw new ArgumentNullException(nameof(puppet), "Tag class can not be instanciated without a puppet!");
             }
         }
 
@@ -94,6 +89,6 @@ namespace Wechaty.User
             }
         }
 
-        public override Tag ToImplement() => this;
+        public override Tag ToImplement => this;
     }
 }

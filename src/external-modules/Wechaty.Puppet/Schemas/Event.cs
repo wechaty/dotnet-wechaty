@@ -39,14 +39,14 @@ namespace Wechaty.Schemas
         public List<string> InviteeIdList { get; set; }
         public string InviterId { get; set; }
         public string RoomId { get; set; }
-        public string Timestamp { get; set; }
+        public long Timestamp { get; set; }
     }
     public class EventRoomLeavePayload
     {
         public List<string> RemoverIdList { get; set; }
         public string RemoverId { get; set; }
         public string RoomId { get; set; }
-        public string Timestamp { get; set; }
+        public long Timestamp { get; set; }
     }
 
     public class EventRoomTopicPayload
@@ -55,7 +55,7 @@ namespace Wechaty.Schemas
         public string NewTopic { get; set; }
         public string OldTopic { get; set; }
         public string RoomId { get; set; }
-        public int Timestamp { get; set; }
+        public long Timestamp { get; set; }
     }
 
     public class EventScanPayload

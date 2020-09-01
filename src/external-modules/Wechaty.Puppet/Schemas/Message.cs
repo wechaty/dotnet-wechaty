@@ -106,7 +106,7 @@ namespace Wechaty.Schemas
         public string? Filename { get; set; }
         public string? Text { get; set; }
         /// <summary>
-        /// Huan(202001): we support both seconds & milliseconds in Wechaty now.
+        /// Huan(202001): we support both seconds and milliseconds in Wechaty now.
         /// </summary>
         public long Timestamp { get; set; }
         public MessageType Type { get; set; }

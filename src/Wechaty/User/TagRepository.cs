@@ -14,15 +14,14 @@ namespace Wechaty.User
 
         public TagRepository([DisallowNull] ILogger<Tag> loggerForTag,
                              [DisallowNull] Wechaty wechaty,
-                             [DisallowNull] Puppet puppet,
                              [DisallowNull] ILogger<TagRepository> logger,
-                             [AllowNull] string? name = null) : base(wechaty, puppet, logger, name)
+                             [AllowNull] string? name = null) : base(wechaty, logger, name)
         {
             _loggerForTag = loggerForTag;
             _name = name;
         }
 
-        public Tag Load(string id) => _pool.GetOrAdd(id, key => new Tag(id, WechatyInstance, Puppet, _loggerForTag, _name));
+        public Tag Load(string id) => _pool.GetOrAdd(id, key => new Tag(id, WechatyInstance, _loggerForTag, _name));
 
         public async Task<Tag> Get(string tag) => Load(tag);
 
@@ -42,6 +41,6 @@ namespace Wechaty.User
             }
         }
 
-        public override TagRepository ToImplement() => this;
+        public override TagRepository ToImplement => this;
     }
 }

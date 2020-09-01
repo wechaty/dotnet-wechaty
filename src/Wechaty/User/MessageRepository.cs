@@ -10,22 +10,36 @@ using Wechaty.Schemas;
 
 namespace Wechaty.User
 {
+    /// <summary>
+    /// repository of <see cref="Message"/>
+    /// </summary>
     public class MessageRepository : Accessory<MessageRepository>
     {
         private readonly ILogger<Message> _loggerForMessage;
 
         private readonly string? _name;
 
+        /// <summary>
+        /// init <see cref="MessageRepository"/>
+        /// </summary>
+        /// <param name="loggerForMessage"></param>
+        /// <param name="wechaty"></param>
+        /// <param name="logger"></param>
+        /// <param name="name"></param>
         public MessageRepository([DisallowNull] ILogger<Message> loggerForMessage,
                                  [DisallowNull] Wechaty wechaty,
-                                 [DisallowNull] Puppet puppet,
                                  [DisallowNull] ILogger<MessageRepository> logger,
-                                 [AllowNull] string? name = null) : base(wechaty, puppet, logger, name)
+                                 [AllowNull] string? name = null) : base(wechaty, logger, name)
         {
             _loggerForMessage = loggerForMessage;
             _name = name;
         }
 
+        /// <summary>
+        /// find <see cref="Message"/> by <paramref name="query"/>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public Task<Message?> Find([DisallowNull] string query)
         {
             if (query == null)
@@ -35,6 +49,11 @@ namespace Wechaty.User
             return Find(new MessageQueryFilter { Text = query });
         }
 
+        /// <summary>
+        /// find <see cref="Message"/> by <paramref name="query"/>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public async Task<Message?> Find([DisallowNull] MessageQueryFilter query)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -48,6 +67,12 @@ namespace Wechaty.User
             }
             return messageList.FirstOrDefault();
         }
+
+        /// <summary>
+        /// find all <see cref="Message"/> by <paramref name="query"/> if <paramref name="query"/> is not null, otherwise find all <see cref="Message"/>
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public async Task<IReadOnlyList<Message>> FindAll([AllowNull] MessageQueryFilter? query = default)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -81,13 +106,18 @@ namespace Wechaty.User
             }
         }
 
+        /// <summary>
+        /// load <see cref="Message"/> by <paramref name="id"/>
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Message Load(string id)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
                 Logger.LogTrace($"static load({id})");
             }
-            return new Message(id, WechatyInstance, Puppet, _loggerForMessage, _name);
+            return new Message(id, WechatyInstance, _loggerForMessage, _name);
         }
 
         /// <summary>
@@ -102,6 +132,7 @@ namespace Wechaty.User
             return Load(id);
         }
 
-        public override MessageRepository ToImplement() => this;
+        ///<inheritdoc/>
+        public override MessageRepository ToImplement => this;
     }
 }

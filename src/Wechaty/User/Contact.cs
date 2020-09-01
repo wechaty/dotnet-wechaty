@@ -15,18 +15,13 @@ namespace Wechaty.User
 
         public Contact([DisallowNull] string id,
             [DisallowNull] Wechaty wechaty,
-            [DisallowNull] Puppet puppet,
             [DisallowNull] ILogger<Contact> logger,
-            [AllowNull] string? name = default) : base(wechaty, puppet, logger, name)
+            [AllowNull] string? name = default) : base(wechaty, logger, name)
         {
             Id = id;
             if (Logger.IsEnabled(LogLevel.Trace))
             {
                 Logger.LogTrace($"constructor(${id})");
-            }
-            if (Puppet == null)
-            {
-                throw new ArgumentNullException(nameof(puppet), "Contact class can not be instantiated without a puppet!");
             }
         }
 
@@ -313,6 +308,6 @@ namespace Wechaty.User
 
         public string? WeiXin => Payload?.Weixin;
 
-        public override Contact ToImplement() => this;
+        public override Contact ToImplement => this;
     }
 }

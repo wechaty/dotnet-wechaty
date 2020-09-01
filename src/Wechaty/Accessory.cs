@@ -1,24 +1,36 @@
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
+using EventEmitter;
 
 namespace Wechaty
 {
+    /// <summary>
+    /// Accessory
+    /// </summary>
+    /// <typeparam name="TAccessory"></typeparam>
     public abstract class Accessory<TAccessory> : EventEmitter<TAccessory>
         where TAccessory : Accessory<TAccessory>
     {
         private readonly long _counter;
 
+        /// <summary>
+        /// logger
+        /// </summary>
         protected ILogger<TAccessory> Logger { get; }
 
         private static long _staticCounter;
 
+        /// <summary>
+        /// init <see cref="Accessory{TAccessory}"/>
+        /// </summary>
+        /// <param name="wechaty"></param>
+        /// <param name="logger"></param>
+        /// <param name="name"></param>
         protected Accessory([DisallowNull] Wechaty wechaty,
-                            [DisallowNull] Puppet puppet,
                             [DisallowNull] ILogger<TAccessory> logger,
                             [AllowNull] string? name = default)
         {
             WechatyInstance = wechaty;
-            Puppet = puppet;
             Logger = logger;
             name ??= ToString() ?? "";
             _counter = _staticCounter++;
@@ -28,8 +40,14 @@ namespace Wechaty
             }
         }
 
+        /// <summary>
+        /// instance of wechaty
+        /// </summary>
         public Wechaty WechatyInstance { get; }
 
-        public Puppet Puppet { get; }
+        /// <summary>
+        /// puppet of wechaty
+        /// </summary>
+        public Puppet Puppet => WechatyInstance.Puppet;
     }
 }

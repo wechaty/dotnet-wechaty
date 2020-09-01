@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Wechaty.Schemas;
 
 namespace Wechaty
@@ -13,9 +13,9 @@ namespace Wechaty
         [Obsolete("DEPRECATED: use name instead")]
         public string? Profile { get; set; }
         public Puppet? Puppet { get; set; }
-        public IPuppetOptions? PuppetOptions { get; set; }
+        public PuppetOptions? PuppetOptions { get; set; }
 
-        [Obsolete("io token not supported yet.", true)]
+        //[Obsolete("io token not supported yet.", true)]
         public string? IoToken { get; set; }
     }
 }
