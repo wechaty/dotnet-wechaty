@@ -228,6 +228,10 @@ dotnet restore ./src/Wechaty.sln
 
 ### master
 
+### v0.1 (Oct 28, 2020)
+
+1. Decided to merged [Jesn's implementation of .Net Wechaty](https://github.com/Jesn/dotnet-wechaty) to this one. ([#4](https://github.com/wechaty/dotnet-wechaty/issues/4#issuecomment-717903833))
+
 ### v0.0.1 (Jul 20, 2020)
 
 1. Project created.
@@ -267,9 +271,10 @@ dotnet restore ./src/Wechaty.sln
 
 1. [@echofool](https://github.com/echofool) - echofool
 
-## Authors
+## Creators
 
 - [@echofool](https://github.com/echofool) - echofool
+- [@Jesn](https://github.com/Jesn) - Darren
 
 ## Copyright & License
 
