@@ -17,7 +17,6 @@ namespace Wechaty
     {
         public StateSwitch State { get; }
 
-
         protected LRUCache<string, ContactPayload> CacheContactPayload { get; }
         protected LRUCache<string, FriendshipPayload> CacheFriendshipPayload { get; }
         protected LRUCache<string, MessagePayload> CacheMessagePayload { get; }
@@ -188,11 +187,35 @@ namespace Wechaty
         public void RemoveListener(Action<EventReadyPayload> listener) => this.RemoveListener("ready", listener);
         public void RemoveListener(Action<EventHeartbeatPayload> listener) => this.RemoveListener("heartbeat", listener);
 
-        public abstract Task Start();
+        public async Task Start()
+        {
+            OnHeartbeat(FeedDog);
+            Watchdog.On(WatchdogEvent.Reset, DogReset);
+            OnReset(ThrottleReset);
+        }
 
-        public abstract Task Stop();
+        public async Task Stop()
+        {
+            RemoveListener(FeedDog);
+            Watchdog.RemoveListener(WatchdogEvent.Reset, DogReset);
+            RemoveListener(ThrottleReset);
 
-        protected void Reset(string reason)
+            Watchdog.Sleep();
+        }
+
+        private void FeedDog(EventHeartbeatPayload payload) => Watchdog.Feed(payload);
+
+        private void DogReset(WatchdogFood<object, EventHeartbeatPayload> lastFood, long time) => Emit(lastFood.Data);
+
+        private void ThrottleReset(EventResetPayload payload)
+        {
+            if (_resetThrottleQueue != null)
+            {
+                _resetThrottleQueue.OnNext(payload.Data);
+            }
+        }
+
+        private void Reset(string reason)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -229,9 +252,23 @@ namespace Wechaty
                 Logger.LogTrace($"login({userId})");
             }
             SelfId = userId;
+
+            Emit(new EventLoginPayload { ContactId = userId });
         }
 
-        public abstract Task Logout();
+        public async Task Logout(string reason = "logout()")
+        {
+            if (string.IsNullOrWhiteSpace(_id))
+            {
+                throw new InvalidOperationException("must login first before logout!");
+            }
+            Emit(new EventLogoutPayload
+            {
+                ContactId = _id,
+                Data = reason
+            });
+            _id = null;
+        }
 
         public bool Logonoff() => !string.IsNullOrEmpty(_id);
 
@@ -240,7 +277,7 @@ namespace Wechaty
         /// </summary>
         /// <param name="data"></param>
         /// <returns>`false` if something went wrong, else if everything is OK</returns>
-        public abstract bool Ding(string? data);
+        public abstract void Ding(string? data);
 
         #region ContactSelf
         public abstract Task ContactSelfName(string name);

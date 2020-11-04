@@ -2,6 +2,9 @@ using System;
 
 namespace Wechaty
 {
+    /// <summary>
+    /// extensions for <see cref="DateTime"/>
+    /// </summary>
     public static class DatetimeExtensions
     {
         /// <summary>

@@ -3,10 +3,18 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Wechaty
 {
+    /// <summary>
+    /// extensions for <see cref="string"/>
+    /// </summary>
     public static class StringExtenions
     {
         private const int MAX_LEN = 7089;
 
+        /// <summary>
+        /// make sure then length of qr code less than <see cref="MAX_LEN"/>(7089)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string GuardQrCodeValue([DisallowNull] this string value)
         {
             if (value.Length > MAX_LEN)

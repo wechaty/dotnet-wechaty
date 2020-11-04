@@ -123,7 +123,7 @@ namespace Wechaty.User
             {
                 return room;
             }
-            room = new Room(id, WechatyInstance, Puppet, _loggerForRoom, _name);
+            room = new Room(id, WechatyInstance, _loggerForRoom, _name);
             return _pool.GetOrAdd(id, room);
         }
 
