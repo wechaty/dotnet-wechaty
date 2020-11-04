@@ -7,7 +7,7 @@ namespace EventEmitter
 {
     internal struct ListenerWrapper
     {
-        public Action<object[]> Process { get; }
+        public Action<object?[]> Process { get; }
 
         private readonly Counter _counter;
 
@@ -30,7 +30,7 @@ namespace EventEmitter
 
         public void Destory() => _ = ListenerWrappers.TryRemove(Key, out _);
 
-        private ListenerWrapper([DisallowNull] Action<object[]> process, HashKey key)
+        private ListenerWrapper([DisallowNull] Action<object?[]> process, HashKey key)
         {
             Process = process;
             Key = key;
@@ -74,6 +74,7 @@ namespace EventEmitter
             return ListenerWrappers.GetOrAdd(hashKey, k => new ListenerWrapper(args => listener(), hashKey));
         }
 
+#pragma warning disable CS8604 // 可能的 null 引用参数。
         public static ListenerWrapper GetListenerWrapper<T1>([DisallowNull] Action<T1> listener)
         {
             var hashKey = new HashKey(listener.Target, listener.Method);
@@ -137,5 +138,6 @@ namespace EventEmitter
                            .GetOrAdd(hashKey,
                                k => new ListenerWrapper(args => listener((T1)args[0], (T2)args[1], (T3)args[2], (T4)args[3], (T5)args[4], (T6)args[5], (T7)args[6], (T8)args[7]), hashKey));
         }
+#pragma warning restore CS8604 // 可能的 null 引用参数。
     }
 }
