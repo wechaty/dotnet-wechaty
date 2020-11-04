@@ -13,7 +13,7 @@ using EventEmitter;
 
 namespace Wechaty
 {
-    public abstract class Puppet : EventEmitter<Puppet>
+    public abstract class WechatyPuppet : EventEmitter<WechatyPuppet>
     {
         public StateSwitch State { get; }
 
@@ -30,7 +30,7 @@ namespace Wechaty
 
         protected PuppetOptions Options { get; }
 
-        protected ILogger<Puppet> Logger { get; }
+        protected ILogger<WechatyPuppet> Logger { get; }
 
         public string? SelfId
         {
@@ -66,7 +66,7 @@ namespace Wechaty
         private string? _id;
         private readonly ThrottleQueue<string> _resetThrottleQueue;
 
-        protected Puppet(PuppetOptions options, ILogger<Puppet> logger, ILoggerFactory loggerFactory)
+        protected WechatyPuppet(PuppetOptions options, ILogger<WechatyPuppet> logger, ILoggerFactory loggerFactory)
         {
             Options = options;
             Logger = logger;
@@ -92,7 +92,7 @@ namespace Wechaty
             // puppet implementation class only need to do one thing:
             // feed the watchdog by `this.emit('heartbeat', ...)`
             Watchdog = new Watchdog<object, EventHeartbeatPayload>(loggerFactory.CreateLogger<Watchdog<object, EventHeartbeatPayload>>());
-            _ = this.On<Puppet, EventHeartbeatPayload>("heartbeat", payload => _ = Watchdog.Feed(payload));
+            _ = this.On<WechatyPuppet, EventHeartbeatPayload>("heartbeat", payload => _ = Watchdog.Feed(payload));
             _ = Watchdog
                 .On<Watchdog<object, EventHeartbeatPayload>, EventHeartbeatPayload>("reset", lastFood =>
                 {
@@ -103,7 +103,7 @@ namespace Wechaty
             _resetThrottleQueue = new ThrottleQueue<string>(TimeSpan.FromSeconds(1));
 
             // 2.2. handle all `reset` events via the resetThrottleQueue
-            _ = this.On<Puppet, EventHeartbeatPayload>("reset", payload =>
+            _ = this.On<WechatyPuppet, EventHeartbeatPayload>("reset", payload =>
             {
                 if (Logger.IsEnabled(LogLevel.Trace))
                 {
@@ -157,20 +157,20 @@ namespace Wechaty
         public virtual bool Emit(EventScanPayload payload) => Emit("scan", payload);
         public virtual bool Emit(EventHeartbeatPayload payload) => Emit("heartbeat", payload);
 
-        public virtual Puppet OnDong(Action<EventDongPayload> listener) => this.On("dong", listener);
-        public virtual Puppet OnError(Action<EventErrorPayload> listener) => this.On("error", listener);
-        public virtual Puppet OnFriendship(Action<EventFriendshipPayload> listener) => this.On("friendship", listener);
-        public virtual Puppet OnLogin(Action<EventLoginPayload> listener) => this.On("login", listener);
-        public virtual Puppet OnLogout(Action<EventLogoutPayload> listener) => this.On("logout", listener);
-        public virtual Puppet OnMessage(Action<EventMessagePayload> listener) => this.On("message", listener);
-        public virtual Puppet OnReset(Action<EventResetPayload> listener) => this.On("reset", listener);
-        public virtual Puppet OnRoomJoin(Action<EventRoomJoinPayload> listener) => this.On("room-join", listener);
-        public virtual Puppet OnRoomLeave(Action<EventRoomLeavePayload> listener) => this.On("room-leave", listener);
-        public virtual Puppet OnRoomTopic(Action<EventRoomTopicPayload> listener) => this.On("room-topic", listener);
-        public virtual Puppet OnRoomInvite(Action<EventRoomInvitePayload> listener) => this.On("room-invite", listener);
-        public virtual Puppet OnScan(Action<EventScanPayload> listener) => this.On("scan", listener);
-        public virtual Puppet OnReady(Action<EventReadyPayload> listener) => this.On("ready", listener);
-        public virtual Puppet OnHeartbeat(Action<EventHeartbeatPayload> listener) => this.On("heartbeat", listener);
+        public virtual WechatyPuppet OnDong(Action<EventDongPayload> listener) => this.On("dong", listener);
+        public virtual WechatyPuppet OnError(Action<EventErrorPayload> listener) => this.On("error", listener);
+        public virtual WechatyPuppet OnFriendship(Action<EventFriendshipPayload> listener) => this.On("friendship", listener);
+        public virtual WechatyPuppet OnLogin(Action<EventLoginPayload> listener) => this.On("login", listener);
+        public virtual WechatyPuppet OnLogout(Action<EventLogoutPayload> listener) => this.On("logout", listener);
+        public virtual WechatyPuppet OnMessage(Action<EventMessagePayload> listener) => this.On("message", listener);
+        public virtual WechatyPuppet OnReset(Action<EventResetPayload> listener) => this.On("reset", listener);
+        public virtual WechatyPuppet OnRoomJoin(Action<EventRoomJoinPayload> listener) => this.On("room-join", listener);
+        public virtual WechatyPuppet OnRoomLeave(Action<EventRoomLeavePayload> listener) => this.On("room-leave", listener);
+        public virtual WechatyPuppet OnRoomTopic(Action<EventRoomTopicPayload> listener) => this.On("room-topic", listener);
+        public virtual WechatyPuppet OnRoomInvite(Action<EventRoomInvitePayload> listener) => this.On("room-invite", listener);
+        public virtual WechatyPuppet OnScan(Action<EventScanPayload> listener) => this.On("scan", listener);
+        public virtual WechatyPuppet OnReady(Action<EventReadyPayload> listener) => this.On("ready", listener);
+        public virtual WechatyPuppet OnHeartbeat(Action<EventHeartbeatPayload> listener) => this.On("heartbeat", listener);
 
         public void RemoveListener(Action<EventDongPayload> listener) => this.RemoveListener("dong", listener);
         public void RemoveListener(Action<EventErrorPayload> listener) => this.RemoveListener("error", listener);
@@ -187,8 +187,12 @@ namespace Wechaty
         public void RemoveListener(Action<EventReadyPayload> listener) => this.RemoveListener("ready", listener);
         public void RemoveListener(Action<EventHeartbeatPayload> listener) => this.RemoveListener("heartbeat", listener);
 
+
+        public abstract Task StartGrpc();
+
         public async Task Start()
         {
+            await StartGrpc();
             OnHeartbeat(FeedDog);
             Watchdog.On(WatchdogEvent.Reset, DogReset);
             OnReset(ThrottleReset);
