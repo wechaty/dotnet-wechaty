@@ -27,6 +27,11 @@ namespace EventEmitter
         private bool _onoff;
         private bool _pending;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="logger"></param>
         public StateSwitch([AllowNull] string? name, [AllowNull] ILogger<StateSwitch>? logger = null)
         {
             Name = name ?? $"#{_counter++}";
@@ -38,8 +43,14 @@ namespace EventEmitter
             _offResolver = NOP;
         }
 
+        /// <summary>
+        /// name
+        /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// check if current switch is in pending state
+        /// </summary>
         public bool Pending
         {
             get
@@ -49,8 +60,15 @@ namespace EventEmitter
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logger"></param>
         public void SetLog(ILogger<StateSwitch> logger) => _logger = logger ?? NullLogger<StateSwitch>.Instance;
 
+        /// <summary>
+        /// get current switch state or set to <see cref="State.On"/> or <see cref="State.Off"/>
+        /// </summary>
         public State IsOn
         {
             get => _onoff ? (_pending ? State.Pending : State.On) : State.Off;
@@ -74,6 +92,9 @@ namespace EventEmitter
             }
         }
 
+        /// <summary>
+        /// get current switch state or set to <see cref="State.On"/> or <see cref="State.Off"/>
+        /// </summary>
         public State IsOff
         {
             get => !_onoff ? (_pending ? State.Pending : State.On) : State.Off;
@@ -97,8 +118,19 @@ namespace EventEmitter
             }
         }
 
+        /// <summary>
+        /// is ready in state or `<see cref="State.On"/>`
+        /// </summary>
+        /// <param name="noCross"></param>
+        /// <returns></returns>
         public Task Ready(bool noCross = false) => Ready(State.On, noCross);
 
+        /// <summary>
+        /// waiting for `<paramref name="state"/>`
+        /// </summary>
+        /// <param name="state"></param>
+        /// <param name="noCross"></param>
+        /// <returns></returns>
         public async Task Ready(State state, bool noCross = false)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
@@ -109,7 +141,7 @@ namespace EventEmitter
             {
                 if (_onoff == false && noCross == true)
                 {
-                    throw new InvalidOperationException($"Ready(State.On) but the state is off. call Ready(on, true) to force crossWait");
+                    throw new InvalidOperationException($"Ready(State.On) but the state is off. call Ready(State.On, true) to force crossWait");
                 }
                 await _onTask;
             }

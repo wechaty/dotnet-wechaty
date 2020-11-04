@@ -6,21 +6,53 @@ using System.Runtime.Serialization;
 
 namespace Wechaty
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class EnumExtensions
     {
+        /// <summary>
+        /// get <typeparamref name="TAttribute"/> attributes declared on <paramref name="this"/>
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <typeparam name="TAttribute"></typeparam>
+        /// <param name="this"></param>
+        /// <returns></returns>
         public static IEnumerable<TAttribute> GetAttributes<TEnum, TAttribute>(this TEnum @this)
             where TEnum : struct, Enum
             where TAttribute : Attribute => TypeCache<TEnum>.GetAttributes<TAttribute>(@this);
 
-        public static TAttribute GetAttribute<TEnum, TAttribute>(this TEnum @this, TAttribute defaultAttribute = default)
+        /// <summary>
+        /// get <typeparamref name="TAttribute"/> attribute declared on <paramref name="this"/>
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <typeparam name="TAttribute"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="defaultAttribute"></param>
+        /// <returns></returns>
+        public static TAttribute? GetAttribute<TEnum, TAttribute>(this TEnum @this, TAttribute? defaultAttribute = default)
             where TEnum : struct, Enum
             where TAttribute : Attribute => TypeCache<TEnum>.GetAttributes<TAttribute>(@this)
             .FirstOrDefault() ?? defaultAttribute;
 
-        public static EnumMemberAttribute GetEnumMemberAttribute<TEnum>(this TEnum @this, EnumMemberAttribute defaultEnumMemberAttribute = default)
+        /// <summary>
+        /// get <see cref="EnumMemberAttribute"/> attribute declared on <paramref name="this"/>
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="defaultEnumMemberAttribute"></param>
+        /// <returns></returns>
+        public static EnumMemberAttribute? GetEnumMemberAttribute<TEnum>(this TEnum @this, EnumMemberAttribute? defaultEnumMemberAttribute = default)
             where TEnum : struct, Enum => @this.GetAttribute(defaultEnumMemberAttribute);
 
-        public static string GetEnumMember<TEnum>(this TEnum @this, string defaultEnumMember = default)
+        /// <summary>
+        /// get <see cref="EnumMemberAttribute.Value"/> declared on <paramref name="this"/>
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="this"></param>
+        /// <param name="defaultEnumMember"></param>
+        /// <returns></returns>
+        public static string? GetEnumMember<TEnum>(this TEnum @this, string? defaultEnumMember = default)
             where TEnum : struct, Enum => @this.GetEnumMemberAttribute()?.Value ?? defaultEnumMember;
 
         private static class TypeCache<TEnum>

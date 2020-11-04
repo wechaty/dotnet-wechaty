@@ -378,7 +378,7 @@ namespace Wechaty
                     EmitError(e);
                 }
             }
-            OnHeartbeat(() => MemoryCheck());
+            OnHeartbeat((instance, data) => MemoryCheck());
 
             _readyState.IsOn = true;
             EmitStart();
@@ -408,14 +408,45 @@ namespace Wechaty
             throw new NotImplementedException();
         }
 
-        public Task<Message> Say(string text, Contact replyTo)
+        public Task<Message> Say(string text, params Contact[]? replyTo)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Message> Say(string text, Contact[] replyTo)
+        public Task<Message> Say(Contact contact, params Contact[]? replyTo)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<Message> Say(FileBox fileBox, params Contact[]? replyTo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Message> Say(MiniProgram miniProgram, params Contact[]? replyTo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Message> Say(UrlLink urlLink, params Contact[]? replyTo)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Ding()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void MemoryCheck()
+        {
+            //ignore
+        }
+
+        public async Task Reset()
+        {
+            await Puppet.Stop();
+            await Puppet.Start();
         }
 
         public override Wechaty ToImplement => this;

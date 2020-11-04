@@ -47,6 +47,9 @@ namespace Wechaty
         public Watchdog<TFoodType, TData> On(WatchdogEvent @event, WatchdogListener<TFoodType, TData> listener)
             => this.On(@event.ToString(), listener);
 
+        public Watchdog<TFoodType, TData> RemoveListener(WatchdogEvent @event, WatchdogListener<TFoodType, TData> listener)
+            => this.RemoveListener(@event.ToString(), listener);
+
         private void StartTimer(long timeout)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
