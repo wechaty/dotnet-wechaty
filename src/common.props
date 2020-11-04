@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Version>0.1.1</Version>
+    <authors>Darren</authors>
+    <owners>Darren</owners>
+    <description>dotnet wechaty</description>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <PackageiconUrl>http://qn.3658k.com/dotnet-wechaty.png</PackageiconUrl>
+    <PackageProjectUrl>https://github.com/wechaty/dotnet-wechaty</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/wechaty/dotnet-wechaty</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
+  </ItemGroup>
+</Project>
