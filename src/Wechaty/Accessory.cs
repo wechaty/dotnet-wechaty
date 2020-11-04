@@ -48,6 +48,6 @@ namespace Wechaty
         /// <summary>
         /// puppet of wechaty
         /// </summary>
-        public Puppet Puppet => WechatyInstance.Puppet;
+        public WechatyPuppet Puppet => WechatyInstance.Puppet;
     }
 }
