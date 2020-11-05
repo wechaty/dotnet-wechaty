@@ -1,36 +1,60 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using github.wechaty.grpc.puppet;
 
 namespace Wechaty
 {
     public partial class GrpcPuppet
     {
         #region Tag
-        public override Task TagContactAdd(string tagId, string contactId)
+        public override async Task TagContactAdd(string tagId, string contactId)
         {
-            throw new NotImplementedException();
+            var request = new TagContactAddRequest()
+            {
+                Id = tagId,
+                ContactId = contactId
+            };
+            await grpcClient.TagContactAddAsync(request);
         }
 
-        public override Task TagContactDelete(string tagId)
+        public override async Task TagContactDelete(string tagId)
         {
-            throw new NotImplementedException();
+            var request = new TagContactDeleteRequest()
+            {
+                Id = tagId
+            };
+
+            await grpcClient.TagContactDeleteAsync(request);
         }
 
-        public override Task<List<string>> TagContactList(string contactId)
+        public override async Task<List<string>> TagContactList(string contactId)
         {
-            throw new NotImplementedException();
+            var request = new TagContactListRequest();
+
+            var response = await grpcClient.TagContactListAsync(request);
+            return response.Ids.ToList();
         }
 
-        public override Task<List<string>> TagContactList()
+        public override async Task<List<string>> TagContactList()
         {
-            throw new NotImplementedException();
+            var request = new TagContactListRequest();
+
+            var response = await grpcClient.TagContactListAsync(request);
+            return response.Ids.ToList();
         }
 
-        public override Task TagContactRemove(string tagId, string contactId)
+        public override async Task TagContactRemove(string tagId, string contactId)
         {
-            throw new NotImplementedException();
+            var request = new TagContactRemoveRequest()
+            {
+                Id = tagId,
+                ContactId = contactId
+            };
+
+            await grpcClient.TagContactRemoveAsync(request);
         }
         #endregion
     }

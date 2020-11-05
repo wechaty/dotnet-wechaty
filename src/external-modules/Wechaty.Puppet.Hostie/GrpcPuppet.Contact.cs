@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
+using github.wechaty.grpc.puppet;
 
 namespace Wechaty
 {
@@ -9,44 +10,69 @@ namespace Wechaty
     {
         #region Contact
 
-        public override Task<string> ContactAlias(string contactId)
+        public override async Task<string> ContactAlias(string contactId)
+        {
+            var request = new ContactAliasRequest
+            {
+                Id = contactId
+            };
+
+            var response = await grpcClient.ContactAliasAsync(request);
+
+            return response.Alias;
+        }
+
+        // TODO 待确认
+        public override async Task ContactAlias(string contactId, string? alias)
+        {
+            var request = new ContactAliasRequest();
+            if (!string.IsNullOrEmpty(alias))
+            {
+                request.Alias = alias;
+            }
+            request.Id = contactId;
+
+            await grpcClient.ContactAliasAsync(request);
+
+        }
+
+        // TODO 待处理
+        public override async Task<FileBox> ContactAvatar(string contactId)
         {
             throw new NotImplementedException();
         }
 
-        public override Task ContactAlias(string ontactId, string? alias)
+        public override async Task ContactAvatar(string contactId, FileBox file)
         {
             throw new NotImplementedException();
         }
 
-        public override Task<FileBox> ContactAvatar(string contactId)
+        public override async Task<List<string>> ContactList()
         {
-            throw new NotImplementedException();
+            var response = await grpcClient.ContactListAsync(new ContactListRequest());
+            return response?.Ids.ToList();
         }
 
-        public override Task ContactAvatar(string contactId, FileBox file)
+        public override async Task ContactSelfName(string name)
         {
-            throw new NotImplementedException();
+            var request = new ContactSelfNameRequest();
+            await grpcClient.ContactSelfNameAsync(request);
         }
 
-        public override Task<List<string>> ContactList()
+        public override async Task<string> ContactSelfQRCode()
         {
-            throw new NotImplementedException();
+            var response = await grpcClient.ContactSelfQRCodeAsync(new ContactSelfQRCodeRequest());
+            return response?.Qrcode;
         }
 
-        public override Task ContactSelfName(string name)
+        public override async Task ContactSelfSignature(string signature)
         {
-            throw new NotImplementedException();
-        }
+            var request = new ContactSelfSignatureRequest
+            {
+                Signature = signature
+            };
 
-        public override Task<string> ContactSelfQRCode()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task ContactSelfSignature(string signature)
-        {
-            throw new NotImplementedException();
+            await grpcClient.ContactSelfSignatureAsync(request);
         }
         #endregion
     }

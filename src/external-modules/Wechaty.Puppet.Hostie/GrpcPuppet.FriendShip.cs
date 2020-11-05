@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using github.wechaty.grpc.puppet;
 
 namespace Wechaty
 {
@@ -9,24 +7,42 @@ namespace Wechaty
     {
         #region Friendship
 
-        public override Task FriendshipAccept(string friendshipId)
+        public override async Task FriendshipAccept(string friendshipId)
         {
-            throw new NotImplementedException();
+            var request = new FriendshipAcceptRequest()
+            { Id = friendshipId };
+
+            await grpcClient.FriendshipAcceptAsync(request);
         }
 
-        public override Task FriendshipAdd(string contactId, string? hello)
+        public override async Task FriendshipAdd(string contactId, string? hello)
         {
-            throw new NotImplementedException();
+            var request = new FriendshipAddRequest()
+            {
+                ContactId = contactId,
+                Hello = hello
+            };
+            var response = await grpcClient.FriendshipAddAsync(request);
         }
 
-        public override Task<string?> FriendshipSearchPhone(string phone)
+        public override async Task<string?> FriendshipSearchPhone(string phone)
         {
-            throw new NotImplementedException();
+            var request = new FriendshipSearchPhoneRequest()
+            {
+                Phone = phone
+            };
+
+            var response = await grpcClient.FriendshipSearchPhoneAsync(request);
+            return response?.ContactId;
         }
 
-        public override Task<string?> FriendshipSearchWeixin(string weixin)
+        public override async Task<string?> FriendshipSearchWeixin(string weixin)
         {
-            throw new NotImplementedException();
+            var request = new FriendshipSearchWeixinRequest()
+            { Weixin = weixin };
+
+            var respnse = await grpcClient.FriendshipSearchWeixinAsync(request);
+            return respnse?.ContactId;
         }
         #endregion
     }
