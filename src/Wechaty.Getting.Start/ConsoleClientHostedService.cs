@@ -12,27 +12,30 @@ namespace Wechaty.Getting.Start
 {
     public class ConsoleClientHostedService : IHostedService
     {
-        private IConfiguration configuration { get; set; }
+        private readonly IConfiguration Configuration;
+
+        public ConsoleClientHostedService(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-
-
             ILoggerFactory loggerFactory = new LoggerFactory();
-
             var logger = new Logger<WechatyPuppet>(loggerFactory);
 
             var PuppetOptions = new Schemas.PuppetOptions()
             {
-                Endpoint = "hostie gateway",
-                Token = "your token"
+                // eg http://192.168.2.200:8788
+                Endpoint = Configuration["Wechaty_EndPoint"],
+                Token = Configuration["Wechaty_Token"]
             };
 
             var grpcPuppet = new GrpcPuppet(PuppetOptions, logger, loggerFactory);
 
             var wechatyOptions = new WechatyOptions()
             {
-                Name = "Demo",
+                Name = Configuration["Wechaty_Name"],
                 Puppet = grpcPuppet,
             };
 
@@ -51,8 +54,13 @@ namespace Wechaty.Getting.Start
 
         private static void WechatyScanEventListener(Wechaty wechaty, string qrcode, ScanStatus status, string? data)
         {
-            //throw new NotImplementedException();
-
+            Console.WriteLine(qrcode);
+            const string QrcodeServerUrl = "https://wechaty.github.io/qrcode/";
+            if (status == ScanStatus.Waiting || status == ScanStatus.Timeout)
+            {
+                var qrcodeImageUrl = QrcodeServerUrl + qrcode;
+                Console.WriteLine(qrcodeImageUrl);
+            }
         }
 
 
