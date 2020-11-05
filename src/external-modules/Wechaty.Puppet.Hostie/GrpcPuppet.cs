@@ -12,13 +12,11 @@ using static Wechaty.Puppet;
 
 namespace Wechaty
 {
-    public class GrpcPuppet : WechatyPuppet
+    public partial class GrpcPuppet : WechatyPuppet
     {
 
         protected PuppetOptions options { get; }
         protected ILogger<WechatyPuppet> logger { get; }
-
-        protected string selfId { get; set; }
 
         public GrpcPuppet(PuppetOptions _options, ILogger<WechatyPuppet> _logger, ILoggerFactory loggerFactory)
             : base(_options, _logger, loggerFactory)
@@ -30,7 +28,7 @@ namespace Wechaty
 
         #region GRPC 连接
         protected const string CHATIE_ENDPOINT = "https://api.chatie.io/v0/hosties/";
-        private Puppet.PuppetClient? grpcClient = null;
+        private Puppet.PuppetClient grpcClient = null;
         private Grpc.Net.Client.GrpcChannel channel = null;
 
 
@@ -247,11 +245,11 @@ namespace Wechaty
                         break;
                     case EventType.Login:
                         var loginPayload = JsonConvert.DeserializeObject<EventLoginPayload>(payload);
-                        selfId = loginPayload.ContactId;
+                        SelfId = loginPayload.ContactId;
                         ////await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventLoginPayload>(payload));
                         break;
                     case EventType.Logout:
-                        selfId = string.Empty;
+                        SelfId = string.Empty;
                         //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventLogoutPayload>(payload));
                         Emit(JsonConvert.DeserializeObject<EventLogoutPayload>(payload));
                         break;
@@ -277,7 +275,7 @@ namespace Wechaty
         #endregion
 
         #region 实现抽象类
-        public override WechatyPuppet ToImplement => throw new NotImplementedException();
+        public override WechatyPuppet ToImplement => this;
 
         public override async Task StartGrpc()
         {
@@ -287,9 +285,12 @@ namespace Wechaty
                 {
                     throw new Exception("wechaty-puppet-hostie: token not found. See: <https://github.com/wechaty/wechaty-puppet-hostie#1-wechaty_puppet_hostie_token>");
                 }
-                StartGrpcStream();
 
-                await grpcClient.StartAsync(new StartRequest());                
+                await StartGrpcClient();
+
+                await grpcClient.StartAsync(new StartRequest());
+
+                StartGrpcStream();
             }
             catch (Exception ex)
             {
@@ -305,306 +306,20 @@ namespace Wechaty
         }
 
 
-        #region Contact
+        
 
-        public override Task<string> ContactAlias(string contactId)
-        {
-            throw new NotImplementedException();
-        }
 
-        public override Task ContactAlias(string ontactId, string? alias)
-        {
-            throw new NotImplementedException();
-        }
 
-        public override Task<FileBox> ContactAvatar(string contactId)
-        {
-            throw new NotImplementedException();
-        }
+        
 
-        public override Task ContactAvatar(string contactId, FileBox file)
-        {
-            throw new NotImplementedException();
-        }
 
-        public override Task<List<string>> ContactList()
-        {
-            throw new NotImplementedException();
-        }
+       
 
-        public override Task ContactSelfName(string name)
-        {
-            throw new NotImplementedException();
-        }
+      
 
-        public override Task<string> ContactSelfQRCode()
-        {
-            throw new NotImplementedException();
-        }
+        
 
-        public override Task ContactSelfSignature(string signature)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-
-
-        #region Friendship
-
-        public override Task FriendshipAccept(string friendshipId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task FriendshipAdd(string contactId, string? hello)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string?> FriendshipSearchPhone(string phone)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string?> FriendshipSearchWeixin(string weixin)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-
-        #region Message
-
-        public override Task<string> MessageContact(string messageId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<FileBox> MessageFile(string messageId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<FileBox> MessageImage(string messageId, Schemas.ImageType imageType)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<MiniProgramPayload> MessageMiniProgram(string messageId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<bool> MessageRecall(string messageId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string?> MessageSendContact(string conversationId, string contactId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string?> MessageSendFile(string conversationId, FileBox file)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string?> MessageSendMiniProgram(string conversationId, MiniProgramPayload miniProgramPayload)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string?> MessageSendText(string conversationId, string text, params string[]? mentionIdList)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string?> MessageSendText(string conversationId, string text, IEnumerable<string>? mentionIdList)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string?> MessageSendUrl(string conversationId, UrlLinkPayload urlLinkPayload)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<UrlLinkPayload> MessageUrl(string messageId)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        #region Room
-
-        public override Task RoomAdd(string roomId, string contactId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string> RoomAnnounce(string roomId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task RoomAnnounce(string roomId, string text)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<FileBox> RoomAvatar(string roomId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string> RoomCreate(IReadOnlyList<string> contactIdList, string? topic)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string> RoomCreate(IEnumerable<string> contactIdList, string? topic)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string> RoomCreate(string[] contactIdList, string? topic)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task RoomDel(string roomId, string contactId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task RoomInvitationAccept(string roomInvitationId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<IReadOnlyList<string>> RoomList()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string[]> RoomMemberList(string roomId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string> RoomQRCode(string roomId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task RoomQuit(string roomId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<string> RoomTopic(string roomId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task RoomTopic(string roomId, string topic)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        #region Tag
-        public override Task TagContactAdd(string tagId, string contactId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task TagContactDelete(string tagId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<List<string>> TagContactList(string contactId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<List<string>> TagContactList()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task TagContactRemove(string tagId, string contactId)
-        {
-            throw new NotImplementedException();
-        }
-        #endregion
-
-        #region RawPayload
-        protected override Task<object> ContactRawPayload(string contactId)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task<ContactPayload> ContactRawPayloadParser(object rawPayload)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task<object> FriendshipRawPayload(string friendshipId)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task<FriendshipPayload> FriendshipRawPayloadParser(object rawPayload)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task<object> MessageRawPayload(string messageId)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task<MessagePayload> MessageRawPayloadParser(object rawPayload)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task<object> RoomInvitationRawPayload(string roomInvitationId)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task<RoomInvitationPayload> RoomInvitationRawPayloadParser(object rawPayload)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task<object> RoomMemberRawPayload(string roomId, string contactId)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task<RoomMemberPayload> RoomMemberRawPayloadParser(object rawPayload)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task<object> RoomRawPayload(string roomId)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override Task<RoomPayload> RoomRawPayloadParser(object rawPayload)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        #endregion
+        
 
         #endregion
     }
