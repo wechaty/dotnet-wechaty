@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using github.wechaty.grpc.puppet;
 using Wechaty.Schemas;
 
 namespace Wechaty
@@ -9,17 +10,37 @@ namespace Wechaty
     public partial class GrpcPuppet
     {
         #region RawPayload
-        protected override Task<object> ContactRawPayload(string contactId)
+        protected override async Task<ContactPayload> ContactRawPayload(string contactId)
         {
-            throw new NotImplementedException();
+            var request = new ContactPayloadRequest()
+            { Id = contactId };
+            var response = await grpcClient.ContactPayloadAsync(request);
+
+            var payload = new ContactPayload()
+            {
+                Id = response.Id,
+                Name = response.Name,
+                Address = response.Address,
+                Alias = response.Alias,
+                Avatar = response.Avatar,
+                City = response.City,
+                Friend = response.Friend,
+                Gender = (Schemas.ContactGender)response.Gender,
+                Province = response.Province,
+                Signature = response.Signature,
+                Star = response.Star,
+                Type = (Schemas.ContactType)response.Type,
+                Weixin = response.Weixin,
+            };
+            return payload;
         }
 
-        protected override Task<ContactPayload> ContactRawPayloadParser(object rawPayload)
+        protected override async Task<ContactPayload> ContactRawPayloadParser(ContactPayload rawPayload)
         {
-            throw new NotImplementedException();
+            return rawPayload;
         }
 
-        protected override Task<object> FriendshipRawPayload(string friendshipId)
+        protected override Task<FriendshipPayload> FriendshipRawPayload(string friendshipId)
         {
             throw new NotImplementedException();
         }

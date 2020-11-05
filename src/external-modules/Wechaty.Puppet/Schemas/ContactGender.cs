@@ -61,19 +61,19 @@ namespace Wechaty.Schemas
 
     public class ContactPayload
     {
-        public string Id { get; }
-        public ContactGender Gender { get; }
-        public ContactType Type { get; }
-        public string Name { get; }
-        public string Avatar { get; }
-        public string? Address { get; }
-        public string? Alias { get; }
-        public string? City { get; }
-        public bool? Friend { get; }
-        public string? Province { get; }
-        public string? Signature { get; }
-        public bool? Star { get; }
-        public string? Weixin { get; }
+        public string Id { get; set; }
+        public ContactGender Gender { get; set; }
+        public ContactType Type { get; set; }
+        public string Name { get; set; }
+        public string Avatar { get; set; }
+        public string? Address { get; set; }
+        public string? Alias { get; set; }
+        public string? City { get; set; }
+        public bool? Friend { get; set; }
+        public string? Province { get; set; }
+        public string? Signature { get; set; }
+        public bool? Star { get; set; }
+        public string? Weixin { get; set; }
     }
 
     public delegate bool ContactPayloadFilterFunction(ContactPayload payload);

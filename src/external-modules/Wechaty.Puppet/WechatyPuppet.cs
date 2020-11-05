@@ -329,8 +329,8 @@ namespace Wechaty
         public abstract Task<FileBox> ContactAvatar(string contactId);
         public abstract Task ContactAvatar(string contactId, FileBox file);
         public abstract Task<List<string>> ContactList();
-        protected abstract Task<object> ContactRawPayload(string contactId);
-        protected abstract Task<ContactPayload> ContactRawPayloadParser(object rawPayload);
+        protected abstract Task<ContactPayload> ContactRawPayload(string contactId);
+        protected abstract Task<ContactPayload> ContactRawPayloadParser(ContactPayload rawPayload);
 
         public async Task<List<string>> ContactRoomList(string contactId)
         {
@@ -507,7 +507,7 @@ namespace Wechaty
         public abstract Task FriendshipAdd(string contactId, string? hello);
         public abstract Task<string?> FriendshipSearchPhone(string phone);
         public abstract Task<string?> FriendshipSearchWeixin(string weixin);
-        protected abstract Task<object> FriendshipRawPayload(string friendshipId);
+        protected abstract Task<FriendshipPayload> FriendshipRawPayload(string friendshipId);
         protected abstract Task<FriendshipPayload> FriendshipRawPayloadParser(object rawPayload);
 
         public async Task<string?> FriendshipSearch(FriendshipSearchCondition searchQueryFilter)
