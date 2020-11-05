@@ -231,7 +231,7 @@ namespace Wechaty
             Puppet = puppet;
             _ = Emit("puppet", puppet);
 
-            InitPuppetEventBridge(puppet);
+           
         }
 
         protected void InitPuppetEventBridge(WechatyPuppet puppet)
@@ -364,6 +364,7 @@ namespace Wechaty
                 }
                 await InitPuppet();
                 await Puppet.Start();
+                InitPuppetEventBridge(Puppet);
                 //TODO: IO component
                 if (!string.IsNullOrWhiteSpace(_options.IoToken))
                 {
