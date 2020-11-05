@@ -69,11 +69,15 @@ namespace Wechaty.Getting.Start
             Console.WriteLine(message.Text);
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        /// <summary>
+        /// Stop
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
             Process.GetCurrentProcess().Kill();
-
-            throw new NotImplementedException();
+            return;
         }
     }
 }

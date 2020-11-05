@@ -325,7 +325,7 @@ namespace Wechaty
 
         #region Contact
         public abstract Task<string> ContactAlias(string contactId);
-        public abstract Task ContactAlias(string ontactId, string? alias);
+        public abstract Task ContactAlias(string contactId, string? alias);
         public abstract Task<FileBox> ContactAvatar(string contactId);
         public abstract Task ContactAvatar(string contactId, FileBox file);
         public abstract Task<List<string>> ContactList();

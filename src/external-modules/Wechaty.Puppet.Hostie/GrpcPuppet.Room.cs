@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using github.wechaty.grpc.puppet;
+using Newtonsoft.Json;
 
 namespace Wechaty
 {
@@ -9,11 +12,17 @@ namespace Wechaty
     {
         #region Room
 
-        public override Task RoomAdd(string roomId, string contactId)
+        public override async Task RoomAdd(string roomId, string contactId)
         {
-            throw new NotImplementedException();
+            var request = new RoomAddRequest()
+            {
+                ContactId = contactId,
+                Id = roomId
+            };
+            await grpcClient.RoomAddAsync(request);
         }
 
+        // TODO  待处理
         public override Task<string> RoomAnnounce(string roomId)
         {
             throw new NotImplementedException();
@@ -24,64 +33,131 @@ namespace Wechaty
             throw new NotImplementedException();
         }
 
-        public override Task<FileBox> RoomAvatar(string roomId)
+        public override async Task<FileBox> RoomAvatar(string roomId)
         {
-            throw new NotImplementedException();
+            var request = new RoomAvatarRequest()
+            { Id = roomId };
+
+            var response = await grpcClient.RoomAvatarAsync(request);
+            return JsonConvert.DeserializeObject<FileBox>(response?.Filebox);
         }
 
-        public override Task<string> RoomCreate(IReadOnlyList<string> contactIdList, string? topic)
+        public override async Task<string> RoomCreate(IReadOnlyList<string> contactIdList, string? topic)
         {
-            throw new NotImplementedException();
+            var request = new RoomCreateRequest();
+
+            request.ContactIds.AddRange(contactIdList);
+            request.Topic = topic;
+
+            var response = await grpcClient.RoomCreateAsync(request);
+            return response?.Id;
         }
 
-        public override Task<string> RoomCreate(IEnumerable<string> contactIdList, string? topic)
+        // TODO 可以合并为一个接口
+        public override async Task<string> RoomCreate(IEnumerable<string> contactIdList, string? topic)
         {
-            throw new NotImplementedException();
+            var request = new RoomCreateRequest();
+
+            request.ContactIds.AddRange(contactIdList);
+            request.Topic = topic;
+
+            var response = await grpcClient.RoomCreateAsync(request);
+            return response?.Id;
         }
 
-        public override Task<string> RoomCreate(string[] contactIdList, string? topic)
+        public override async Task<string> RoomCreate(string[] contactIdList, string? topic)
         {
-            throw new NotImplementedException();
+            var request = new RoomCreateRequest();
+
+            request.ContactIds.AddRange(contactIdList);
+            if (topic != "")
+            {
+                request.Topic = topic;
+            }
+
+            var response = await grpcClient.RoomCreateAsync(request);
+            return response?.Id;
         }
 
-        public override Task RoomDel(string roomId, string contactId)
+        public override async Task RoomDel(string roomId, string contactId)
         {
-            throw new NotImplementedException();
+            var request = new RoomDelRequest()
+            {
+                ContactId = contactId,
+                Id = roomId
+            };
+            await grpcClient.RoomDelAsync(request);
         }
 
-        public override Task RoomInvitationAccept(string roomInvitationId)
+        public override async Task RoomInvitationAccept(string roomInvitationId)
         {
-            throw new NotImplementedException();
+            var request = new RoomInvitationAcceptRequest()
+            {
+                Id = roomInvitationId
+            };
+            await grpcClient.RoomInvitationAcceptAsync(request);
         }
 
-        public override Task<IReadOnlyList<string>> RoomList()
+        public override async Task<IReadOnlyList<string>> RoomList()
         {
-            throw new NotImplementedException();
+            var response = await grpcClient.RoomListAsync(new RoomListRequest());
+            return response?.Ids.ToList();
         }
 
-        public override Task<string[]> RoomMemberList(string roomId)
+        public override async Task<string[]> RoomMemberList(string roomId)
         {
-            throw new NotImplementedException();
+            var request = new RoomMemberListRequest()
+            {
+                Id = roomId
+            };
+
+            var response = await grpcClient.RoomMemberListAsync(request);
+            return response?.MemberIds.ToArray();
         }
 
-        public override Task<string> RoomQRCode(string roomId)
+        public override async Task<string> RoomQRCode(string roomId)
         {
-            throw new NotImplementedException();
+            var request = new RoomQRCodeRequest()
+            {
+                Id = roomId
+            };
+            var response = await grpcClient.RoomQRCodeAsync(request);
+            return response?.Qrcode;
         }
 
-        public override Task RoomQuit(string roomId)
+        public override async Task RoomQuit(string roomId)
         {
-            throw new NotImplementedException();
+            var request = new RoomQuitRequest()
+            {
+                Id = roomId
+            };
+            await grpcClient.RoomQuitAsync(request);
         }
 
-        public override Task<string> RoomTopic(string roomId)
+        public override async Task<string> RoomTopic(string roomId)
         {
-            throw new NotImplementedException();
+            var request = new RoomTopicRequest()
+            {
+                Id = roomId
+            };
+            var response = await grpcClient.RoomTopicAsync(request);
+            return response?.Topic;
         }
 
-        public override Task RoomTopic(string roomId, string topic)
+        // TODO  待确定
+        public override async Task RoomTopic(string roomId, string topic)
         {
-            throw new NotImplementedException();
+            var request = new RoomTopicRequest()
+            {
+                Id = roomId
+            };
+            if (!string.IsNullOrEmpty(topic))
+            {
+                request.Topic = topic;
+            }
+
+            var response = await grpcClient.RoomTopicAsync(request);
+            //return response?.Topic;
         }
         #endregion
     }
