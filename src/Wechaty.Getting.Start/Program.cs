@@ -14,8 +14,8 @@ namespace Wechaty.Getting.Start
 
             var PuppetOptions = new Schemas.PuppetOptions()
             {
-                Endpoint = "http://47.100.24.97:8788",
-                Token = "puppet_padplus_f415f3ab3bead8a0"
+                Endpoint = "hostie gateway",
+                Token = "your token"
             };
 
             var logger = new Logger<WechatyPuppet>(loggerFactory);
