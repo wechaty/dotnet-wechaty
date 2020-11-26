@@ -616,8 +616,8 @@ namespace Wechaty
         public abstract Task<string?> MessageSendUrl(string conversationId, UrlLinkPayload urlLinkPayload);
 
         public abstract Task<bool> MessageRecall(string messageId);
-        protected abstract Task<object> MessageRawPayload(string messageId);
-        protected abstract Task<MessagePayload> MessageRawPayloadParser(object rawPayload);
+        protected abstract Task<MessagePayload> MessageRawPayload(string messageId);
+        protected abstract MessagePayload MessageRawPayloadParser(MessagePayload rawPayload);
 
         protected MessagePayload? MessagePayloadCache(string messageId)
         {
@@ -669,7 +669,7 @@ namespace Wechaty
 
             //2. Cache not found
             var rawPayload = await MessageRawPayload(messageId);
-            var payload = await MessageRawPayloadParser(rawPayload);
+            var payload =  MessageRawPayloadParser(rawPayload);
 
             CacheMessagePayload.Set(messageId, payload);
             if (Logger.IsEnabled(LogLevel.Trace))

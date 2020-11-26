@@ -177,15 +177,15 @@ namespace Wechaty
 
                 Console.WriteLine($"{eventType},PayLoad:{payload}");
 
-                if (eventType != EventType.Heartbeat)
-                {
-                    var eventHeartbeatPayload = new EventHeartbeatPayload()
-                    {
-                        Data = $"onGrpcStreamEvent({eventType})"
-                    };
-                    //await _localEventBus.PublishAsync(eventHeartbeatPayload);
-                    Emit(eventHeartbeatPayload);
-                }
+                //if (eventType != EventType.Heartbeat)
+                //{
+                //    var eventHeartbeatPayload = new EventHeartbeatPayload()
+                //    {
+                //        Data = $"onGrpcStreamEvent({eventType})"
+                //    };
+                //    //await _localEventBus.PublishAsync(eventHeartbeatPayload);
+                //    Emit(eventHeartbeatPayload);
+                //}
 
                 switch (eventType)
                 {

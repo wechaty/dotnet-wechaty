@@ -47,7 +47,7 @@ namespace Wechaty.Getting.Start
                 .Start();
         }
 
-        private static void WechatyHeartbeatEventListener(Wechaty wechaty, object data)
+        private static void WechatyHeartbeatEventListener(object data)
         {
             Console.WriteLine(JsonConvert.SerializeObject(data));
         }
@@ -64,7 +64,7 @@ namespace Wechaty.Getting.Start
         }
 
 
-        private static void WechatyMessageEventListener(Wechaty wechaty, User.Message message)
+        private static void WechatyMessageEventListener(User.Message message)
         {
             Console.WriteLine(message.Text);
         }

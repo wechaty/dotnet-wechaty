@@ -96,7 +96,7 @@ namespace Wechaty.Schemas
         public IReadOnlyList<string>? MentionIdList { get; set; }
     }
 
-    public abstract class MessagePayload
+    public  class MessagePayload
     {
         /// <summary>
         /// use message id to get rawPayload to get those information when needed
@@ -105,6 +105,8 @@ namespace Wechaty.Schemas
         public string Id { get; set; }
         public string? Filename { get; set; }
         public string? Text { get; set; }
+
+        public List<string> MentionIdList { get; set; }
         /// <summary>
         /// Huan(202001): we support both seconds and milliseconds in Wechaty now.
         /// </summary>
