@@ -384,7 +384,7 @@ namespace Wechaty
                     EmitError(e);
                 }
             }
-            OnHeartbeat((instance, data) => MemoryCheck());
+            OnHeartbeat((data) => MemoryCheck());
 
             _readyState.IsOn = true;
             EmitStart();

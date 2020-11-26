@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
@@ -50,14 +51,37 @@ namespace Wechaty
             throw new NotImplementedException();
         }
 
-        protected override Task<object> MessageRawPayload(string messageId)
+        protected override async Task<MessagePayload> MessageRawPayload(string messageId)
         {
-            throw new NotImplementedException();
+            MessagePayload payload = new MessagePayload();
+
+            var request = new MessagePayloadRequest()
+            {
+                Id = messageId
+            };
+            var response = await grpcClient.MessagePayloadAsync(request);
+
+            if (response != null)
+            {
+                payload = new MessagePayload()
+                {
+                    Id = messageId,
+                    Filename = response.Filename,
+                    FromId = response.FromId,
+                    Text = response.Text,
+                    MentionIdList = response.MentionIds.ToList(),
+                    RoomId = response.RoomId,
+                    Timestamp = (long)response.Timestamp,
+                    Type = (Schemas.MessageType)response.Type,
+                    ToId = response.ToId
+                };
+            }
+            return payload;
         }
 
-        protected override Task<MessagePayload> MessageRawPayloadParser(object rawPayload)
+        protected override MessagePayload MessageRawPayloadParser(MessagePayload rawPayload)
         {
-            throw new NotImplementedException();
+            return rawPayload;
         }
 
         protected override Task<object> RoomInvitationRawPayload(string roomInvitationId)

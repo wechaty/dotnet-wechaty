@@ -7,10 +7,10 @@ namespace Wechaty
     public delegate void WechatyDongEventListener(Wechaty wechaty, string? data);
     public delegate void WechatyErrorEventListener(Wechaty wechaty, Exception error);
     public delegate void WechatyFriendshipEventListener(Wechaty wechaty, Friendship friendship);
-    public delegate void WechatyHeartbeatEventListener(Wechaty wechaty, object data);
+    public delegate void WechatyHeartbeatEventListener(object data);
     public delegate void WechatyLoginEventListener(Wechaty wechaty, ContactSelf user);
     public delegate void WechatyLogoutEventListener(Wechaty wechaty, ContactSelf user, string? reason);
-    public delegate void WechatyMessageEventListener(Wechaty wechaty, Message message);
+    public delegate void WechatyMessageEventListener(Message message);
     public delegate void WechatyReadyEventListener(Wechaty wechaty);
     public delegate void WechatyRoomInviteEventListener(Wechaty wechaty, RoomInvitation roomInvitation);
     public delegate void WechatyRoomJoinEventListener(Wechaty wechaty, Room room, Contact[] inviteeList, Contact inviter, DateTime? date);
