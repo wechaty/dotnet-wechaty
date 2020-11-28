@@ -91,14 +91,18 @@ namespace Wechaty
             // 1. Setup Watchdog
             // puppet implementation class only need to do one thing:
             // feed the watchdog by `this.emit('heartbeat', ...)`
-            Watchdog = new Watchdog<object, EventHeartbeatPayload>(loggerFactory.CreateLogger<Watchdog<object, EventHeartbeatPayload>>());
-            _ = this.On<WechatyPuppet, EventHeartbeatPayload>("heartbeat", payload => _ = Watchdog.Feed(payload));
-            _ = Watchdog
-                .On<Watchdog<object, EventHeartbeatPayload>, EventHeartbeatPayload>("reset", lastFood =>
-                {
-                    Logger.LogWarning($"constructor() watchdog.on(reset) reason: {JsonConvert.SerializeObject(lastFood)}");
-                    _ = Emit("reset", lastFood);
-                });
+
+            // TODO  Darren 注释
+            //Watchdog = new Watchdog<object, EventHeartbeatPayload>(loggerFactory.CreateLogger<Watchdog<object, EventHeartbeatPayload>>());
+            //_ = this.On<WechatyPuppet, EventHeartbeatPayload>("heartbeat", payload => _ = Watchdog.Feed(payload));
+            //_ = Watchdog
+            //    .On<Watchdog<object, EventHeartbeatPayload>, EventHeartbeatPayload>("reset", lastFood =>
+            //    {
+            //        Logger.LogWarning($"constructor() watchdog.on(reset) reason: {JsonConvert.SerializeObject(lastFood)}");
+            //        _ = Emit("reset", lastFood);
+            //    });
+
+
             // 2. Setup `reset` Event via a 1 second Throttle Queue:
             _resetThrottleQueue = new ThrottleQueue<string>(TimeSpan.FromSeconds(1));
 
@@ -193,18 +197,18 @@ namespace Wechaty
         public async Task Start()
         {
             await StartGrpc();
-            OnHeartbeat(FeedDog);
-            Watchdog.On(WatchdogEvent.Reset, DogReset);
+            //OnHeartbeat(FeedDog);
+            //Watchdog.On(WatchdogEvent.Reset, DogReset);
             OnReset(ThrottleReset);
         }
 
         public async Task Stop()
         {
-            RemoveListener(FeedDog);
-            Watchdog.RemoveListener(WatchdogEvent.Reset, DogReset);
+            //RemoveListener(FeedDog);
+            //Watchdog.RemoveListener(WatchdogEvent.Reset, DogReset);
             RemoveListener(ThrottleReset);
 
-            Watchdog.Sleep();
+            //Watchdog.Sleep();
         }
 
         private void FeedDog(EventHeartbeatPayload payload) => Watchdog.Feed(payload);
@@ -508,7 +512,7 @@ namespace Wechaty
         public abstract Task<string?> FriendshipSearchPhone(string phone);
         public abstract Task<string?> FriendshipSearchWeixin(string weixin);
         protected abstract Task<FriendshipPayload> FriendshipRawPayload(string friendshipId);
-        protected abstract Task<FriendshipPayload> FriendshipRawPayloadParser(object rawPayload);
+        protected abstract Task<FriendshipPayload> FriendshipRawPayloadParser(FriendshipPayload rawPayload);
 
         public async Task<string?> FriendshipSearch(FriendshipSearchCondition searchQueryFilter)
         {
@@ -810,8 +814,8 @@ namespace Wechaty
 
         public abstract Task RoomInvitationAccept(string roomInvitationId);
 
-        protected abstract Task<object> RoomInvitationRawPayload(string roomInvitationId);
-        protected abstract Task<RoomInvitationPayload> RoomInvitationRawPayloadParser(object rawPayload);
+        protected abstract Task<RoomInvitationPayload> RoomInvitationRawPayload(string roomInvitationId);
+        protected abstract Task<RoomInvitationPayload> RoomInvitationRawPayloadParser(RoomInvitationPayload rawPayload);
 
         /// <summary>
         /// get room inviatation payload 
@@ -858,8 +862,8 @@ namespace Wechaty
         public abstract Task<string> RoomTopic(string roomId);
         public abstract Task RoomTopic(string roomId, string topic);
 
-        protected abstract Task<object> RoomRawPayload(string roomId);
-        protected abstract Task<RoomPayload> RoomRawPayloadParser(object rawPayload);
+        protected abstract Task<RoomPayload> RoomRawPayload(string roomId);
+        protected abstract Task<RoomPayload> RoomRawPayloadParser(RoomPayload rawPayload);
         #endregion
 
         #region RoomMember
@@ -867,8 +871,8 @@ namespace Wechaty
         public abstract Task RoomAnnounce(string roomId, string text);
         public abstract Task<string[]> RoomMemberList(string roomId);
 
-        protected abstract Task<object> RoomMemberRawPayload(string roomId, string contactId);
-        protected abstract Task<RoomMemberPayload> RoomMemberRawPayloadParser(object rawPayload);
+        protected abstract Task<RoomMemberPayload> RoomMemberRawPayload(string roomId, string contactId);
+        protected abstract Task<RoomMemberPayload> RoomMemberRawPayloadParser(RoomMemberPayload rawPayload);
         #endregion
 
         public async Task<IReadOnlyList<string>> RoomMemberSearch(string roomId, string query)

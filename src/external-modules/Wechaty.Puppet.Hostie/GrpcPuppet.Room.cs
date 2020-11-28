@@ -22,15 +22,28 @@ namespace Wechaty
             await grpcClient.RoomAddAsync(request);
         }
 
-        // TODO  待处理
-        public override Task<string> RoomAnnounce(string roomId)
+        public override async Task<string> RoomAnnounce(string roomId)
         {
-            throw new NotImplementedException();
+            var request = new RoomAnnounceRequest
+            {
+                Id = roomId
+            };
+
+
+            var response = await grpcClient.RoomAnnounceAsync(request);
+            return response?.Text;
         }
 
-        public override Task RoomAnnounce(string roomId, string text)
+        public override async Task RoomAnnounce(string roomId, string text)
         {
-            throw new NotImplementedException();
+            var request = new RoomAnnounceRequest
+            {
+                Id = roomId,
+                Text = text
+            };
+
+            await grpcClient.RoomAnnounceAsync(request);
+
         }
 
         public override async Task<FileBox> RoomAvatar(string roomId)

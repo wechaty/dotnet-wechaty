@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wechaty.Schemas;
+using Wechaty.User;
 
 namespace Wechaty.Getting.Start
 {
@@ -42,9 +43,15 @@ namespace Wechaty.Getting.Start
             var bot = new Wechaty(wechatyOptions, loggerFactory);
 
             await bot.OnScan(WechatyScanEventListener)
+                .OnLogin(WechatyLoginEventListener)
                 .OnMessage(WechatyMessageEventListener)
                 .OnHeartbeat(WechatyHeartbeatEventListener)
                 .Start();
+        }
+
+        public static void WechatyLoginEventListener(ContactSelf user)
+        {
+            Console.WriteLine($"{user.Id}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！");
         }
 
         private static void WechatyHeartbeatEventListener(object data)
@@ -52,7 +59,7 @@ namespace Wechaty.Getting.Start
             Console.WriteLine(JsonConvert.SerializeObject(data));
         }
 
-        private static void WechatyScanEventListener(Wechaty wechaty, string qrcode, ScanStatus status, string? data)
+        private static void WechatyScanEventListener(string qrcode, ScanStatus status, string? data)
         {
             Console.WriteLine(qrcode);
             const string QrcodeServerUrl = "https://wechaty.github.io/qrcode/";
@@ -67,6 +74,10 @@ namespace Wechaty.Getting.Start
         private static void WechatyMessageEventListener(User.Message message)
         {
             Console.WriteLine(message.Text);
+            if (message.Text=="天王盖地虎" || message.Text == "小鸡啄米")
+            {
+                _ = message.Say("宝塔镇河妖");
+            }
         }
 
         /// <summary>

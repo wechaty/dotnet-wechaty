@@ -72,7 +72,7 @@ namespace Wechaty.User
                 var toId = Payload.ToId;
                 if (!string.IsNullOrWhiteSpace(roomId))
                 {
-                    await WechatyInstance.Room.Load(id).Ready();
+                    await WechatyInstance.Room.Load(roomId).Ready();
                 }
                 if (!string.IsNullOrWhiteSpace(fromId))
                 {
@@ -246,8 +246,17 @@ namespace Wechaty.User
             }
             var room = Room;
             var from = From;
-            var conversationId = room?.Id ?? from?.Id;
-            if (conversationId == null)
+            var conversationId =string.Empty;
+            if (room != null && room.Id!=string.Empty)
+            {
+                conversationId = room.Id;
+            }
+            else if (from!=null && from.Id!=string.Empty)
+            {
+                conversationId = from.Id;
+            }
+
+            if (conversationId == string.Empty)
             {
                 throw new InvalidOperationException("neither room nor from?");
             }
