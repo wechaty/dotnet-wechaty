@@ -41,14 +41,35 @@ namespace Wechaty
             return rawPayload;
         }
 
-        protected override Task<FriendshipPayload> FriendshipRawPayload(string friendshipId)
+        protected override async Task<FriendshipPayload> FriendshipRawPayload(string friendshipId)
         {
-            throw new NotImplementedException();
+            var payload = new FriendshipPayload();
+
+            var request = new FriendshipPayloadRequest()
+            {
+                Id = friendshipId
+            };
+
+            var response = await grpcClient.FriendshipPayloadAsync(request);
+            if (response != null)
+            {
+                payload = new FriendshipPayload()
+                {
+                    ContactId = response.ContactId,
+                    Hello = response.Hello,
+                    Id = response.Id,
+                    Scene = (int)response.Scene,
+                    Stranger = response.Stranger,
+                    Ticket = response.Ticket,
+                    Type = (Schemas.FriendshipType)response.Type
+                };
+            }
+            return payload;
         }
 
-        protected override Task<FriendshipPayload> FriendshipRawPayloadParser(object rawPayload)
+        protected override async Task<FriendshipPayload> FriendshipRawPayloadParser(FriendshipPayload rawPayload)
         {
-            throw new NotImplementedException();
+            return _= rawPayload;
         }
 
         protected override async Task<MessagePayload> MessageRawPayload(string messageId)
@@ -84,34 +105,97 @@ namespace Wechaty
             return rawPayload;
         }
 
-        protected override Task<object> RoomInvitationRawPayload(string roomInvitationId)
+        protected override async Task<RoomInvitationPayload> RoomInvitationRawPayload(string roomInvitationId)
         {
-            throw new NotImplementedException();
+            var payload = new RoomInvitationPayload();
+            var request = new RoomInvitationPayloadRequest()
+            {
+                Id = roomInvitationId
+            };
+            var response = await grpcClient.RoomInvitationPayloadAsync(request);
+
+            if (response == null)
+            {
+                payload = new RoomInvitationPayload()
+                {
+                    Avatar = response.Avatar,
+                    Id = response.Id,
+                    Invitation = response.Invitation,
+                    InviterId = response.InviterId,
+                    MemberCount = response.MemberCount,
+                    MemberIdList = response.MemberIds.ToList(),
+                    ReceiverId = response.ReceiverId,
+                    Timestamp = (long)response.Timestamp,
+                    Topic = response.Topic
+                };
+            }
+            return payload;
         }
 
-        protected override Task<RoomInvitationPayload> RoomInvitationRawPayloadParser(object rawPayload)
+        protected override async Task<RoomInvitationPayload> RoomInvitationRawPayloadParser(RoomInvitationPayload rawPayload)
         {
-            throw new NotImplementedException();
+            return _ = rawPayload;
         }
 
-        protected override Task<object> RoomMemberRawPayload(string roomId, string contactId)
+        protected override async Task<RoomMemberPayload> RoomMemberRawPayload(string roomId, string contactId)
         {
-            throw new NotImplementedException();
+            var payload = new RoomMemberPayload();
+
+            var request = new RoomMemberPayloadRequest()
+            {
+                Id = roomId,
+                MemberId = contactId
+            };
+            var response = await grpcClient.RoomMemberPayloadAsync(request);
+            if (response != null)
+            {
+                payload = new RoomMemberPayload()
+                {
+                    Avatar = response.Avatar,
+                    Id = response.Id,
+                    InviterId = response.InviterId,
+                    Name = response.Name,
+                    RoomAlias = response.RoomAlias
+                };
+            }
+            return payload;
         }
 
-        protected override Task<RoomMemberPayload> RoomMemberRawPayloadParser(object rawPayload)
+        protected override async Task<RoomMemberPayload> RoomMemberRawPayloadParser(RoomMemberPayload rawPayload)
         {
-            throw new NotImplementedException();
+            return _= rawPayload;
         }
 
-        protected override Task<object> RoomRawPayload(string roomId)
+        protected override async Task<RoomPayload> RoomRawPayload(string roomId)
         {
-            throw new NotImplementedException();
+            var roomPayload = new RoomPayload();
+
+            var request = new RoomPayloadRequest()
+            {
+                Id = roomId
+            };
+
+            var response = await grpcClient.RoomPayloadAsync(request);
+
+
+            if (response != null)
+            {
+                roomPayload = new RoomPayload
+                {
+                    AdminIdList = response.AdminIds.ToList(),
+                    Avatar = response.Avatar,
+                    Id = response.Id,
+                    MemberIdList = response.MemberIds.ToList(),
+                    OwnerId = response.OwnerId,
+                    Topic = response.Topic
+                };
+            }
+            return roomPayload;
         }
 
-        protected override Task<RoomPayload> RoomRawPayloadParser(object rawPayload)
+        protected override async Task<RoomPayload> RoomRawPayloadParser(RoomPayload rawPayload)
         {
-            throw new NotImplementedException();
+            return _= rawPayload;
         }
 
 
