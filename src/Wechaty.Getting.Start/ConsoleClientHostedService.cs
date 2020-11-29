@@ -20,6 +20,9 @@ namespace Wechaty.Getting.Start
             Configuration = configuration;
         }
 
+
+        private static Wechaty bot;
+
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             ILoggerFactory loggerFactory = new LoggerFactory();
@@ -40,11 +43,11 @@ namespace Wechaty.Getting.Start
                 Puppet = grpcPuppet,
             };
 
-            var bot = new Wechaty(wechatyOptions, loggerFactory);
+            bot = new Wechaty(wechatyOptions, loggerFactory);
 
             await bot.OnScan(WechatyScanEventListener)
                 .OnLogin(WechatyLoginEventListener)
-                .OnMessage(WechatyMessageEventListener)
+                .OnMessage(WechatyMessageEventListenerAsync)
                 .OnHeartbeat(WechatyHeartbeatEventListener)
                 .Start();
         }
@@ -71,10 +74,10 @@ namespace Wechaty.Getting.Start
         }
 
 
-        private static void WechatyMessageEventListener(User.Message message)
+        private static void  WechatyMessageEventListenerAsync(User.Message message)
         {
             Console.WriteLine(message.Text);
-            if (message.Text=="天王盖地虎" || message.Text == "小鸡啄米")
+            if (message.Text == "天王盖地虎" || message.Text == "小鸡啄米")
             {
                 _ = message.Say("宝塔镇河妖");
             }

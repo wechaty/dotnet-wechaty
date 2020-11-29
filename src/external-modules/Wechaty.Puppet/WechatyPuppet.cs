@@ -375,7 +375,7 @@ namespace Wechaty
             {
                 Logger.LogTrace($"contactSearch(query={JsonConvert.SerializeObject(query)}, searchIdList.length{searchIdList?.Length})");
             }
-            if (searchIdList == null)
+            if (searchIdList.Count()==0)
             {
                 searchIdList = (await ContactList()).ToArray();
             }
