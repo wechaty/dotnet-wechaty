@@ -147,8 +147,10 @@ namespace Wechaty.User
                           }));
                     batchIndex++;
                 }
-                return contactList.Where(c => invalid.ContainsKey(c.Id))
-                    .ToImmutableList();
+                //return contactList.Where(c => invalid.ContainsKey(c.Id))
+                //    .ToImmutableList();
+
+                return contactList.ToImmutableList();
             }
             catch (Exception exception)
             {
