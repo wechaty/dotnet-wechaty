@@ -1,3 +1,5 @@
+using Newtonsoft.Json;
+
 namespace Wechaty.Schemas
 {
     public enum FriendshipType
@@ -23,7 +25,7 @@ namespace Wechaty.Schemas
         QRCode = 30,
     }
 
-    public abstract class FriendshipPayload
+    public  class FriendshipPayload
     {
         public string Id { get; set; }
         public string ContactId { get; set; }
@@ -33,22 +35,47 @@ namespace Wechaty.Schemas
         /// </summary>
         public long Timestamp { get; set; }
 
-        public abstract FriendshipType Type { get; }
-    }
-    public class FriendshipPayloadConfirm : FriendshipPayload
-    {
-        public override FriendshipType Type => FriendshipType.Confirm;
-    }
-    public class FriendshipPayloadReceive : FriendshipPayload
-    {
-        public override FriendshipType Type => FriendshipType.Receive;
-        public FriendshipSceneType? Scene { get; set; }
-        public string? Stranger { get; set; }
+        public  FriendshipType Type { get; set; }
+
+        public double? Scene { get; set; }
+        public string Stranger { get; set; }
         public string Ticket { get; set; }
     }
-    public class FriendshipPayloadVerify : FriendshipPayload
+
+    public  class FriendshipPayloadConfirm
     {
-        public override FriendshipType Type => FriendshipType.Verify;
+        [JsonProperty("contactId", Required = Required.Always)]
+        public string ContactId { get; set; }
+
+        [JsonProperty("hello", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        public string Hello { get; set; }
+
+        [JsonProperty("id", Required = Required.Always)]
+        public string Id { get; set; }
+
+        [JsonProperty("timestamp", Required = Required.Always)]
+        public double Timestamp { get; set; }
+
+        [JsonProperty("type", Required = Required.Always)]
+        public double Type { get; set; }
+    }
+
+    public partial class FriendshipPayloadVerify
+    {
+        [JsonProperty("contactId", Required = Required.Always)]
+        public string ContactId { get; set; }
+
+        [JsonProperty("hello", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
+        public string Hello { get; set; }
+
+        [JsonProperty("id", Required = Required.Always)]
+        public string Id { get; set; }
+
+        [JsonProperty("timestamp", Required = Required.Always)]
+        public double Timestamp { get; set; }
+
+        [JsonProperty("type", Required = Required.Always)]
+        public double Type { get; set; }
     }
 
     public class FriendshipSearchCondition

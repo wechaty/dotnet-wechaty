@@ -12,7 +12,7 @@ namespace Wechaty
         /// </summary>
         [Obsolete("DEPRECATED: use name instead")]
         public string? Profile { get; set; }
-        public Puppet? Puppet { get; set; }
+        public WechatyPuppet? Puppet { get; set; }
         public PuppetOptions? PuppetOptions { get; set; }
 
         //[Obsolete("io token not supported yet.", true)]

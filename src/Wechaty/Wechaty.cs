@@ -29,6 +29,8 @@ namespace Wechaty
 
         private MemoryCard? _memory;
 
+
+
         private Timer? _lifeTimer;
         //not supported yet.
         //private io?        : Io
@@ -37,7 +39,7 @@ namespace Wechaty
         /// puppet of wechaty
         /// </summary>
         [DisallowNull]
-        public Puppet Puppet { get; set; }
+        public WechatyPuppet Puppet { get; set; }
 
         /// <summary>
         /// repository of <see cref="User.Contact"/>
@@ -219,6 +221,7 @@ namespace Wechaty
                 throw new InvalidOperationException("no memory");
             }
             //TODO: should we implement resolve puppet by name like TypeScript?
+
             var puppet = _options.Puppet!;
             var memory = _memory.Multiplex(PUPPET_MEMORY_NAME);
 
@@ -227,9 +230,11 @@ namespace Wechaty
 
             Puppet = puppet;
             _ = Emit("puppet", puppet);
+
+           
         }
 
-        protected void InitPuppetEventBridge(Puppet puppet)
+        protected void InitPuppetEventBridge(WechatyPuppet puppet)
         {
             _logger.LogInformation("init puppet event bridge");
             _ = puppet.OnDong(payload => EmitDong(payload.Data))
@@ -359,6 +364,7 @@ namespace Wechaty
                 }
                 await InitPuppet();
                 await Puppet.Start();
+                InitPuppetEventBridge(Puppet);
                 //TODO: IO component
                 if (!string.IsNullOrWhiteSpace(_options.IoToken))
                 {
@@ -378,7 +384,7 @@ namespace Wechaty
                     EmitError(e);
                 }
             }
-            OnHeartbeat((instance, data) => MemoryCheck());
+            OnHeartbeat((data) => MemoryCheck());
 
             _readyState.IsOn = true;
             EmitStart();
