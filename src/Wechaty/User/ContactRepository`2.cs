@@ -100,6 +100,7 @@ namespace Wechaty.User
                 }
                 if (valid)
                 {
+                    await contact.Ready(true);
                     return contact;
                 }
                 index++;
