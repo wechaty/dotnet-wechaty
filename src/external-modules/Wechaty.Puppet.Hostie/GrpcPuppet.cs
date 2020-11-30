@@ -31,7 +31,6 @@ namespace Wechaty
         private Puppet.PuppetClient grpcClient = null;
         private Grpc.Core.Channel channel = null;
 
-
         /// <summary>
         /// 发现 hostie gateway 对应的服务是否能能访问
         /// </summary>
@@ -289,10 +288,6 @@ namespace Wechaty
 
                 await StartGrpcClient();
 
-
-                //var headers = new Metadata();
-                //headers.Add("grpc.default_authority", Options.Token);
-
                 await grpcClient.StartAsync(new StartRequest());
 
                 StartGrpcStream();
@@ -309,21 +304,6 @@ namespace Wechaty
         {
             throw new NotImplementedException();
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         #endregion

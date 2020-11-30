@@ -974,7 +974,6 @@ namespace Wechaty
             {
                 allRoomPayloads.Select(x => x.Id);
             }
-
             if (Logger.IsEnabled(LogLevel.Trace))
             {
                 Logger.LogTrace($"roomSearch() roomIdList filtered. result length={filterResult.Count}");

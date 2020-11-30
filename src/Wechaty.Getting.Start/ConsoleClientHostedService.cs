@@ -77,8 +77,7 @@ namespace Wechaty.Getting.Start
             }
         }
 
-
-        private static void WechatyMessageEventListenerAsync(User.Message message)
+        private static void  WechatyMessageEventListenerAsync(User.Message message)
         {
             Console.WriteLine(message.Text);
             if (message.Text == "天王盖地虎" || message.Text == "小鸡啄米")
@@ -86,11 +85,6 @@ namespace Wechaty.Getting.Start
                 _ = message.Say("宝塔镇河妖");
             }
 
-            Console.WriteLine(message.Text);
-            if (message.Text == "天王盖地虎" || message.Text == "小鸡啄米")
-            {
-                _ = message.Say("宝塔镇河妖");
-            }
         }
 
         /// <summary>
