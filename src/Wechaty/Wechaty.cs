@@ -330,7 +330,9 @@ namespace Wechaty
 
                     _ = EmitRoomTopic(room, payload.NewTopic, payload.OldTopic, changer, date);
                 })
-                .OnScan(payload => _ = EmitScan(payload.Data ?? "", payload.Status, payload.Data));
+                .OnScan(payload => {
+                    _ = EmitScan(payload.Qrcode ?? "", payload.Status, payload.Data);
+                });
         }
 
         public async Task Start()

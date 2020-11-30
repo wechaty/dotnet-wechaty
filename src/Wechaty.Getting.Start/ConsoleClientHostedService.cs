@@ -32,7 +32,8 @@ namespace Wechaty.Getting.Start
             {
                 // eg http://192.168.2.200:8788
                 Endpoint = Configuration["Wechaty_EndPoint"],
-                Token = Configuration["Wechaty_Token"]
+                Token = Configuration["Wechaty_Token"],
+                PuppetProvider = Configuration["Wechaty_Puppet_providers"]??""
             };
 
             var grpcPuppet = new GrpcPuppet(PuppetOptions, logger, loggerFactory);
@@ -64,6 +65,9 @@ namespace Wechaty.Getting.Start
 
         private static void WechatyScanEventListener(string qrcode, ScanStatus status, string? data)
         {
+
+
+            // {"headImageUrl":"http://wx.qlogo.cn/mmhead/ver_1/ugLn11sPrwIZlcxFUz5MqYlcN1wWI1yHkqjzcic093dPacUMGNKaLEwZqL9Qev11vIyZn1jF7wZG9Lm2QgyNQR34Af9u2FzXLLOq07GjUc8k/0","nickName":"MacWeChat","status":"Scanned"}
             Console.WriteLine(qrcode);
             const string QrcodeServerUrl = "https://wechaty.github.io/qrcode/";
             if (status == ScanStatus.Waiting || status == ScanStatus.Timeout)

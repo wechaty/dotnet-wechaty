@@ -29,7 +29,7 @@ namespace Wechaty
         #region GRPC 连接
         protected const string CHATIE_ENDPOINT = "https://api.chatie.io/v0/hosties/";
         private Puppet.PuppetClient grpcClient = null;
-        private Grpc.Net.Client.GrpcChannel channel = null;
+        private Grpc.Core.Channel channel = null;
 
 
         /// <summary>
@@ -75,45 +75,46 @@ namespace Wechaty
                 }
 
                 var endPoint = Options.Endpoint;
-                if (string.IsNullOrEmpty(endPoint))
-                {
-                    var model = await DiscoverHostieIp(Options.Token);
-                    if (model.IP == "0.0.0.0" || model.Port == "0")
-                    {
-                        throw new Exception("no endpoint");
-                    }
-                    // 方式一
-                    endPoint = "http://" + model.IP + ":" + model.Port;
-
-                    Options.Endpoint = endPoint;
-
-                    // 方式二
-                    //endPoint = model.IP + ":" + model.Port;
-                }
 
                 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
                 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
 
-                // 方式一
-                channel = Grpc.Net.Client.GrpcChannel.ForAddress(endPoint);
-                grpcClient = new PuppetClient(channel);
+                //if (string.IsNullOrEmpty(endPoint))
+                //{
+                //    var model = await DiscoverHostieIp(Options.Token);
+                //    if (model.IP == "0.0.0.0" || model.Port == "0")
+                //    {
+                //        throw new Exception("no endpoint");
+                //    }
+                //    // 方式一
+                //    endPoint = "http://" + model.IP + ":" + model.Port;
 
-                // 方式二
-                //channel = new Channel(endPoint, ChannelCredentials.Insecure);
+                //    Options.Endpoint = endPoint;
+
+                //    // 方式二
+                //    //endPoint = model.IP + ":" + model.Port;
+                //}
+
+
+
+                // 方式一
+                //channel = Grpc.Net.Client.GrpcChannel.ForAddress(endPoint);
                 //grpcClient = new PuppetClient(channel);
 
-                //try
-                //{
-                //    var version = grpcClient.Version(new VersionRequest()).Version;
+                // 方式二
 
-                //    //var resonse = grpcClient.Ding(new DingRequest() { Data = "ding" });
+                // For  Rock Puppet Service authority
+                if (Options.PuppetProvider == "wechaty-puppet-rock")
+                {
+                    var options = new List<ChannelOption>()
+                    {
+                        new ChannelOption("grpc.default_authority", Options.Token)
+                    };
+                    channel = new Channel(endPoint, ChannelCredentials.Insecure, options);
+                }
 
-                //    //await channel.ShutdownAsync();
-                //}
-                //catch (Exception ex)
-                //{
+                grpcClient = new PuppetClient(channel);
 
-                //}
             }
             catch (Exception ex)
             {
@@ -175,7 +176,7 @@ namespace Wechaty
                 var eventType = @event.Type;
                 var payload = @event.Payload;
 
-                Console.WriteLine($"{eventType},PayLoad:{payload}");
+                Console.WriteLine($"dateTime:{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} {eventType},PayLoad:{payload}");
 
                 if (eventType != EventType.Heartbeat)
                 {
@@ -288,6 +289,10 @@ namespace Wechaty
 
                 await StartGrpcClient();
 
+
+                //var headers = new Metadata();
+                //headers.Add("grpc.default_authority", Options.Token);
+
                 await grpcClient.StartAsync(new StartRequest());
 
                 StartGrpcStream();
@@ -306,20 +311,20 @@ namespace Wechaty
         }
 
 
-        
 
 
 
-        
 
 
-       
 
-      
 
-        
 
-        
+
+
+
+
+
+
 
         #endregion
     }
