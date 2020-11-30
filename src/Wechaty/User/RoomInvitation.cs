@@ -99,7 +99,7 @@ namespace Wechaty.User
         /// member count of current <see cref="RoomInvitation"/>
         /// </summary>
         /// <returns></returns>
-        public async Task<double> MemberCount()
+        public async Task<int> MemberCount()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -110,7 +110,7 @@ namespace Wechaty.User
         }
 
         [Obsolete("roomMemberCount() DEPRECATED. use memberCount() instead.")]
-        public Task<double> RoomMemberCount()
+        public Task<int> RoomMemberCount()
         {
             Logger.LogWarning($"roomMemberCount() DEPRECATED. use memberCount() instead.");
             return MemberCount();
