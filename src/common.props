@@ -3,11 +3,11 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Version>0.1.1</Version>
-    <authors>Darren</authors>
-    <owners>Darren</owners>
+    <authors>Wechaty</authors>
+    <owners>Wechaty</owners>
     <description>dotnet wechaty</description>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <PackageiconUrl>http://qn.3658k.com/dotnet-wechaty.png</PackageiconUrl>
+    <PackageiconUrl>https://camo.githubusercontent.com/8663c7fa27f9849e4002ca4d8f4b032c420e0ecce53757c2f6c1859a250561ee/68747470733a2f2f776563686174792e6a732e6f72672f696d672f776563686174792d6c6f676f2e737667</PackageiconUrl>
     <PackageProjectUrl>https://github.com/wechaty/dotnet-wechaty</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
