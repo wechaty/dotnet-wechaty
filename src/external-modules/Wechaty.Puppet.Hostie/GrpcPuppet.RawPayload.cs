@@ -122,7 +122,7 @@ namespace Wechaty
                     Id = response.Id,
                     Invitation = response.Invitation,
                     InviterId = response.InviterId,
-                    MemberCount = response.MemberCount,
+                    MemberCount = (int)response.MemberCount,
                     MemberIdList = response.MemberIds.ToList(),
                     ReceiverId = response.ReceiverId,
                     Timestamp = (long)response.Timestamp,
