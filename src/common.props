@@ -3,8 +3,8 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Version>0.1.1</Version>
-    <authors>Darren</authors>
-    <owners>Darren</owners>
+    <authors>Wechaty</authors>
+    <owners>Wechaty</owners>
     <description>dotnet wechaty</description>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <PackageiconUrl>http://qn.3658k.com/dotnet-wechaty.png</PackageiconUrl>
