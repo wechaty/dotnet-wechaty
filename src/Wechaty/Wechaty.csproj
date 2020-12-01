@@ -15,11 +15,6 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\external-modules\EventEmitter\EventEmitter.csproj" />
-    <ProjectReference Include="..\external-modules\FileBox\FileBox.csproj" />
-    <ProjectReference Include="..\external-modules\MemoryCard\MemoryCard.csproj" />
-    <ProjectReference Include="..\external-modules\ReactiveQueue\ReactiveQueue.csproj" />
-    <ProjectReference Include="..\external-modules\Watchdog\Watchdog.csproj" />
     <ProjectReference Include="..\external-modules\Wechaty.Common\Wechaty.Common.csproj" />
     <ProjectReference Include="..\external-modules\Wechaty.Puppet.Hostie\Wechaty.Puppet.Hostie.csproj" />
     <ProjectReference Include="..\external-modules\Wechaty.Puppet\Wechaty.Puppet.csproj" />

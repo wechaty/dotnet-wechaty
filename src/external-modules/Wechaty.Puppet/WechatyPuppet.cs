@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using EventEmitter;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ReactiveQueue;
 using Wechaty.Schemas;
-using EventEmitter;
 
 namespace Wechaty
 {

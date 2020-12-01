@@ -4,10 +4,10 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using EventEmitter;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wechaty.Schemas;
-using EventEmitter;
 
 namespace Wechaty.User
 {
