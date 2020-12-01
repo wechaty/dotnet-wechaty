@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Wechaty.MemoryCard</AssemblyName>
   </PropertyGroup>
   <Import Project="../../common.props" />
 
