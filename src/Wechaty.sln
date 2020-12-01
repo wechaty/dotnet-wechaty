@@ -33,7 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wechaty.Common", "external-modules\Wechaty.Common\Wechaty.Common.csproj", "{12B425AB-4BF3-4308-9005-2A76BC344F43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wechaty.Getting.Start", "Wechaty.Getting.Start\Wechaty.Getting.Start.csproj", "{E3A62704-A571-4AFE-B71C-BEC1E9001DAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wechaty.Getting.Start", "Wechaty.Getting.Start\Wechaty.Getting.Start.csproj", "{E3A62704-A571-4AFE-B71C-BEC1E9001DAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
