@@ -25,25 +25,14 @@ namespace Wechaty.Getting.Start
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            ILoggerFactory loggerFactory = new LoggerFactory();
-            var logger = new Logger<WechatyPuppet>(loggerFactory);
-
             var PuppetOptions = new Schemas.PuppetOptions()
             {
+                Name=Configuration["Wechaty_Name"],
                 Endpoint = Configuration["Wechaty_EndPoint"],
                 Token = Configuration["Wechaty_Token"],
                 PuppetProvider = Configuration["Wechaty_Puppet_providers"] == string.Empty ? "wechaty-puppet-dount" : "wechaty-puppet-rock"
             };
-
-            var grpcPuppet = new GrpcPuppet(PuppetOptions, logger, loggerFactory);
-
-            var wechatyOptions = new WechatyOptions()
-            {
-                Name = Configuration["Wechaty_Name"],
-                Puppet = grpcPuppet,
-            };
-
-            bot = new Wechaty(wechatyOptions, loggerFactory);
+            bot = new Wechaty(PuppetOptions);
 
             await bot.OnScan(WechatyScanEventListener)
                 .OnLogin(WechatyLoginEventListener)
