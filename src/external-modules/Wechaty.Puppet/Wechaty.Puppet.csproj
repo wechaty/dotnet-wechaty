@@ -2,15 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIcon>wechaty.png</PackageIcon>
   </PropertyGroup>
-  <Import Project="../../common.props"/>
-  
+  <Import Project="../../common.props" />
   <ItemGroup>
-    <ProjectReference Include="..\EventEmitter\EventEmitter.csproj" />
-    <ProjectReference Include="..\FileBox\FileBox.csproj" />
-    <ProjectReference Include="..\MemoryCard\MemoryCard.csproj" />
-    <ProjectReference Include="..\ReactiveQueue\ReactiveQueue.csproj" />
-    <ProjectReference Include="..\Watchdog\Watchdog.csproj" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wechaty.EventEmitter\Wechaty.EventEmitter.csproj" />
+    <ProjectReference Include="..\Wechaty.FileBox\Wechaty.FileBox.csproj" />
+    <ProjectReference Include="..\Wechaty.MemoryCard\Wechaty.MemoryCard.csproj" />
+    <ProjectReference Include="..\Wechaty.ReactiveQueue\Wechaty.ReactiveQueue.csproj" />
+    <ProjectReference Include="..\Wechaty.Watchdog\Wechaty.Watchdog.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\docs\images\wechaty.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

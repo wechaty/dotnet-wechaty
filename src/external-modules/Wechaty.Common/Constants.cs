@@ -1,5 +1,7 @@
 using Microsoft.Extensions.Logging;
 
+
+
 namespace Wechaty
 {
     /// <summary>

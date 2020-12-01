@@ -4,10 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using EventEmitter;
 using Microsoft.Extensions.Logging;
 using Wechaty.Schemas;
 using Wechaty.User;
-using EventEmitter;
 
 namespace Wechaty
 {

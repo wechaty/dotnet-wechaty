@@ -3,13 +3,20 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wechaty.MemoryCard</AssemblyName>
+    <PackageIcon>wechaty.png</PackageIcon>
   </PropertyGroup>
   <Import Project="../../common.props" />
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="3.3.111.27" />
-    <PackageReference Include="HuaweiCloud.SDK.OBS" Version="3.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\docs\images\wechaty.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

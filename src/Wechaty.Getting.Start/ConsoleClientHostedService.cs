@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wechaty.Schemas;
 using Wechaty.User;
@@ -13,11 +12,11 @@ namespace Wechaty.Getting.Start
 {
     public class ConsoleClientHostedService : IHostedService
     {
-        private readonly IConfiguration Configuration;
+        private readonly IConfiguration _configuration;
 
         public ConsoleClientHostedService(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
 
@@ -27,10 +26,10 @@ namespace Wechaty.Getting.Start
         {
             var PuppetOptions = new Schemas.PuppetOptions()
             {
-                Name=Configuration["Wechaty_Name"],
-                Endpoint = Configuration["Wechaty_EndPoint"],
-                Token = Configuration["Wechaty_Token"],
-                PuppetProvider = Configuration["Wechaty_Puppet_providers"] == string.Empty ? "wechaty-puppet-dount" : "wechaty-puppet-rock"
+                Name = _configuration["Wechaty_Name"],
+                Endpoint = _configuration["Wechaty_EndPoint"],
+                Token = _configuration["Wechaty_Token"],
+                PuppetProvider = _configuration["Wechaty_Puppet_providers"] == string.Empty ? "wechaty-puppet-dount" : "wechaty-puppet-rock"
             };
             bot = new Wechaty(PuppetOptions);
 
@@ -66,7 +65,7 @@ namespace Wechaty.Getting.Start
             }
         }
 
-        private static void  WechatyMessageEventListenerAsync(User.Message message)
+        private static void WechatyMessageEventListenerAsync(User.Message message)
         {
             Console.WriteLine(message.Text);
             if (message.Text == "天王盖地虎" || message.Text == "小鸡啄米")
