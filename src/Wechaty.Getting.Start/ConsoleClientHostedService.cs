@@ -30,9 +30,9 @@ namespace Wechaty.Getting.Start
 
             var PuppetOptions = new Schemas.PuppetOptions()
             {
-                // eg http://192.168.2.200:8788
                 Endpoint = Configuration["Wechaty_EndPoint"],
-                Token = Configuration["Wechaty_Token"]
+                Token = Configuration["Wechaty_Token"],
+                PuppetProvider = Configuration["Wechaty_Puppet_providers"] == string.Empty ? "wechaty-puppet-dount" : "wechaty-puppet-rock"
             };
 
             var grpcPuppet = new GrpcPuppet(PuppetOptions, logger, loggerFactory);
@@ -71,8 +71,11 @@ namespace Wechaty.Getting.Start
                 var qrcodeImageUrl = QrcodeServerUrl + qrcode;
                 Console.WriteLine(qrcodeImageUrl);
             }
+            else if (status == ScanStatus.Scanned)
+            {
+                Console.WriteLine(data);
+            }
         }
-
 
         private static void  WechatyMessageEventListenerAsync(User.Message message)
         {
@@ -81,6 +84,7 @@ namespace Wechaty.Getting.Start
             {
                 _ = message.Say("宝塔镇河妖");
             }
+
         }
 
         /// <summary>

@@ -302,7 +302,7 @@ namespace Wechaty
                     var room = Room.Load(payload.RoomId);
                     await room.Sync();
 
-                    var leaverList = payload.RemoverIdList.Select(Contact.Load).ToList();
+                    var leaverList = payload.RemoveeIdList.Select(Contact.Load).ToList();
                     await Task.WhenAll(leaverList.Select(c => c.Ready()));
 
                     var remover = Contact.Load(payload.RemoverId);
@@ -314,7 +314,7 @@ namespace Wechaty
                     _ = room.EmitLeave(leaverList, remover, date);
 
                     var selftId = Puppet.SelfId;
-                    if (!string.IsNullOrEmpty(selftId) && payload.RemoverIdList.Contains(selftId))
+                    if (!string.IsNullOrEmpty(selftId) && payload.RemoveeIdList.Contains(selftId))
                     {
                         await Puppet.RoomPayloadDirty(payload.RoomId);
                         await Puppet.RoomMemberPayloadDirty(payload.RoomId);
@@ -330,7 +330,9 @@ namespace Wechaty
 
                     _ = EmitRoomTopic(room, payload.NewTopic, payload.OldTopic, changer, date);
                 })
-                .OnScan(payload => _ = EmitScan(payload.Data ?? "", payload.Status, payload.Data));
+                .OnScan(payload => {
+                    _ = EmitScan(payload.Qrcode ?? "", payload.Status, payload.Data);
+                });
         }
 
         public async Task Start()
