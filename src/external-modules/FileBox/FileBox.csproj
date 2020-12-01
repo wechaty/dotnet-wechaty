@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Wechaty.FileBox</AssemblyName>
   </PropertyGroup>
-  <Import Project="../../common.props"/>
+  <Import Project="../../common.props" />
 
   <ItemGroup>
     <PackageReference Include="MimeMapping" Version="1.0.1.30" />
