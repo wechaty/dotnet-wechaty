@@ -5,7 +5,7 @@ dotnet-wechaty (.NET Wechaty) is a Conversational AI RPA SDK for Chatbot written
 ![.NET Core version support](https://img.shields.io/badge/.NET%20Core-3.1-brightgreen)
 ![.NET Core](https://github.com/wechaty/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
 
-![.NET Core Wechaty](docs/images/dotnet-wechaty.png)
+![.NET Wechaty](docs/images/dotnet-wechaty.png)
 
 ## Connecting Chatbots
 
