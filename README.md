@@ -1,10 +1,11 @@
-# dotnet-wechaty
-dotnet-wechaty is a Conversational AI RPA SDK for Chatbot written in C#
+# dotnet-wechaty (.NET Wechaty)
+
+dotnet-wechaty (.NET Wechaty) is a Conversational SDK for chatbot makers written in C#
 
 ![.NET Core version support](https://img.shields.io/badge/.NET%20Core-3.1-brightgreen)
 ![.NET Core](https://github.com/wechaty/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
 
-![.NET Core Wechaty](docs/images/dotnet-wechaty.png)
+![.NET Wechaty](docs/images/dotnet-wechaty.png)
 
 ## Connecting Chatbots
 
@@ -249,12 +250,10 @@ dotnet restore ./src/Wechaty.sln
 
 ## Badge
 
-![.NET Core version support](https://img.shields.io/badge/.NET%20Core-3.1-brightgreen)
-![.NET Core](https://github.com/wechaty/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
+[![.NET Wechaty](https://img.shields.io/badge/Wechaty-.NET-blueviolet)](https://github.com/wechaty/dotnet-wechaty)
 
 ```md
-![.NET Core version support](https://img.shields.io/badge/.NET%20Core-3.1-brightgreen)
-![.NET Core](https://github.com/wechaty/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
+[![.NET Wechaty](https://img.shields.io/badge/Wechaty-.NET-blueviolet)](https://github.com/wechaty/dotnet-wechaty)
 ```
 
 ## Contributors

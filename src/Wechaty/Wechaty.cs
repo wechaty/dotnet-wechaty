@@ -4,10 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using EventEmitter;
 using Microsoft.Extensions.Logging;
 using Wechaty.Schemas;
 using Wechaty.User;
-using EventEmitter;
 
 namespace Wechaty
 {
@@ -16,6 +16,9 @@ namespace Wechaty
     /// </summary>
     public class Wechaty : EventEmitter<Wechaty>, ISayable
     {
+
+
+
         private const string PUPPET_MEMORY_NAME = "puppet";
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace Wechaty
         public static void GloabalAdd(params IWechatPlugin[] plugins) => GlobalPlugins.AddRange(plugins);
 
 
-        private readonly WechatyOptions _options;
+        private readonly WechatyPuppetOptions _options;
         private readonly ILogger<Wechaty> _logger;
         private readonly ILoggerFactory _loggerFactory;
 
@@ -111,20 +114,36 @@ namespace Wechaty
         public Wechaty WechatyInstance => this;
 
         /// <summary>
-        /// init <see cref="Wechaty"/> with <see cref="WechatyOptions"/>
+        /// init <see cref="Wechaty"/> with <see cref="WechatyPuppetOptions"/>
         /// </summary>
         /// <param name="options"></param>
         /// <param name="loggerFactory"></param>
-        public Wechaty(WechatyOptions options, ILoggerFactory loggerFactory)
+        public Wechaty(PuppetOptions options)
         {
-            _options = options;
+
+            ILoggerFactory loggerFactory = new LoggerFactory();
+            var logger = new Logger<WechatyPuppet>(loggerFactory);
+
+            var grpcPuppet = new GrpcPuppet(options, logger, loggerFactory);
+
+            var wechatyOptions = new WechatyPuppetOptions()
+            {
+                Name = options.Name,
+                Puppet = grpcPuppet,
+            };
+
+
+            _options = wechatyOptions;
+
             _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<Wechaty>();
+
+
             if (_logger.IsEnabled(LogLevel.Trace))
             {
                 _logger.LogTrace("constructor() WechatyOptions.profile DEPRECATED. use WechatyOptions.name instead.");
             }
-            if (string.IsNullOrWhiteSpace(options.Name) && !string.IsNullOrWhiteSpace(options.Profile))
+            if (string.IsNullOrWhiteSpace(options.Name))
             {
                 if (_logger.IsEnabled(LogLevel.Trace))
                 {
@@ -231,7 +250,7 @@ namespace Wechaty
             Puppet = puppet;
             _ = Emit("puppet", puppet);
 
-           
+
         }
 
         protected void InitPuppetEventBridge(WechatyPuppet puppet)
@@ -302,7 +321,7 @@ namespace Wechaty
                     var room = Room.Load(payload.RoomId);
                     await room.Sync();
 
-                    var leaverList = payload.RemoverIdList.Select(Contact.Load).ToList();
+                    var leaverList = payload.RemoveeIdList.Select(Contact.Load).ToList();
                     await Task.WhenAll(leaverList.Select(c => c.Ready()));
 
                     var remover = Contact.Load(payload.RemoverId);
@@ -314,7 +333,7 @@ namespace Wechaty
                     _ = room.EmitLeave(leaverList, remover, date);
 
                     var selftId = Puppet.SelfId;
-                    if (!string.IsNullOrEmpty(selftId) && payload.RemoverIdList.Contains(selftId))
+                    if (!string.IsNullOrEmpty(selftId) && payload.RemoveeIdList.Contains(selftId))
                     {
                         await Puppet.RoomPayloadDirty(payload.RoomId);
                         await Puppet.RoomMemberPayloadDirty(payload.RoomId);
@@ -330,7 +349,10 @@ namespace Wechaty
 
                     _ = EmitRoomTopic(room, payload.NewTopic, payload.OldTopic, changer, date);
                 })
-                .OnScan(payload => _ = EmitScan(payload.Data ?? "", payload.Status, payload.Data));
+                .OnScan(payload =>
+                {
+                    _ = EmitScan(payload.Qrcode ?? "", payload.Status, payload.Data);
+                });
         }
 
         public async Task Start()
@@ -365,10 +387,7 @@ namespace Wechaty
                 await InitPuppet();
                 await Puppet.Start();
                 InitPuppetEventBridge(Puppet);
-                //TODO: IO component
-                if (!string.IsNullOrWhiteSpace(_options.IoToken))
-                {
-                }
+
             }
             catch (Exception exception)
             {

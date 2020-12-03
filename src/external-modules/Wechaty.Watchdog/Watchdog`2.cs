@@ -1,10 +1,10 @@
-using System.Diagnostics.CodeAnalysis;
 using System;
-using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
 using System.Timers;
-using Microsoft.CodeAnalysis;
-using Newtonsoft.Json;
 using EventEmitter;
+using Microsoft.CodeAnalysis;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace Wechaty
 {

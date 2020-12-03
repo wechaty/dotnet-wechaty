@@ -43,7 +43,7 @@ namespace Wechaty.Schemas
     }
     public class EventRoomLeavePayload
     {
-        public List<string> RemoverIdList { get; set; }
+        public List<string> RemoveeIdList { get; set; }
         public string RemoverId { get; set; }
         public string RoomId { get; set; }
         public long Timestamp { get; set; }

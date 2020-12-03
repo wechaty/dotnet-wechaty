@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wechaty.Schemas;
 using Wechaty.User;
@@ -13,11 +12,11 @@ namespace Wechaty.Getting.Start
 {
     public class ConsoleClientHostedService : IHostedService
     {
-        private readonly IConfiguration Configuration;
+        private readonly IConfiguration _configuration;
 
         public ConsoleClientHostedService(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
 
@@ -25,25 +24,14 @@ namespace Wechaty.Getting.Start
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            ILoggerFactory loggerFactory = new LoggerFactory();
-            var logger = new Logger<WechatyPuppet>(loggerFactory);
-
             var PuppetOptions = new Schemas.PuppetOptions()
             {
-                // eg http://192.168.2.200:8788
-                Endpoint = Configuration["Wechaty_EndPoint"],
-                Token = Configuration["Wechaty_Token"]
+                Name = _configuration["Wechaty_Name"],
+                Endpoint = _configuration["Wechaty_EndPoint"],
+                Token = _configuration["Wechaty_Token"],
+                PuppetProvider = _configuration["Wechaty_Puppet_providers"] == string.Empty ? "wechaty-puppet-dount" : "wechaty-puppet-rock"
             };
-
-            var grpcPuppet = new GrpcPuppet(PuppetOptions, logger, loggerFactory);
-
-            var wechatyOptions = new WechatyOptions()
-            {
-                Name = Configuration["Wechaty_Name"],
-                Puppet = grpcPuppet,
-            };
-
-            bot = new Wechaty(wechatyOptions, loggerFactory);
+            bot = new Wechaty(PuppetOptions);
 
             await bot.OnScan(WechatyScanEventListener)
                 .OnLogin(WechatyLoginEventListener)
@@ -71,16 +59,20 @@ namespace Wechaty.Getting.Start
                 var qrcodeImageUrl = QrcodeServerUrl + qrcode;
                 Console.WriteLine(qrcodeImageUrl);
             }
+            else if (status == ScanStatus.Scanned)
+            {
+                Console.WriteLine(data);
+            }
         }
 
-
-        private static void  WechatyMessageEventListenerAsync(User.Message message)
+        private static void WechatyMessageEventListenerAsync(User.Message message)
         {
             Console.WriteLine(message.Text);
             if (message.Text == "天王盖地虎" || message.Text == "小鸡啄米")
             {
                 _ = message.Say("宝塔镇河妖");
             }
+
         }
 
         /// <summary>

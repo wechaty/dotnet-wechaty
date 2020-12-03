@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.Extensions.Logging;
 using EventEmitter;
+using Microsoft.Extensions.Logging;
 
 namespace Wechaty
 {

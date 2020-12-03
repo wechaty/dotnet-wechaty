@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageProjectUrl></PackageProjectUrl>
+    <PackageIcon>wechaty.png</PackageIcon>
   </PropertyGroup>
   <Import Project="../../common.props" />
 
@@ -12,6 +14,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Wechaty.Puppet\Wechaty.Puppet.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\docs\images\wechaty.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

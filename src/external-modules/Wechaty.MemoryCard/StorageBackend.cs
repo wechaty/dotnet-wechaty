@@ -51,8 +51,8 @@ namespace Wechaty
                     return new StorageNop(name, (StorageNopOptions)options, loggerFactory.CreateLogger<StorageNop>());
                 case StorageBackendType.S3:
                     return new StorageS3(name, (StorageS3Options)options, loggerFactory.CreateLogger<StorageS3>());
-                case StorageBackendType.Obs:
-                    return new StorageObs(name, (StorageObsOptions)options, loggerFactory.CreateLogger<StorageObs>());
+                //case StorageBackendType.Obs:
+                //    return new StorageObs(name, (StorageObsOptions)options, loggerFactory.CreateLogger<StorageObs>());
                 default:
                     throw new InvalidOperationException($"backend unknown: {options.Type}");
             }

@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using EventEmitter;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ReactiveQueue;
 using Wechaty.Schemas;
-using EventEmitter;
 
 namespace Wechaty
 {
@@ -375,7 +374,7 @@ namespace Wechaty
             {
                 Logger.LogTrace($"contactSearch(query={JsonConvert.SerializeObject(query)}, searchIdList.length{searchIdList?.Length})");
             }
-            if (searchIdList.Count()==0)
+            if (searchIdList.Count() == 0)
             {
                 searchIdList = (await ContactList()).ToArray();
             }
@@ -673,7 +672,7 @@ namespace Wechaty
 
             //2. Cache not found
             var rawPayload = await MessageRawPayload(messageId);
-            var payload =  MessageRawPayloadParser(rawPayload);
+            var payload = MessageRawPayloadParser(rawPayload);
 
             CacheMessagePayload.Set(messageId, payload);
             if (Logger.IsEnabled(LogLevel.Trace))
@@ -931,8 +930,14 @@ namespace Wechaty
             {
                 return allRoomIds;
             }
+            if (!string.IsNullOrEmpty(query.Id))
+            {
+                var result = allRoomIds.Where(x => x == query.Id);
+                return result.ToImmutableList();
+            }
+
             var filter = query.Every<RoomQueryFilter, RoomPayload>();
-            var filterResult = (await Task.WhenAll(allRoomIds.Select(async id =>
+            var allRoomPayloads = (await Task.WhenAll(allRoomIds.Select(async id =>
             {
                 try
                 {
@@ -951,9 +956,23 @@ namespace Wechaty
             })))
             .Where(r => r != null)
             .OfType<RoomPayload>()
-            .Select(r => r.Id)
+            //.Select(r => r.Id)
             .ToImmutableList();
 
+            IReadOnlyList<string> filterResult = null;
+
+
+            if (!string.IsNullOrEmpty(query.Topic.Value))
+            {
+                filterResult = allRoomPayloads
+                .Where(x => query.Topic.Value == x.Topic)
+                .Select(x => x.Id)
+                .ToImmutableList();
+            }
+            else
+            {
+                allRoomPayloads.Select(x => x.Id);
+            }
             if (Logger.IsEnabled(LogLevel.Trace))
             {
                 Logger.LogTrace($"roomSearch() roomIdList filtered. result length={filterResult.Count}");

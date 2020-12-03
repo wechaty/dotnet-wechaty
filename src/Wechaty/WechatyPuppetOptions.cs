@@ -3,7 +3,7 @@ using Wechaty.Schemas;
 
 namespace Wechaty
 {
-    public class WechatyOptions
+    public class WechatyPuppetOptions
     {
         public MemoryCard? Memory { get; set; }
         public string? Name { get; set; }
@@ -14,8 +14,5 @@ namespace Wechaty
         public string? Profile { get; set; }
         public WechatyPuppet? Puppet { get; set; }
         public PuppetOptions? PuppetOptions { get; set; }
-
-        //[Obsolete("io token not supported yet.", true)]
-        public string? IoToken { get; set; }
     }
 }

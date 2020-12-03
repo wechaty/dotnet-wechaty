@@ -2,13 +2,12 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <authors>Wechaty</authors>
     <owners>Wechaty</owners>
     <description>dotnet wechaty</description>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <PackageiconUrl>http://qn.3658k.com/dotnet-wechaty.png</PackageiconUrl>
-    <PackageProjectUrl>https://github.com/wechaty/dotnet-wechaty</PackageProjectUrl>
+    <PackageiconUrl>https://wechaty.js.org/img/wechaty-icon.svg</PackageiconUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/wechaty/dotnet-wechaty</RepositoryUrl>

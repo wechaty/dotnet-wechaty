@@ -2,15 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Wechaty.EventEmitter</AssemblyName>
     <PackageIcon>wechaty.png</PackageIcon>
-    <RootNamespace>Wechaty</RootNamespace>
+    <RootNamespace>EventEmitter</RootNamespace>
   </PropertyGroup>
   <Import Project="../../common.props" />
 
   <ItemGroup>
-    <Compile Remove="Common\**" />
-    <EmbeddedResource Remove="Common\**" />
-    <None Remove="Common\**" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\..\..\docs\images\wechaty.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
