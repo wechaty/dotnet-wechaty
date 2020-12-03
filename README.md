@@ -250,12 +250,10 @@ dotnet restore ./src/Wechaty.sln
 
 ## Badge
 
-![.NET Core version support](https://img.shields.io/badge/.NET%20Core-3.1-brightgreen)
-![.NET Core](https://github.com/wechaty/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
+[![.NET Wechaty](https://img.shields.io/badge/Wechaty-.NET-blueviolet)](https://github.com/wechaty/dotnet-wechaty)
 
 ```md
-![.NET Core version support](https://img.shields.io/badge/.NET%20Core-3.1-brightgreen)
-![.NET Core](https://github.com/wechaty/dotnet-wechaty/workflows/.NET%20Core/badge.svg)
+[![.NET Wechaty](https://img.shields.io/badge/Wechaty-.NET-blueviolet)](https://github.com/wechaty/dotnet-wechaty)
 ```
 
 ## Contributors
