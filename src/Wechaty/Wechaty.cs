@@ -124,6 +124,11 @@ namespace Wechaty
             ILoggerFactory loggerFactory = new LoggerFactory();
             var logger = new Logger<WechatyPuppet>(loggerFactory);
 
+            if (string.IsNullOrEmpty(options.Token))
+            {
+                throw new Exception("Please configure your token !");
+            }
+
             var grpcPuppet = new GrpcPuppet(options, logger, loggerFactory);
 
             var wechatyOptions = new WechatyPuppetOptions()
