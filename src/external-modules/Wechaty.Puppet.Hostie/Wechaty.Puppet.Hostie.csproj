@@ -1,11 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <PackageProjectUrl></PackageProjectUrl>
-    <PackageIcon>wechaty.png</PackageIcon>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>Wechaty.Puppet.Hostie</AssemblyName>
+    <RootNamespace>Wechaty</RootNamespace>
   </PropertyGroup>
-  <Import Project="../../common.props" />
 
   <ItemGroup>
     <PackageReference Include="Grpc.Net.Client" Version="2.33.1" />
@@ -14,13 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Wechaty.Puppet\Wechaty.Puppet.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\..\docs\images\wechaty.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
 </Project>
