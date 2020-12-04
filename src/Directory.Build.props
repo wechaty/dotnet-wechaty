@@ -3,6 +3,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(SolutionDir)NullableAttributes.cs" />
@@ -10,5 +11,50 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.6.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.5" />
+  </ItemGroup>
+  <!--common properties for package-->
+  <PropertyGroup>
+    <authors>Wechaty</authors>
+    <owners>Wechaty</owners>
+    <description>dotnet wechaty</description>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <!--Workaround for https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets#packageicon-->
+    <PackageiconUrl>https://wechaty.js.org/img/wechaty-icon.svg</PackageiconUrl>
+    <PackageIcon>wechaty.png</PackageIcon>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://wechaty.js.org</PackageProjectUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Version)' == ''">
+    <Version>0.1.2</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(SolutionDir)wechaty.png" Pack="true" PackagePath=""/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
+  </ItemGroup>
+
+  <!--Workaround for https://github.com/dotnet/sourcelink/issues/572-->
+  <!--<PropertyGroup>
+    <TargetFrameworkMonikerAssemblyAttributesPath>$([System.IO.Path]::Combine('$(IntermediateOutputPath)','$(TargetFrameworkMoniker).AssemblyAttributes$(DefaultLanguageSourceExtension)'))</TargetFrameworkMonikerAssemblyAttributesPath>
+  </PropertyGroup>-->
+  <!--<ItemGroup>
+    <EmbeddedFiles Include="$(GeneratedAssemblyInfoFile)"/>
+  </ItemGroup>-->
+  <ItemGroup>
+    <EmbeddedFiles Include="$(GeneratedAssemblyInfoFile)"/>
+    <EmbeddedFiles Include="$(TargetFrameworkMonikerAssemblyAttributesPath)"/>
+  </ItemGroup>
+  
+   <!--Workaround for https://github.com/dotnet/sdk/issues/11105--> 
+  <ItemGroup>
+    <SourceRoot Include="$(NuGetPackageRoot)" Condition="'$(NuGetPackageRoot)' != ''" />
   </ItemGroup>
 </Project>

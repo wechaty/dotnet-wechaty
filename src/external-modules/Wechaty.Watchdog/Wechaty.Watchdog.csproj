@@ -3,9 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wechaty.Watchdog</AssemblyName>
-    <PackageIcon>wechaty.png</PackageIcon>
+    <RootNamespace>Wechaty</RootNamespace>
   </PropertyGroup>
-  <Import Project="../../common.props" />
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -14,13 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Wechaty.Common\Wechaty.Common.csproj" />
     <ProjectReference Include="..\Wechaty.EventEmitter\Wechaty.EventEmitter.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\..\..\docs\images\wechaty.png">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
   </ItemGroup>
 
 </Project>
