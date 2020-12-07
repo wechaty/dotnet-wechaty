@@ -291,7 +291,7 @@ namespace Wechaty.User
             {
                 Logger.LogTrace($"get topic()");
             }
-            if (IsReady)
+            if (!IsReady)
             {
                 Logger.LogWarning("topic() room not ready");
                 throw new InvalidOperationException("not ready");
