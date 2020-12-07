@@ -32,10 +32,15 @@ namespace Wechaty.Getting.Start
             bot = new Wechaty(PuppetOptions);
 
             await bot.OnScan(WechatyScanEventListener)
-                .OnLogin(WechatyLoginEventListener)
-                .OnMessage(WechatyMessageEventListenerAsync)
-                .OnHeartbeat(WechatyHeartbeatEventListener)
-                .Start();
+              .OnLogin(WechatyLoginEventListener)
+              .OnMessage(WechatyMessageEventListenerAsync)
+              .OnHeartbeat(WechatyHeartbeatEventListener)
+              .OnRoomInvite(WechatyRoomInviteEventListener)
+              .OnRoomJoin(WechatyRoomJoinEventListener)
+              .OnRoomLeave(WechatyRoomLeaveEventListener)
+              .OnRoomTopic(WechatyRoomTopicEventListener)
+              .Start();
+
         }
 
         public static void WechatyLoginEventListener(ContactSelf user)
@@ -72,6 +77,28 @@ namespace Wechaty.Getting.Start
             }
 
         }
+
+        #region Room
+        private static void WechatyRoomInviteEventListener(RoomInvitation roomInvitation)
+        {
+
+        }
+
+        private static void WechatyRoomJoinEventListener(Room room, Contact[] inviteeList, Contact inviter, DateTime? date)
+        {
+
+        }
+
+        private static void WechatyRoomLeaveEventListener(Room room, Contact[] leaverList, Contact remover, DateTime? date)
+        {
+
+        }
+
+        private static void WechatyRoomTopicEventListener(Room room, string newTopic, string oldTopic, Contact changer, DateTime? date)
+        {
+
+        }
+        #endregion
 
         /// <summary>
         /// Stop
