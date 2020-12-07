@@ -30,6 +30,7 @@ namespace Wechaty.Getting.Start
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 Log.Fatal(ex, "Host terminated unexpectedly!");
             }
             finally
