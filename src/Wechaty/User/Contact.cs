@@ -295,14 +295,14 @@ namespace Wechaty.User
                 await Puppet.ContactPayloadDirty(Id);
                 Payload = await Puppet.ContactPayload(Id);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                Logger.LogError(exception, "ready() failed.");
-                throw;
+                Logger.LogError(ex, "ready() failed.");
+                throw ex;
             }
         }
 
-        public bool IsReady => string.IsNullOrWhiteSpace(Payload?.Name);
+        public bool IsReady => !string.IsNullOrWhiteSpace(Payload?.Name);
 
         public bool Self => Puppet?.SelfId == Id;
 
