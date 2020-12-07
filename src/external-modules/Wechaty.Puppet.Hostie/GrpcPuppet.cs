@@ -29,7 +29,7 @@ namespace Wechaty
         #region GRPC 连接
         protected const string CHATIE_ENDPOINT = "https://api.chatie.io/v0/hosties/";
         private Puppet.PuppetClient grpcClient = null;
-        private Grpc.Core.Channel channel = null;
+        private Channel channel = null;
 
         /// <summary>
         /// 发现 hostie gateway 对应的服务是否能能访问
@@ -127,13 +127,22 @@ namespace Wechaty
             {
                 var eventStream = grpcClient.Event(new EventRequest());
 
-                var stream = Task.Run(async () =>
+                //var stream = Task.Run(async () =>
+                //{
+                //    await foreach (var resp in eventStream.ResponseStream.ReadAllAsync())
+                //    {
+                //        OnGrpcStreamEvent(resp);
+                //    }
+                //});
+
+                Task.Run(async () =>
                 {
-                    await foreach (var resp in eventStream.ResponseStream.ReadAllAsync())
+                    while (await eventStream.ResponseStream.MoveNext())
                     {
-                        OnGrpcStreamEvent(resp);
+                        OnGrpcStreamEvent(eventStream.ResponseStream.Current);
                     }
                 });
+
             }
             catch (Exception ex)
             {
