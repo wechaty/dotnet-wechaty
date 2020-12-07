@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -45,7 +47,7 @@ namespace Wechaty.Getting.Start
 
         public static void WechatyLoginEventListener(ContactSelf user)
         {
-            Console.WriteLine($"{user.Id}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！");
+            Console.WriteLine($"{user.Name}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！");
         }
 
         private static void WechatyHeartbeatEventListener(object data)
@@ -75,28 +77,28 @@ namespace Wechaty.Getting.Start
             {
                 _ = message.Say("宝塔镇河妖");
             }
-
         }
 
         #region Room
         private static void WechatyRoomInviteEventListener(RoomInvitation roomInvitation)
         {
+            // 1102977037
 
         }
 
-        private static void WechatyRoomJoinEventListener(Room room, Contact[] inviteeList, Contact inviter, DateTime? date)
+        private static void WechatyRoomJoinEventListener(Room room, IReadOnlyList<Contact> inviteeList, Contact inviter, DateTime? date)
         {
-
+            Console.WriteLine($"{inviter.Name} invites {string.Join(",", inviteeList.Select(x => x.Name))} into { _=room.GetTopic()} room !");
         }
 
-        private static void WechatyRoomLeaveEventListener(Room room, Contact[] leaverList, Contact remover, DateTime? date)
+        private static void WechatyRoomLeaveEventListener(Room room, IReadOnlyList<Contact> leaverList, Contact remover, DateTime? date)
         {
 
         }
 
         private static void WechatyRoomTopicEventListener(Room room, string newTopic, string oldTopic, Contact changer, DateTime? date)
         {
-
+            Console.WriteLine($"{changer.Name} update room topic as {newTopic}");
         }
         #endregion
 

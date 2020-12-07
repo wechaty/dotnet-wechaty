@@ -206,10 +206,14 @@ namespace Wechaty
                         break;
                     case EventType.RoomInvite:
                         //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventRoomInvitePayload>(payload));
+                        // {"roomInvitationId":"1102977037","kind":"ROOM_INVITE"}
                         Emit(JsonConvert.DeserializeObject<EventRoomInvitePayload>(payload));
                         break;
                     case EventType.RoomJoin:
                         //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventRoomJoinPayload>(payload));
+
+                        // {"inviteeIdList":["wxid_eiv80kttrpkg22"],"inviterId":"wxid_lucnxixqb97522","roomId":"18194110447@chatroom","timestamp":1607321211,"kind":"ROOM_JOIN"}
+
                         Emit(JsonConvert.DeserializeObject<EventRoomJoinPayload>(payload));
                         break;
                     case EventType.RoomLeave:
@@ -218,6 +222,8 @@ namespace Wechaty
                         break;
                     case EventType.RoomTopic:
                         //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventRoomTopicPayload>(payload));
+
+                        // {"changerId":"YOU","newTopic":"botv2","roomId":"18194110447@chatroom","timestamp":1607329121}
                         Emit(JsonConvert.DeserializeObject<EventRoomTopicPayload>(payload));
                         break;
                     case EventType.Scan:
@@ -238,6 +244,8 @@ namespace Wechaty
                     case EventType.Login:
                         var loginPayload = JsonConvert.DeserializeObject<EventLoginPayload>(payload);
                         SelfId = loginPayload.ContactId;
+
+                        //Emit(JsonConvert.DeserializeObject<EventLoginPayload>(payload));
                         ////await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventLoginPayload>(payload));
                         break;
                     case EventType.Logout:
