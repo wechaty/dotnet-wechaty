@@ -42,7 +42,7 @@ namespace Wechaty.User
         /// <summary>
         /// cache for <typeparamref name="TContact"/>s
         /// </summary>
-        protected ConcurrentDictionary<string, TContact>? Pool { get; set; }
+        protected ConcurrentDictionary<string, TContact>? _pool { get; set; }
 
         /// <summary>
         /// load <typeparamref name="TContact"/> by <paramref name="id"/>
@@ -51,16 +51,16 @@ namespace Wechaty.User
         /// <returns></returns>
         public TContact Load(string id)
         {
-            if (Pool == null)
+            if (_pool == null)
             {
                 if (Logger.IsEnabled(LogLevel.Trace))
                 {
                     Logger.LogTrace($"load({id}) init pool");
                 }
-                Pool = new ConcurrentDictionary<string, TContact>();
+                _pool = new ConcurrentDictionary<string, TContact>();
             }
 
-            return Pool.GetOrAdd(id, key => New(key, WechatyInstance, _loggerForContact, _name));
+            return _pool.GetOrAdd(id, key => New(key, WechatyInstance, _loggerForContact, _name));
         }
 
         /// <summary>
