@@ -59,13 +59,14 @@ namespace Wechaty
             }
         }
 
+
+
         /// <summary>
         /// 初始化 Grpc连接
         /// </summary>
         /// <returns></returns>
         protected async Task StartGrpcClient()
         {
-
             try
             {
                 if (grpcClient != null)
@@ -78,39 +79,21 @@ namespace Wechaty
                 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
                 AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
 
-                //if (string.IsNullOrEmpty(endPoint))
-                //{
-                //    var model = await DiscoverHostieIp(Options.Token);
-                //    if (model.IP == "0.0.0.0" || model.Port == "0")
-                //    {
-                //        throw new Exception("no endpoint");
-                //    }
-                //    // 方式一
-                //    endPoint = "http://" + model.IP + ":" + model.Port;
-
-                //    Options.Endpoint = endPoint;
-
-                //    // 方式二
-                //    //endPoint = model.IP + ":" + model.Port;
-                //}
-
-
-
-                // 方式一
-                //channel = Grpc.Net.Client.GrpcChannel.ForAddress(endPoint);
-                //grpcClient = new PuppetClient(channel);
-
-                // 方式二
-
-                // For  Rock Puppet Service authority
-                if (Options.PuppetProvider == "wechaty-puppet-rock")
+                if (string.IsNullOrEmpty(endPoint))
                 {
-                    var options = new List<ChannelOption>()
+                    var model = await DiscoverHostieIp(Options.Token);
+                    if (model.IP == "0.0.0.0" || model.Port == "0")
                     {
-                        new ChannelOption("grpc.default_authority", Options.Token)
-                    };
-                    channel = new Channel(endPoint, ChannelCredentials.Insecure, options);
+                        throw new Exception("no endpoint");
+                    }
+                    endPoint = model.IP + ":" + model.Port;
                 }
+
+                var options = new List<ChannelOption>()
+                {
+                    new ChannelOption("grpc.default_authority", Options.Token)
+                };
+                channel = new Channel(endPoint, ChannelCredentials.Insecure, options);
 
                 grpcClient = new PuppetClient(channel);
 
