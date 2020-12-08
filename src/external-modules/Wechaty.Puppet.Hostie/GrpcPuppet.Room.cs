@@ -55,17 +55,6 @@ namespace Wechaty
             return JsonConvert.DeserializeObject<FileBox>(response?.Filebox);
         }
 
-        public override async Task<string> RoomCreate(IReadOnlyList<string> contactIdList, string? topic)
-        {
-            var request = new RoomCreateRequest();
-
-            request.ContactIds.AddRange(contactIdList);
-            request.Topic = topic;
-
-            var response = await grpcClient.RoomCreateAsync(request);
-            return response?.Id;
-        }
-
         // TODO 可以合并为一个接口
         public override async Task<string> RoomCreate(IEnumerable<string> contactIdList, string? topic)
         {
