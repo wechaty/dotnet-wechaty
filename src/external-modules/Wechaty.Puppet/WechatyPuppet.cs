@@ -851,7 +851,6 @@ namespace Wechaty
         #region Room
         public abstract Task RoomAdd(string roomId, string contactId);
         public abstract Task<FileBox> RoomAvatar(string roomId);
-        public abstract Task<string> RoomCreate(IReadOnlyList<string> contactIdList, string? topic);
         public abstract Task<string> RoomCreate(IEnumerable<string> contactIdList, string? topic);
         public abstract Task<string> RoomCreate(string[] contactIdList, string? topic);
         public abstract Task RoomDel(string roomId, string contactId);
