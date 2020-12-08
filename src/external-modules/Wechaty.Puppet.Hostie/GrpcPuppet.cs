@@ -118,31 +118,19 @@ namespace Wechaty
             grpcClient = null;
         }
 
-        /// <summary>
+                /// <summary>
         /// 双向数据流事件处理
         /// </summary>
-        protected void StartGrpcStream()
+        protected async Task StartGrpcStream()
         {
             try
             {
                 var eventStream = grpcClient.Event(new EventRequest());
 
-                //var stream = Task.Run(async () =>
-                //{
-                //    await foreach (var resp in eventStream.ResponseStream.ReadAllAsync())
-                //    {
-                //        OnGrpcStreamEvent(resp);
-                //    }
-                //});
-
-                Task.Run(async () =>
+                while (await eventStream.ResponseStream.MoveNext())
                 {
-                    while (await eventStream.ResponseStream.MoveNext())
-                    {
-                        OnGrpcStreamEvent(eventStream.ResponseStream.Current);
-                    }
-                });
-
+                    OnGrpcStreamEvent(eventStream.ResponseStream.Current);
+                }
             }
             catch (Exception ex)
             {
@@ -150,7 +138,6 @@ namespace Wechaty
                 {
                     Data = ex.StackTrace
                 };
-                //_localEventBus.PublishAsync(eventResetPayload);
                 Emit(eventResetPayload);
             }
         }
@@ -189,53 +176,36 @@ namespace Wechaty
                         Emit(JsonConvert.DeserializeObject<EventHeartbeatPayload>(payload));
                         break;
                     case EventType.Message:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventMessagePayload>(payload));
                         Emit(JsonConvert.DeserializeObject<EventMessagePayload>(payload));
                         break;
                     case EventType.Dong:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventDongPayload>(payload));
                         Emit(JsonConvert.DeserializeObject<EventDongPayload>(payload));
                         break;
                     case EventType.Error:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventErrorPayload>(payload));
                         Emit(JsonConvert.DeserializeObject<EventErrorPayload>(payload));
                         break;
                     case EventType.Friendship:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<FriendshipPayload>(payload));
                         Emit(JsonConvert.DeserializeObject<EventFriendshipPayload>(payload));
                         break;
                     case EventType.RoomInvite:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventRoomInvitePayload>(payload));
-                        // {"roomInvitationId":"1102977037","kind":"ROOM_INVITE"}
                         Emit(JsonConvert.DeserializeObject<EventRoomInvitePayload>(payload));
                         break;
                     case EventType.RoomJoin:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventRoomJoinPayload>(payload));
-
-                        // {"inviteeIdList":["wxid_eiv80kttrpkg22"],"inviterId":"wxid_lucnxixqb97522","roomId":"18194110447@chatroom","timestamp":1607321211,"kind":"ROOM_JOIN"}
-
                         Emit(JsonConvert.DeserializeObject<EventRoomJoinPayload>(payload));
                         break;
                     case EventType.RoomLeave:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventRoomLeavePayload>(payload));
                         Emit(JsonConvert.DeserializeObject<EventRoomLeavePayload>(payload));
                         break;
                     case EventType.RoomTopic:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventRoomTopicPayload>(payload));
-
-                        // {"changerId":"YOU","newTopic":"botv2","roomId":"18194110447@chatroom","timestamp":1607329121}
                         Emit(JsonConvert.DeserializeObject<EventRoomTopicPayload>(payload));
                         break;
                     case EventType.Scan:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventScanPayload>(payload));
                         Emit(JsonConvert.DeserializeObject<EventScanPayload>(payload));
                         break;
                     case EventType.Ready:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventReadyPayload>(payload));
                         Emit(JsonConvert.DeserializeObject<EventReadyPayload>(payload));
                         break;
                     case EventType.Reset:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventResetPayload>(payload));
                         //log.warn('PuppetHostie', 'onGrpcStreamEvent() got an EventType.EVENT_TYPE_RESET ?')
                         // the `reset` event should be dealed not send out
                         Emit(JsonConvert.DeserializeObject<EventResetPayload>(payload));
@@ -244,9 +214,6 @@ namespace Wechaty
                     case EventType.Login:
                         var loginPayload = JsonConvert.DeserializeObject<EventLoginPayload>(payload);
                         SelfId = loginPayload.ContactId;
-
-                        //Emit(JsonConvert.DeserializeObject<EventLoginPayload>(payload));
-                        ////await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventLoginPayload>(payload));
                         break;
                     case EventType.Logout:
                         SelfId = string.Empty;
