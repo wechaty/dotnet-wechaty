@@ -52,7 +52,9 @@ namespace Wechaty
             { Id = roomId };
 
             var response = await grpcClient.RoomAvatarAsync(request);
-            return JsonConvert.DeserializeObject<FileBox>(response?.Filebox);
+            
+            return FileBox.FromJson(response.Filebox);
+            //return JsonConvert.DeserializeObject<FileBox>(response?.Filebox);
         }
 
         // TODO 可以合并为一个接口
