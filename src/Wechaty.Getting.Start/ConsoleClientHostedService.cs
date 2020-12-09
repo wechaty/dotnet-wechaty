@@ -73,9 +73,98 @@ namespace Wechaty.Getting.Start
         private static void WechatyMessageEventListenerAsync(User.Message message)
         {
             Console.WriteLine(message.Text);
+            var room = message.Room;
+
+
             if (message.Text == "天王盖地虎" || message.Text == "小鸡啄米")
             {
                 _ = message.Say("宝塔镇河妖");
+            }
+            //var taker = message.Talker;
+            //if (taker?.Name == "大狗" || taker?.Name == "Darren")
+            //{
+            //    Task.Run(async () =>
+            //    {
+            //        //await taker.SetAlias("大狗");
+            //        //var findAll = await bot.Contact.FindAll();
+
+            //        //var room = await bot.Room.Find(new RoomQueryFilter() { Id = "19182933822@chatroom" });
+            //        //await message.Forward(room);
+            //    });
+            //}
+
+            //if (true)
+            //{
+            //    Task.Run(async () =>
+            //    {
+            //        var rooms = await bot.Room.FindAll();
+            //    });
+            //}
+
+            if (message.Room != null && room.Id == "17557292862@chatroom")
+            {
+                Task.Run(async () =>
+                {
+                    var room = await bot.Room.Find(new RoomQueryFilter() { Id = "19182933822@chatroom" });
+                    await message.Forward(room);
+
+                });
+            }
+
+            if ((message.Room != null && message.Room.Id == "19182933822@chatroom") || message.Talker.Id == "wxid_lucnxixqb97522")
+            {
+                Task.Run(async () =>
+                {
+                    var room = message.Room;
+                    //var avt = await room.Avatar;
+
+                    //var members = await room.MemberAll();
+                    //var firstOne = await room.Alias(members[0]);
+                    //var roomOwner = room.Owner;
+                    //await room.Delete(members[0]);
+                    //await room.Say("集合啦", members.Where(x => x.Name != "MacWeChat").Take(2).ToArray());
+                    //var rooms = await bot.Room.FindAll();
+
+                    if (message.Type == MessageType.Emoticon || message.Type == MessageType.Image)
+                    {
+                        var img = message.ToImage();
+                        var aa = await img.Artwork();
+                        var bb = await img.HD();
+                        var cc = await img.Thumbnail();
+                        Console.WriteLine(await aa.ToBase64());
+                    }
+                    if (message.Type == MessageType.Contact)
+                    {
+                        var contactCard = message.ToContact();
+                    }
+
+                    // 发送名片
+                    if (message.Text == "天使的信息")
+                    {
+                        var tianshi = await bot.Contact.Find(new ContactQueryFilter() { Name = "天使" });
+                        if (tianshi != null)
+                        {
+                            await message.Say(tianshi);
+                        }
+                    }
+                    if (message.Text == "天使图片")
+                    {
+                        var fileBox = FileBox.FromUrl("https://wechaty.github.io/wechaty/images/bot-qr-code.png");
+                        await message.Say(fileBox);
+                    }
+
+
+
+                    var urlLink = new UrlLink(new UrlLinkPayload()
+                    {
+                        Url = "https://u.jd.com/tyPpe4K",
+                        ThumbnailUrl = "https://car2.autoimg.cn/cardfs/product/g25/M0B/C7/57/240x180_0_q95_c42_autohomecar__ChsEmF8EOK-Aa1_hAAi6_ZwI4QE965.jpg",
+                        Title = "小久吖 柠檬味无骨鸡爪 200g/盒",
+                        Description = "13.9元  第二份7.9"
+                    });
+
+                    var newMessage = await message.Say(urlLink);
+                });
             }
         }
 
@@ -88,7 +177,7 @@ namespace Wechaty.Getting.Start
 
         private static void WechatyRoomJoinEventListener(Room room, IReadOnlyList<Contact> inviteeList, Contact inviter, DateTime? date)
         {
-            Console.WriteLine($"{inviter.Name} invites {string.Join(",", inviteeList.Select(x => x.Name))} into { _=room.GetTopic()} room !");
+            Console.WriteLine($"{inviter.Name} invites {string.Join(",", inviteeList.Select(x => x.Name))} into {room.GetTopic().Result} room !");
         }
 
         private static void WechatyRoomLeaveEventListener(Room room, IReadOnlyList<Contact> leaverList, Contact remover, DateTime? date)
