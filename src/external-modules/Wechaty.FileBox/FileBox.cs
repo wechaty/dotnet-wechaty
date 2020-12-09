@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using MimeMapping;
+using Newtonsoft.Json.Linq;
 using QRCoder;
 
 namespace Wechaty
@@ -431,5 +432,41 @@ namespace Wechaty
             fileBox.Metadata = obj.Metadata.ToImmutableDictionary();
             return fileBox;
         }
+
+
+        public static FileBox FromJson([DisallowNull] string fileboxStr)
+        {
+            var jsonObj = JObject.Parse(fileboxStr);
+            if (jsonObj==null)
+            {
+                return null;
+            }
+
+            FileBox fileBox;
+            switch ((int)jsonObj["boxType"])
+            {
+                case (int)FileBoxType.Base64:
+                    fileBox = FromBase64(jsonObj["base64"].ToString(),jsonObj["name"].ToString());
+                    break;
+                case (int)FileBoxType.Url:
+                    //fileBox = FromUrl(((FileBoxJsonObjectUrl)obj).RemoteUrl, obj.Name);
+                    fileBox = FromUrl(jsonObj["remoteUrl"].ToString(), jsonObj["name"].ToString());
+                    break;
+                case (int)FileBoxType.QRCode:
+                    fileBox = FromQRCode(jsonObj["qrCode"].ToString());
+                    break;
+                case (int)FileBoxType.Unknown:
+                case (int)FileBoxType.Buffer:
+                case (int)FileBoxType.File:
+                case (int)FileBoxType.Stream:
+                default:
+                    //throw new InvalidOperationException($"unknown filebox json object{{type}}: {JsonSerializer.Serialize(obj)}");
+                    throw new InvalidOperationException($"unknown filebox json object{{type}}: {fileboxStr}");
+            }
+            //fileBox.Metadata = obj.Metadata.ToImmutableDictionary();
+            //fileBox.Metadata = jsonObj["metadata"].ToString().ToImmutableDictionary();
+            return fileBox;
+        }
+
     }
 }
