@@ -44,8 +44,8 @@ namespace Wechaty
             };
 
             var response = await grpcClient.MessageImageAsync(request);
-
-            return JsonConvert.DeserializeObject<FileBox>(response.Filebox);
+            var fileBox = response.Filebox;
+            return FileBox.FromJson(fileBox);
         }
 
         public override async Task<MiniProgramPayload> MessageMiniProgram(string messageId)
@@ -92,7 +92,7 @@ namespace Wechaty
             var request = new MessageSendFileRequest
             {
                 ConversationId = conversationId,
-                Filebox = JsonConvert.SerializeObject(file)
+                Filebox = JsonConvert.SerializeObject(file.ToJson())
             };
 
             var response = await grpcClient.MessageSendFileAsync(request);

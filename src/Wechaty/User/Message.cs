@@ -245,12 +245,12 @@ namespace Wechaty.User
             }
             var room = Room;
             var from = From;
-            var conversationId =string.Empty;
-            if (room != null && room.Id!=string.Empty)
+            var conversationId = string.Empty;
+            if (room != null && room.Id != string.Empty)
             {
                 conversationId = room.Id;
             }
-            else if (from!=null && from.Id!=string.Empty)
+            else if (from != null && from.Id != string.Empty)
             {
                 conversationId = from.Id;
             }
@@ -282,7 +282,7 @@ namespace Wechaty.User
             }
             var room = Room;
             var from = From;
-            var conversationId = room?.Id ?? from?.Id;
+            var conversationId = string.IsNullOrEmpty(room?.Id) ? from?.Id : room.Id;
             if (conversationId == null)
             {
                 throw new InvalidOperationException("neither room nor from?");
@@ -310,7 +310,7 @@ namespace Wechaty.User
             }
             var room = Room;
             var from = From;
-            var conversationId = room?.Id ?? from?.Id;
+            var conversationId = string.IsNullOrEmpty(room?.Id) ? from?.Id : room?.Id;
             if (conversationId == null)
             {
                 throw new InvalidOperationException("neither room nor from?");
@@ -338,7 +338,7 @@ namespace Wechaty.User
             }
             var room = Room;
             var from = From;
-            var conversationId = room?.Id ?? from?.Id;
+            var conversationId = string.IsNullOrEmpty(room?.Id) ? from?.Id : room.Id;
             if (conversationId == null)
             {
                 throw new InvalidOperationException("neither room nor from?");
@@ -366,7 +366,7 @@ namespace Wechaty.User
             }
             var room = Room;
             var from = From;
-            var conversationId = room?.Id ?? from?.Id;
+            var conversationId = string.IsNullOrEmpty(room?.Id) ? from?.Id : room?.Id;
             if (conversationId == null)
             {
                 throw new InvalidOperationException("neither room nor from?");
@@ -394,7 +394,7 @@ namespace Wechaty.User
             }
             var room = Room;
             var from = From;
-            var conversationId = room?.Id ?? from?.Id;
+            var conversationId = string.IsNullOrEmpty(room?.Id) ? from?.Id : room.Id;
             if (conversationId == null)
             {
                 throw new InvalidOperationException("neither room nor from?");
