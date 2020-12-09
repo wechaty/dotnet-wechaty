@@ -137,12 +137,21 @@ namespace Wechaty.User
             {
                 Logger.LogTrace($"say({text},{(replyTo != null ? string.Join<Contact>(",", replyTo) : "")})");
             }
+
+            var someText = string.Empty;
             if (replyTo?.Length > 0)
             {
                 var memtionAlias = await Task.WhenAll(replyTo.Select(async c => await Alias(c) ?? c.Name));
-                text = '@' + string.Join('@', memtionAlias);
+
+                //text = '@' + string.Join('@', memtionAlias)+ " "+text;
+                for (int i = 0; i < memtionAlias.Count(); i++)
+                {
+                    someText += string.Format($"@{memtionAlias[i]} ");
+                }
             }
-            var msgId = await Puppet.MessageSendText(Id, text, replyTo?.Select(c => c.Id));
+            var someThing = string.Format("{0}{1}", someText, text);
+
+            var msgId = await Puppet.MessageSendText(Id, someThing, replyTo?.Select(c => c.Id));
             return await TryLoad(msgId);
         }
 
@@ -362,7 +371,7 @@ namespace Wechaty.User
         public async Task<string?> Alias(Contact contact)
         {
             var memberPayload = await Puppet.RoomMemberPayload(Id, contact.Id);
-            return memberPayload?.RoomAlias;
+            return memberPayload?.RoomAlias == string.Empty ? memberPayload?.Name : memberPayload?.RoomAlias;
         }
 
         public async Task<bool> Has(Contact contact)
