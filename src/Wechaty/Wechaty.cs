@@ -281,13 +281,21 @@ namespace Wechaty
                 .OnMessage(async payload =>
                 {
                     var message = Message.Load(payload.MessageId);
-                    await message.Ready;
-                    _ = EmitMessage(message);
-                    var room = message.Room;
-                    if (room != null)
+                    try
                     {
-                        _ = room.EmitMessage(message);
+                        await message.Ready;
+                        _ = EmitMessage(message);
+                        var room = message.Room;
+                        if (room != null)
+                        {
+                            _ = room.EmitMessage(message);
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        EmitError(ex);
+                    }
+                   
                 }).OnReady(payload =>
                 {
                     _ = Emit("ready");

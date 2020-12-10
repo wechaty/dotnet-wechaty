@@ -653,34 +653,41 @@ namespace Wechaty
 
         public async Task<MessagePayload?> MessagePayload(string messageId)
         {
-            if (Logger.IsEnabled(LogLevel.Trace))
+            try
             {
-                Logger.LogTrace($"messagePayload({messageId})");
-            }
+                if (Logger.IsEnabled(LogLevel.Trace))
+                {
+                    Logger.LogTrace($"messagePayload({messageId})");
+                }
 
-            if (string.IsNullOrWhiteSpace(messageId))
+                if (string.IsNullOrWhiteSpace(messageId))
+                {
+                    throw new ArgumentException("no id");
+                }
+
+                //1. Try to get from cache first
+                var cachedPayload = MessagePayloadCache(messageId);
+                if (cachedPayload != null)
+                {
+                    return cachedPayload;
+                }
+
+                //2. Cache not found
+                var rawPayload = await MessageRawPayload(messageId);
+                var payload = MessageRawPayloadParser(rawPayload);
+
+                CacheMessagePayload.Set(messageId, payload);
+                if (Logger.IsEnabled(LogLevel.Trace))
+                {
+                    Logger.LogTrace($"messagePayload({messageId}) cache SET");
+                }
+
+                return payload;
+            }
+            catch (Exception ex)
             {
-                throw new ArgumentException("no id");
+                throw ex;
             }
-
-            //1. Try to get from cache first
-            var cachedPayload = MessagePayloadCache(messageId);
-            if (cachedPayload != null)
-            {
-                return cachedPayload;
-            }
-
-            //2. Cache not found
-            var rawPayload = await MessageRawPayload(messageId);
-            var payload = MessageRawPayloadParser(rawPayload);
-
-            CacheMessagePayload.Set(messageId, payload);
-            if (Logger.IsEnabled(LogLevel.Trace))
-            {
-                Logger.LogTrace($"messagePayload({messageId}) cache SET");
-            }
-
-            return payload;
         }
 
         public IReadOnlyList<string> MessageList()

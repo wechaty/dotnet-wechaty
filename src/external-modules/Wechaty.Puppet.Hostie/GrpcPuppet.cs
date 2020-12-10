@@ -172,7 +172,6 @@ namespace Wechaty
                         Logger.LogError("onGrpcStreamEvent() got an EventType.EVENT_TYPE_UNSPECIFIED ?");
                         break;
                     case EventType.Heartbeat:
-                        //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventHeartbeatPayload>(payload));
                         Emit(JsonConvert.DeserializeObject<EventHeartbeatPayload>(payload));
                         break;
                     case EventType.Message:
@@ -220,11 +219,11 @@ namespace Wechaty
                         //await _localEventBus.PublishAsync(JsonConvert.DeserializeObject<EventLogoutPayload>(payload));
                         Emit(JsonConvert.DeserializeObject<EventLogoutPayload>(payload));
                         break;
-                        //default:
-                        //    Console.WriteLine($"'eventType {_event.Type.ToString()} unsupported! (code should not reach here)");
+                    default:
+                        Console.WriteLine($"'eventType {eventType} unsupported! (code should not reach here)");
 
                         //    //throw new BusinessException($"'eventType {_event.Type.ToString()} unsupported! (code should not reach here)");
-                        //    break;
+                        break;
                 }
             }
             catch (Exception ex)

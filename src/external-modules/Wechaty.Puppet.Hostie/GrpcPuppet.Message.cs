@@ -31,8 +31,9 @@ namespace Wechaty
             };
 
             var response = await grpcClient.MessageFileAsync(request);
+            var filebox = response.Filebox;
+            return FileBox.FromJson(filebox);
 
-            return JsonConvert.DeserializeObject<FileBox>(response.Filebox);
         }
 
         public override async Task<FileBox> MessageImage(string messageId, Schemas.ImageType imageType)
