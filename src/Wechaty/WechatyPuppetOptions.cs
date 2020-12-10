@@ -1,4 +1,5 @@
 using System;
+using Wechaty.Memorycard;
 using Wechaty.Schemas;
 
 namespace Wechaty

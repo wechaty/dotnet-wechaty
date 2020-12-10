@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Wechaty
+namespace Wechaty.Memorycard
 {
     public struct NumberOrString : IEquatable<NumberOrString>, IComparable<NumberOrString>
     {

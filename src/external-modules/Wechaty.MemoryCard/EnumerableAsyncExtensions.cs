@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace Wechaty
+namespace Wechaty.Memorycard
 {
     public static class EnumerableAsyncExtensions
     {

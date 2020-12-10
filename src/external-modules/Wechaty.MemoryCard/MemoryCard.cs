@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Wechaty
+namespace Wechaty.Memorycard
 {
     public class MemoryCard : IAsyncMap<string, object>
     {

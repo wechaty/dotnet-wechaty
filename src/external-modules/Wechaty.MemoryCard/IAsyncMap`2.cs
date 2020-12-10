@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 
-namespace Wechaty
+namespace Wechaty.Memorycard
 {
     public interface IAsyncMap<TKey, TValue>
     {

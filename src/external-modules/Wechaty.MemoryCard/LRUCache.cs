@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Wechaty
+namespace Wechaty.Memorycard
 {
 
     //TODO:implement lru cache

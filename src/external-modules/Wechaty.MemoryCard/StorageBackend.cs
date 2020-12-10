@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Wechaty
+namespace Wechaty.Memorycard
 {
     public abstract class StorageBackend
     {

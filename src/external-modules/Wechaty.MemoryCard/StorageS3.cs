@@ -10,7 +10,7 @@ using Amazon.S3.Model;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Wechaty
+namespace Wechaty.Memorycard
 {
     public class StorageS3 : StorageBackend
     {

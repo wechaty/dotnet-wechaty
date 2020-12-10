@@ -12,7 +12,7 @@
 
 // add nuget: HuaweiCloud.SDK.OBS
 
-//namespace Wechaty
+//namespace Wechaty.Memorycard
 //{
 //    public class StorageObs : StorageBackend
 //    {
