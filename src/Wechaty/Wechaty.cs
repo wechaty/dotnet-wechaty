@@ -9,6 +9,7 @@ using Wechaty.Common;
 using Wechaty.EventEmitter;
 using Wechaty.Filebox;
 using Wechaty.Memorycard;
+using Wechaty.PuppetHostie;
 using Wechaty.Schemas;
 using Wechaty.User;
 

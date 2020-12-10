@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Wechaty.Filebox;
 using Wechaty.Schemas;
 
-namespace Wechaty
+namespace Wechaty.PuppetHostie
 {
     public partial class GrpcPuppet
     {
