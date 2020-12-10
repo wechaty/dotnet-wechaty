@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 
 
-namespace Wechaty
+namespace Wechaty.Common
 {
     /// <summary>
     /// 常量

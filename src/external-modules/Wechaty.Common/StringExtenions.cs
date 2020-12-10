@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Wechaty
+namespace Wechaty.Common
 {
     /// <summary>
     /// extensions for <see cref="string"/>

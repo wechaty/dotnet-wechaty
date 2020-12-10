@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Wechaty.Common;
 using Wechaty.EventEmitter;
 using Wechaty.Filebox;
 using Wechaty.Schemas;

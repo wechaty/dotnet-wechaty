@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.Extensions.Logging;
+using Wechaty.Common;
 using Wechaty.EventEmitter;
 using Wechaty.Filebox;
 using Wechaty.Memorycard;
