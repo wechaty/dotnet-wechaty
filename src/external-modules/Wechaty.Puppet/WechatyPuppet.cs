@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using ReactiveQueue;
+using Wechaty.Reactivequeue;
 using Wechaty.EventEmitter;
 using Wechaty.Filebox;
 using Wechaty.Memorycard;
