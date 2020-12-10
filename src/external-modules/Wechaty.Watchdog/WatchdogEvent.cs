@@ -1,6 +1,6 @@
-namespace Wechaty
+namespace Wechaty.Watchdog
 {
-    public enum WatchdogEvent
+    public enum WatchDogEvent
     {
         Feed,
         Reset,

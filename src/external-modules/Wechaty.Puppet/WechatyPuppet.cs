@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Wechaty.Reactivequeue;
 using Wechaty.EventEmitter;
 using Wechaty.Filebox;
 using Wechaty.Memorycard;
+using Wechaty.Reactivequeue;
 using Wechaty.Schemas;
+using Wechaty.Watchdog;
+using Wechaty.Watchdog;
 
 namespace Wechaty
 {
@@ -62,7 +64,7 @@ namespace Wechaty
             }
         }
 
-        protected Watchdog<object, EventHeartbeatPayload> Watchdog { get; }
+        protected WatchDog<object, EventHeartbeatPayload> Watchdog { get; }
 
         private string? _id;
         private readonly ThrottleQueue<string> _resetThrottleQueue;
@@ -214,7 +216,7 @@ namespace Wechaty
 
         private void FeedDog(EventHeartbeatPayload payload) => Watchdog.Feed(payload);
 
-        private void DogReset(WatchdogFood<object, EventHeartbeatPayload> lastFood, long time) => Emit(lastFood.Data);
+        private void DogReset(WatchDogFood<object, EventHeartbeatPayload> lastFood, long time) => Emit(lastFood.Data);
 
         private void ThrottleReset(EventResetPayload payload)
         {
