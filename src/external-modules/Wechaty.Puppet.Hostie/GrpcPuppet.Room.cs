@@ -46,13 +46,13 @@ namespace Wechaty
 
         }
 
-        public override async Task<FileBox> RoomAvatar(string roomId)
+        public override async Task<FileBox.FileBox> RoomAvatar(string roomId)
         {
             var request = new RoomAvatarRequest()
             { Id = roomId };
 
             var response = await grpcClient.RoomAvatarAsync(request);
-            return JsonConvert.DeserializeObject<FileBox>(response?.Filebox);
+            return JsonConvert.DeserializeObject<FileBox.FileBox>(response?.Filebox);
         }
 
         public override async Task<string> RoomCreate(IReadOnlyList<string> contactIdList, string? topic)

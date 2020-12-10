@@ -1,5 +1,5 @@
 ﻿
-namespace Wechaty
+namespace Wechaty.FileBox
 {
     public class FileBoxOptionsBuffer : FileBoxOptions
     {

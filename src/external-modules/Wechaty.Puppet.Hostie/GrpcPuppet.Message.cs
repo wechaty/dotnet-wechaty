@@ -23,7 +23,7 @@ namespace Wechaty
             return response.Id;
         }
 
-        public override async Task<FileBox> MessageFile(string messageId)
+        public override async Task<FileBox.FileBox> MessageFile(string messageId)
         {
             var request = new MessageFileRequest
             {
@@ -32,10 +32,10 @@ namespace Wechaty
 
             var response = await grpcClient.MessageFileAsync(request);
 
-            return JsonConvert.DeserializeObject<FileBox>(response.Filebox);
+            return JsonConvert.DeserializeObject<FileBox.FileBox>(response.Filebox);
         }
 
-        public override async Task<FileBox> MessageImage(string messageId, Schemas.ImageType imageType)
+        public override async Task<FileBox.FileBox> MessageImage(string messageId, Schemas.ImageType imageType)
         {
             var request = new MessageImageRequest
             {
@@ -45,7 +45,7 @@ namespace Wechaty
 
             var response = await grpcClient.MessageImageAsync(request);
 
-            return JsonConvert.DeserializeObject<FileBox>(response.Filebox);
+            return JsonConvert.DeserializeObject<FileBox.FileBox>(response.Filebox);
         }
 
         public override async Task<MiniProgramPayload> MessageMiniProgram(string messageId)
@@ -87,7 +87,7 @@ namespace Wechaty
             return response?.Id;
         }
 
-        public override async Task<string?> MessageSendFile(string conversationId, FileBox file)
+        public override async Task<string?> MessageSendFile(string conversationId, FileBox.FileBox file)
         {
             var request = new MessageSendFileRequest
             {

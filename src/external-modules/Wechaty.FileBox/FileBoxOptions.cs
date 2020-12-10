@@ -1,5 +1,5 @@
 ﻿
-namespace Wechaty
+namespace Wechaty.FileBox
 {
     /// <summary>
     /// URI to the file

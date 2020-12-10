@@ -158,7 +158,7 @@ namespace Wechaty.User
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
-        public async Task<Message?> Say(FileBox file)
+        public async Task<Message?> Say(FileBox.FileBox file)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -456,7 +456,7 @@ namespace Wechaty.User
             }
         }
 
-        public Task<FileBox> Avatar
+        public Task<FileBox.FileBox> Avatar
         {
             get
             {

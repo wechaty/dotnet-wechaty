@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wechaty.FileBox</AssemblyName>
-    <RootNamespace>Wechaty</RootNamespace>
+    <RootNamespace>Wechaty.FileBox</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

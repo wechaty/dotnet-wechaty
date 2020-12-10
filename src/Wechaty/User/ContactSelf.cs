@@ -14,7 +14,7 @@ namespace Wechaty.User
         {
         }
 
-        public Task Avatar([DisallowNull] FileBox file)
+        public Task Avatar([DisallowNull] FileBox.FileBox file)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {

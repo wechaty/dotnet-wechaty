@@ -81,7 +81,7 @@ namespace Wechaty.User
             }
             return null;
         }
-        public async Task<Message?> Say(FileBox fileBox)
+        public async Task<Message?> Say(FileBox.FileBox fileBox)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -239,7 +239,7 @@ namespace Wechaty.User
 
         public string? City => Payload?.City;
 
-        public Task<FileBox> Avatar()
+        public Task<FileBox.FileBox> Avatar()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -252,7 +252,7 @@ namespace Wechaty.User
             catch (Exception exception)
             {
                 Logger.LogError(exception, "avatar() failed.");
-                return Task.FromResult(FileBox.FromQRCode("https://u.wechat.com/EJ7pw_ug6XdWRdko3nortP0"));
+                return Task.FromResult(FileBox.FileBox.FromQRCode("https://u.wechat.com/EJ7pw_ug6XdWRdko3nortP0"));
             }
         }
 

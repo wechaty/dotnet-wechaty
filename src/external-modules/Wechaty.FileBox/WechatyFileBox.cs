@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis;
 using MimeMapping;
 using QRCoder;
 
-namespace Wechaty
+namespace Wechaty.FileBox
 {
     public class FileBox
     {

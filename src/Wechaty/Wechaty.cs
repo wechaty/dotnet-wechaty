@@ -450,7 +450,7 @@ namespace Wechaty
             throw new NotImplementedException();
         }
 
-        public Task<Message> Say(FileBox fileBox, params Contact[]? replyTo)
+        public Task<Message> Say(FileBox.FileBox fileBox, params Contact[]? replyTo)
         {
             throw new NotImplementedException();
         }

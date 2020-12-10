@@ -38,7 +38,7 @@ namespace Wechaty.User
         /// thumbnail
         /// </summary>
         /// <returns></returns>
-        public async Task<FileBox> Thumbnail()
+        public async Task<FileBox.FileBox> Thumbnail()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -51,7 +51,7 @@ namespace Wechaty.User
         /// hd
         /// </summary>
         /// <returns></returns>
-        public async Task<FileBox> HD()
+        public async Task<FileBox.FileBox> HD()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -64,7 +64,7 @@ namespace Wechaty.User
         /// artwork
         /// </summary>
         /// <returns></returns>
-        public async Task<FileBox> Artwork()
+        public async Task<FileBox.FileBox> Artwork()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {

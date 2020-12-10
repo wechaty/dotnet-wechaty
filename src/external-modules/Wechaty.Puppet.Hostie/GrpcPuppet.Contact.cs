@@ -37,12 +37,12 @@ namespace Wechaty
         }
 
         // TODO 待处理
-        public override async Task<FileBox> ContactAvatar(string contactId)
+        public override async Task<FileBox.FileBox> ContactAvatar(string contactId)
         {
             throw new NotImplementedException();
         }
 
-        public override async Task ContactAvatar(string contactId, FileBox file)
+        public override async Task ContactAvatar(string contactId, FileBox.FileBox file)
         {
             throw new NotImplementedException();
         }
