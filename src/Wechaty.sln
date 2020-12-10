@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wechaty.MemoryCard", "exter
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wechaty.ReactiveQueue", "external-modules\Wechaty.ReactiveQueue\Wechaty.ReactiveQueue.csproj", "{0D2B21AD-3E65-4FB7-84E4-0ED45F480784}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wechaty.Watchdog", "external-modules\Wechaty.Watchdog\Wechaty.Watchdog.csproj", "{0CD234AF-B8CF-490E-90C3-5C7BC6840F27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wechaty.WatchDog", "external-modules\Wechaty.Watchdog\Wechaty.WatchDog.csproj", "{0CD234AF-B8CF-490E-90C3-5C7BC6840F27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

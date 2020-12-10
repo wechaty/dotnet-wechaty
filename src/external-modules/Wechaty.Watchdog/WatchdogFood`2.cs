@@ -1,6 +1,6 @@
-namespace Wechaty
+namespace Wechaty.Watchdog
 {
-    public class WatchdogFood<TFoodType, TData>
+    public class WatchDogFood<TFoodType, TData>
     {
         public TData Data { get; set; }
         /// <summary>

@@ -7,34 +7,34 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wechaty.Common;
 
-namespace Wechaty
+namespace Wechaty.Watchdog
 {
-    public class Watchdog<TFoodType, TData> : EventEmitter<Watchdog<TFoodType, TData>>
+    public class WatchDog<TFoodType, TData> : EventEmitter<WatchDog<TFoodType, TData>>
     {
         private Optional<Timer> _timer;
         private Optional<long> _lastFeed;
-        private Optional<WatchdogFood<TFoodType, TData>> _lastFood;
-        private readonly ILogger<Watchdog<TFoodType, TData>> _logger;
+        private Optional<WatchDogFood<TFoodType, TData>> _lastFood;
+        private readonly ILogger<WatchDog<TFoodType, TData>> _logger;
 
         public long DefaultTimeout { get; set; }
         public string Name { get; set; }
-        public Watchdog([DisallowNull] ILogger<Watchdog<TFoodType, TData>> logger)
+        public WatchDog([DisallowNull] ILogger<WatchDog<TFoodType, TData>> logger)
             : this(60 * 1000, "Bark", logger)
         {
         }
-        public Watchdog([DisallowNull] string name,
-                        [DisallowNull] ILogger<Watchdog<TFoodType, TData>> logger)
+        public WatchDog([DisallowNull] string name,
+                        [DisallowNull] ILogger<WatchDog<TFoodType, TData>> logger)
             : this(60 * 1000, name, logger)
         {
         }
-        public Watchdog([DisallowNull] long defaultTimeout,
-                        [DisallowNull] ILogger<Watchdog<TFoodType, TData>> logger)
+        public WatchDog([DisallowNull] long defaultTimeout,
+                        [DisallowNull] ILogger<WatchDog<TFoodType, TData>> logger)
             : this(defaultTimeout, "Bark", logger)
         {
         }
-        public Watchdog([DisallowNull] long defaultTimeout,
+        public WatchDog([DisallowNull] long defaultTimeout,
                         [DisallowNull] string name,
-                        [DisallowNull] ILogger<Watchdog<TFoodType, TData>> logger)
+                        [DisallowNull] ILogger<WatchDog<TFoodType, TData>> logger)
         {
             DefaultTimeout = defaultTimeout;
             Name = name;
@@ -45,10 +45,10 @@ namespace Wechaty
             }
         }
 
-        public Watchdog<TFoodType, TData> On(WatchdogEvent @event, WatchdogListener<TFoodType, TData> listener)
+        public WatchDog<TFoodType, TData> On(WatchDogEvent @event, WatchdogListener<TFoodType, TData> listener)
             => this.On(@event.ToString(), listener);
 
-        public Watchdog<TFoodType, TData> RemoveListener(WatchdogEvent @event, WatchdogListener<TFoodType, TData> listener)
+        public WatchDog<TFoodType, TData> RemoveListener(WatchDogEvent @event, WatchdogListener<TFoodType, TData> listener)
             => this.RemoveListener(@event.ToString(), listener);
 
         private void StartTimer(long timeout)
@@ -124,9 +124,9 @@ namespace Wechaty
             return left;
         }
 
-        public long Feed(TData data) => Feed(new WatchdogFood<TFoodType, TData> { Data = data });
+        public long Feed(TData data) => Feed(new WatchDogFood<TFoodType, TData> { Data = data });
 
-        public long Feed(WatchdogFood<TFoodType, TData> food)
+        public long Feed(WatchDogFood<TFoodType, TData> food)
         {
             if (_logger.IsEnabled(LogLevel.Trace))
             {
@@ -162,6 +162,6 @@ namespace Wechaty
             _ = Emit("sleep", _lastFood, Left());
         }
 
-        public override Watchdog<TFoodType, TData> ToImplement => this;
+        public override WatchDog<TFoodType, TData> ToImplement => this;
     }
 }
