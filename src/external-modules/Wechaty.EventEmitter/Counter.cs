@@ -1,6 +1,6 @@
 using System.Threading;
 
-namespace EventEmitter
+namespace Wechaty.EventEmitter
 
 {
     internal class Counter

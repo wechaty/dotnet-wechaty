@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
-using EventEmitter;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ReactiveQueue;
+using Wechaty.EventEmitter;
 using Wechaty.Schemas;
 
 namespace Wechaty
@@ -753,7 +753,8 @@ namespace Wechaty
                 case MessageType.Audio:          // Audio(1), Voice(34)
                 case MessageType.Image:          // Img(2), Image(3)
                 case MessageType.Video:          // Video(4), Video(43)
-                    newMsgId = await MessageSendFile(conversationId, await MessageFile(messageId));
+                    var fileBox = await MessageFile(messageId);
+                    newMsgId = await MessageSendFile(conversationId, fileBox);
                     break;
 
 

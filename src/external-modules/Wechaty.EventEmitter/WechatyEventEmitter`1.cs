@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 
-namespace EventEmitter
+namespace Wechaty.EventEmitter
 {
     /// <summary>
     /// event emitter
