@@ -1,6 +1,6 @@
 using System;
 
-namespace Wechaty
+namespace Wechaty.Common
 {
     /// <summary>
     /// extensions for <see cref="DateTime"/>
