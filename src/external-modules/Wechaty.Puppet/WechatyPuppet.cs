@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ReactiveQueue;
 using Wechaty.EventEmitter;
+using Wechaty.Filebox;
 using Wechaty.Memorycard;
 using Wechaty.Schemas;
 
@@ -330,8 +331,8 @@ namespace Wechaty
         #region Contact
         public abstract Task<string> ContactAlias(string contactId);
         public abstract Task ContactAlias(string contactId, string? alias);
-        public abstract Task<FileBox.FileBox> ContactAvatar(string contactId);
-        public abstract Task ContactAvatar(string contactId, FileBox.FileBox file);
+        public abstract Task<FileBox> ContactAvatar(string contactId);
+        public abstract Task ContactAvatar(string contactId, FileBox file);
         public abstract Task<List<string>> ContactList();
         protected abstract Task<ContactPayload> ContactRawPayload(string contactId);
         protected abstract Task<ContactPayload> ContactRawPayloadParser(ContactPayload rawPayload);
@@ -607,13 +608,13 @@ namespace Wechaty
 
         #region Message
         public abstract Task<string> MessageContact(string messageId);
-        public abstract Task<FileBox.FileBox> MessageFile(string messageId);
-        public abstract Task<FileBox.FileBox> MessageImage(string messageId, ImageType imageType);
+        public abstract Task<FileBox> MessageFile(string messageId);
+        public abstract Task<FileBox> MessageImage(string messageId, ImageType imageType);
         public abstract Task<MiniProgramPayload> MessageMiniProgram(string messageId);
         public abstract Task<UrlLinkPayload> MessageUrl(string messageId);
 
         public abstract Task<string?> MessageSendContact(string conversationId, string contactId);
-        public abstract Task<string?> MessageSendFile(string conversationId, FileBox.FileBox file);
+        public abstract Task<string?> MessageSendFile(string conversationId, FileBox file);
         public abstract Task<string?> MessageSendMiniProgram(string conversationId, MiniProgramPayload miniProgramPayload);
         public abstract Task<string?> MessageSendText(string conversationId, string text, params string[]? mentionIdList);
         public abstract Task<string?> MessageSendText(string conversationId, string text, IEnumerable<string>? mentionIdList);
@@ -852,7 +853,7 @@ namespace Wechaty
 
         #region Room
         public abstract Task RoomAdd(string roomId, string contactId);
-        public abstract Task<FileBox.FileBox> RoomAvatar(string roomId);
+        public abstract Task<FileBox> RoomAvatar(string roomId);
         public abstract Task<string> RoomCreate(IReadOnlyList<string> contactIdList, string? topic);
         public abstract Task<string> RoomCreate(IEnumerable<string> contactIdList, string? topic);
         public abstract Task<string> RoomCreate(string[] contactIdList, string? topic);

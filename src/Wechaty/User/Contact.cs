@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Wechaty.Filebox;
 using Wechaty.Schemas;
 
 namespace Wechaty.User
@@ -81,7 +82,7 @@ namespace Wechaty.User
             }
             return null;
         }
-        public async Task<Message?> Say(FileBox.FileBox fileBox)
+        public async Task<Message?> Say(FileBox fileBox)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -239,7 +240,7 @@ namespace Wechaty.User
 
         public string? City => Payload?.City;
 
-        public Task<FileBox.FileBox> Avatar()
+        public Task<FileBox> Avatar()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -252,7 +253,7 @@ namespace Wechaty.User
             catch (Exception exception)
             {
                 Logger.LogError(exception, "avatar() failed.");
-                return Task.FromResult(FileBox.FileBox.FromQRCode("https://u.wechat.com/EJ7pw_ug6XdWRdko3nortP0"));
+                return Task.FromResult(FileBox.FromQRCode("https://u.wechat.com/EJ7pw_ug6XdWRdko3nortP0"));
             }
         }
 

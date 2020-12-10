@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Wechaty.Filebox;
 using Wechaty.Schemas;
 
 namespace Wechaty.User
@@ -38,7 +39,7 @@ namespace Wechaty.User
         /// thumbnail
         /// </summary>
         /// <returns></returns>
-        public async Task<FileBox.FileBox> Thumbnail()
+        public async Task<FileBox> Thumbnail()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -51,7 +52,7 @@ namespace Wechaty.User
         /// hd
         /// </summary>
         /// <returns></returns>
-        public async Task<FileBox.FileBox> HD()
+        public async Task<FileBox> HD()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -64,7 +65,7 @@ namespace Wechaty.User
         /// artwork
         /// </summary>
         /// <returns></returns>
-        public async Task<FileBox.FileBox> Artwork()
+        public async Task<FileBox> Artwork()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {

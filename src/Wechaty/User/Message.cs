@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Nito.AsyncEx;
+using Wechaty.Filebox;
 using Wechaty.Schemas;
 
 namespace Wechaty.User
@@ -330,7 +331,7 @@ namespace Wechaty.User
         /// </summary>
         /// <param name="fileBox"></param>
         /// <returns></returns>
-        public async Task<Message?> Say(FileBox.FileBox fileBox)
+        public async Task<Message?> Say(FileBox fileBox)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -649,7 +650,7 @@ namespace Wechaty.User
         /// use <see cref="ToFileBox"/> instead
         /// </summary>
         [Obsolete("file() DEPRECATED. use toFileBox() instead.")]
-        public Task<FileBox.FileBox> File
+        public Task<FileBox> File
         {
             get
             {
@@ -662,7 +663,7 @@ namespace Wechaty.User
         /// Extract the Media File from the Message, and put it into the FileBox.
         /// </summary>
         /// <returns></returns>
-        public Task<FileBox.FileBox> ToFileBox()
+        public Task<FileBox> ToFileBox()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {

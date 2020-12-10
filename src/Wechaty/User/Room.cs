@@ -4,9 +4,10 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using Wechaty.EventEmitter;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Wechaty.EventEmitter;
+using Wechaty.Filebox;
 using Wechaty.Schemas;
 
 namespace Wechaty.User
@@ -158,7 +159,7 @@ namespace Wechaty.User
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
-        public async Task<Message?> Say(FileBox.FileBox file)
+        public async Task<Message?> Say(FileBox file)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -456,7 +457,7 @@ namespace Wechaty.User
             }
         }
 
-        public Task<FileBox.FileBox> Avatar
+        public Task<FileBox> Avatar
         {
             get
             {

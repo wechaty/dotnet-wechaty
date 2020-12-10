@@ -1,5 +1,5 @@
 ﻿
-namespace Wechaty.FileBox
+namespace Wechaty.Filebox
 {
     public class FileBoxOptionsBase64 : FileBoxOptions
     {

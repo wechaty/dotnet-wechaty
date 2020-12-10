@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
+using Newtonsoft.Json;
+using Wechaty.Filebox;
 
 namespace Wechaty
 {
@@ -36,15 +38,29 @@ namespace Wechaty
 
         }
 
-        // TODO 待处理
-        public override async Task<FileBox.FileBox> ContactAvatar(string contactId)
+        // TODO  待合并版本后，开启该注释
+        public override async Task<FileBox> ContactAvatar(string contactId)
         {
-            throw new NotImplementedException();
+            var request = new ContactAvatarRequest
+            {
+                Id = contactId
+            };
+
+            //var response = await grpcClient.ContactAvatarAsync(request);
+            //var filebox = response.Filebox;
+            //return FileBox.FromJson(filebox);
+
+            return null;
         }
 
-        public override async Task ContactAvatar(string contactId, FileBox.FileBox file)
+        public override async Task ContactAvatar(string contactId, FileBox file)
         {
-            throw new NotImplementedException();
+            var request = new ContactAvatarRequest
+            {
+                Id = contactId,
+                Filebox= JsonConvert.SerializeObject(file)
+            };
+            await grpcClient.ContactAvatarAsync(request);
         }
 
         public override async Task<List<string>> ContactList()

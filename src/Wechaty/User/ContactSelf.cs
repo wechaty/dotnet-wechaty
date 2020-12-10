@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Wechaty.Filebox;
 
 namespace Wechaty.User
 {
@@ -14,7 +15,7 @@ namespace Wechaty.User
         {
         }
 
-        public Task Avatar([DisallowNull] FileBox.FileBox file)
+        public Task Avatar([DisallowNull] FileBox file)
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {

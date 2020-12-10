@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.Extensions.Logging;
 using Wechaty.EventEmitter;
+using Wechaty.Filebox;
 using Wechaty.Memorycard;
 using Wechaty.Schemas;
 using Wechaty.User;
@@ -448,7 +449,7 @@ namespace Wechaty
             throw new NotImplementedException();
         }
 
-        public Task<Message> Say(FileBox.FileBox fileBox, params Contact[]? replyTo)
+        public Task<Message> Say(FileBox fileBox, params Contact[]? replyTo)
         {
             throw new NotImplementedException();
         }

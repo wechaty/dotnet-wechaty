@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Wechaty.FileBox
+namespace Wechaty.Filebox
 {
     public class FileBoxOptionsStream : FileBoxOptions
     {

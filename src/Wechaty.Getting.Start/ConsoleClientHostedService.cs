@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Wechaty.Filebox;
 using Wechaty.Schemas;
 using Wechaty.User;
 
@@ -170,14 +171,14 @@ namespace Wechaty.Getting.Start
 
                     if (message.Text == "喜洋洋美羊羊视频")
                     {
-                        var fileBox = FileBox.FileBox.FromUrl("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+                        var fileBox = FileBox.FromUrl("http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
                         var msg_video = await message.Say(fileBox);
 
                         await msg_video.Forward(room);
                     }
                     if (message.Text == "gif")
                     {
-                        var fileBox = FileBox.FileBox.FromUrl("https://n.sinaimg.cn/tech/transform/419/w140h279/20201209/7ee0-keyancx3618731.gif");
+                        var fileBox = FileBox.FromUrl("https://n.sinaimg.cn/tech/transform/419/w140h279/20201209/7ee0-keyancx3618731.gif");
                         var msg_gif = await message.Say(fileBox);
                         await msg_gif.Forward(room);
                     }
@@ -219,7 +220,7 @@ namespace Wechaty.Getting.Start
                     }
                     if (message.Text == "天使图片")
                     {
-                        var fileBox = FileBox.FileBox.FromUrl("https://wechaty.github.io/wechaty/images/bot-qr-code.png");
+                        var fileBox = FileBox.FromUrl("https://wechaty.github.io/wechaty/images/bot-qr-code.png");
                         var msg_filebox = await message.Say(fileBox);
                         await msg_filebox.Forward(room);
                     }
