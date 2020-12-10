@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Wechaty
+namespace Wechaty.PuppetHostie
 {
     public class HostieEndPoint
     {

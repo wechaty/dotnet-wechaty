@@ -10,7 +10,7 @@ using github.wechaty.grpc.puppet;
 using Grpc.Core;
 using static Wechaty.Puppet;
 
-namespace Wechaty
+namespace Wechaty.PuppetHostie
 {
     public partial class GrpcPuppet : WechatyPuppet
     {

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Wechaty.Puppet.Hostie</AssemblyName>
-    <RootNamespace>Wechaty</RootNamespace>
+    <RootNamespace>Wechaty.PuppetHostie</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

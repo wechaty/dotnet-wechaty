@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
 
-namespace Wechaty
+namespace Wechaty.PuppetHostie
 {
     public partial class GrpcPuppet
     {
