@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace Wechaty
+namespace Wechaty.Filebox
 {
     internal static class Http
     {

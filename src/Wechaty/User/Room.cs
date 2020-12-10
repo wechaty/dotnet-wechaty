@@ -4,9 +4,10 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using Wechaty.EventEmitter;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Wechaty.EventEmitter;
+using Wechaty.Filebox;
 using Wechaty.Schemas;
 using System.Text;
 

@@ -1,7 +1,6 @@
-
 using Newtonsoft.Json;
 
-namespace Wechaty
+namespace Wechaty.Filebox
 {
     public class FileBoxJsonObjectQRCode : FileBoxJsonObject
     {

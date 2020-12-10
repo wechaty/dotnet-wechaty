@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Nito.AsyncEx;
+using Wechaty.Filebox;
 using Wechaty.Schemas;
 
 namespace Wechaty.User

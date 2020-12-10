@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.Extensions.Logging;
 using Wechaty.EventEmitter;
+using Wechaty.Filebox;
 using Wechaty.Memorycard;
 using Wechaty.Schemas;
 using Wechaty.User;

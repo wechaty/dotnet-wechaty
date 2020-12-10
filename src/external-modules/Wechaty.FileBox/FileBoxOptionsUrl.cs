@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Wechaty
+namespace Wechaty.Filebox
 {
     public class FileBoxOptionsUrl : FileBoxOptions
     {

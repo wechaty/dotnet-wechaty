@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
 using Newtonsoft.Json;
+using Wechaty.Filebox;
 
 namespace Wechaty
 {

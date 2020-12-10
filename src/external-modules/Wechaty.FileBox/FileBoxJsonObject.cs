@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Wechaty
+namespace Wechaty.Filebox
 {
     public abstract class FileBoxJsonObject
     {

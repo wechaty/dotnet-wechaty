@@ -10,7 +10,7 @@ using MimeMapping;
 using Newtonsoft.Json.Linq;
 using QRCoder;
 
-namespace Wechaty
+namespace Wechaty.Filebox
 {
     public class FileBox
     {
