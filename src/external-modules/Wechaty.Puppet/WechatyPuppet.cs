@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using ReactiveQueue;
 using Wechaty.EventEmitter;
+using Wechaty.Memorycard;
 using Wechaty.Schemas;
 
 namespace Wechaty

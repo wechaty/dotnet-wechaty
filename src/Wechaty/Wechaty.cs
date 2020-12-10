@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.Extensions.Logging;
 using Wechaty.EventEmitter;
+using Wechaty.Memorycard;
 using Wechaty.Schemas;
 using Wechaty.User;
 
@@ -16,9 +17,6 @@ namespace Wechaty
     /// </summary>
     public class Wechaty : EventEmitter<Wechaty>, ISayable
     {
-
-
-
         private const string PUPPET_MEMORY_NAME = "puppet";
 
         /// <summary>

@@ -1,5 +1,5 @@
 
-namespace Wechaty
+namespace Wechaty.Memorycard
 {
     public class MemoryCardOptions
     {

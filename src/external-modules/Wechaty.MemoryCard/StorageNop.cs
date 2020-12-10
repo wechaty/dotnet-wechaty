@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace Wechaty
+namespace Wechaty.Memorycard
 {
     public class StorageNop : StorageBackend
     {
