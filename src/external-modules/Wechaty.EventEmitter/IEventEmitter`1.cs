@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace EventEmitter
+namespace Wechaty.EventEmitter
 {
     /// <summary>
     /// event emitter

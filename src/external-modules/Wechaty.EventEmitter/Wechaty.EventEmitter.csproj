@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wechaty.EventEmitter</AssemblyName>
-    <RootNamespace>EventEmitter</RootNamespace>
+    <RootNamespace>Wechaty.EventEmitter</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

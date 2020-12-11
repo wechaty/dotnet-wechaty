@@ -4,10 +4,11 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
-using EventEmitter;
+using Wechaty.EventEmitter;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wechaty.Schemas;
+using System.Text;
 
 namespace Wechaty.User
 {
@@ -138,16 +139,18 @@ namespace Wechaty.User
                 Logger.LogTrace($"say({text},{(replyTo != null ? string.Join<Contact>(",", replyTo) : "")})");
             }
 
-            var someText = string.Empty;
+
+            var builder = new StringBuilder();
             if (replyTo?.Length > 0)
             {
                 var memtionAlias = await Task.WhenAll(replyTo.Select(async c => await Alias(c) ?? c.Name));
+               
                 for (int i = 0; i < memtionAlias.Count(); i++)
                 {
-                    someText += StringBuilder.Append($"@{memtionAlias[i]} ");
+                    builder.Append($"@{memtionAlias[i]} ");
                 }
             }
-            var someThing = string.Format("{0}{1}", someText, text);
+            var someThing = string.Format("{0}{1}", builder, text);
 
             var msgId = await Puppet.MessageSendText(Id, someThing, replyTo?.Select(c => c.Id));
             return await TryLoad(msgId);

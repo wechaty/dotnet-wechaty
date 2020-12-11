@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace EventEmitter
+namespace Wechaty.EventEmitter
 {
     /// <summary>
     /// state of: on/off/pending

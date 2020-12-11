@@ -1,5 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
-using EventEmitter;
+using Wechaty.EventEmitter;
 using Microsoft.Extensions.Logging;
 
 namespace Wechaty

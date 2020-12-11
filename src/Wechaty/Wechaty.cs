@@ -4,8 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using EventEmitter;
 using Microsoft.Extensions.Logging;
+using Wechaty.EventEmitter;
 using Wechaty.Schemas;
 using Wechaty.User;
 
@@ -280,9 +280,9 @@ namespace Wechaty
                 })
                 .OnMessage(async payload =>
                 {
-                    var message = Message.Load(payload.MessageId);
                     try
                     {
+                        var message = Message.Load(payload.MessageId);
                         await message.Ready;
                         _ = EmitMessage(message);
                         var room = message.Room;
@@ -295,7 +295,6 @@ namespace Wechaty
                     {
                         EmitError(ex);
                     }
-                   
                 }).OnReady(payload =>
                 {
                     _ = Emit("ready");

@@ -1,7 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace EventEmitter
+namespace Wechaty.EventEmitter
 {
     /// <summary>
     /// 事件发射器扩展类
