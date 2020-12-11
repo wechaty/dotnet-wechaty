@@ -686,7 +686,8 @@ namespace Wechaty
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.LogError($"messagePayload({messageId}) exception,exception detail:{ex.StackTrace}");
+                return null;
             }
         }
 
