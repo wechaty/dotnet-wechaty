@@ -142,11 +142,9 @@ namespace Wechaty.User
             if (replyTo?.Length > 0)
             {
                 var memtionAlias = await Task.WhenAll(replyTo.Select(async c => await Alias(c) ?? c.Name));
-
-                //text = '@' + string.Join('@', memtionAlias)+ " "+text;
                 for (int i = 0; i < memtionAlias.Count(); i++)
                 {
-                    someText += string.Format($"@{memtionAlias[i]} ");
+                    someText += StringBuilder.Append($"@{memtionAlias[i]} ");
                 }
             }
             var someThing = string.Format("{0}{1}", someText, text);
