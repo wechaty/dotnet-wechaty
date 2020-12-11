@@ -38,7 +38,6 @@ namespace Wechaty.PuppetHostie
 
         }
 
-        // TODO  待合并版本后，开启该注释
         public override async Task<FileBox> ContactAvatar(string contactId)
         {
             var request = new ContactAvatarRequest
@@ -46,11 +45,9 @@ namespace Wechaty.PuppetHostie
                 Id = contactId
             };
 
-            //var response = await grpcClient.ContactAvatarAsync(request);
-            //var filebox = response.Filebox;
-            //return FileBox.FromJson(filebox);
-
-            return null;
+            var response = await grpcClient.ContactAvatarAsync(request);
+            var filebox = response.Filebox;
+            return FileBox.FromJson(filebox);
         }
 
         public override async Task ContactAvatar(string contactId, FileBox file)
