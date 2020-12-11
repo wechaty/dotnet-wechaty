@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using github.wechaty.grpc.puppet;
 using Grpc.Core;
 using static Wechaty.Puppet;
+using System.Threading;
 
 namespace Wechaty.PuppetHostie
 {
@@ -30,6 +31,11 @@ namespace Wechaty.PuppetHostie
         protected const string CHATIE_ENDPOINT = "https://api.chatie.io/v0/hosties/";
         private Puppet.PuppetClient grpcClient = null;
         private Channel channel = null;
+
+        /// <summary>
+        /// GRPC  重连次数，超过该次数则放弃重连
+        /// </summary>
+        private int GRPCReconnectionCount = 3;
 
         /// <summary>
         /// 发现 hostie gateway 对应的服务是否能能访问
@@ -100,7 +106,7 @@ namespace Wechaty.PuppetHostie
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.StackTrace);
+                throw ex;
             }
         }
 
@@ -118,10 +124,10 @@ namespace Wechaty.PuppetHostie
             grpcClient = null;
         }
 
-                /// <summary>
+        /// <summary>
         /// 双向数据流事件处理
         /// </summary>
-        protected async Task StartGrpcStream()
+        protected async Task StartGrpcStreamAsync()
         {
             try
             {
@@ -154,7 +160,7 @@ namespace Wechaty.PuppetHostie
                 var eventType = @event.Type;
                 var payload = @event.Payload;
 
-                Console.WriteLine($"dateTime:{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} {eventType},PayLoad:{payload}");
+                //Console.WriteLine($"dateTime:{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} {eventType},PayLoad:{payload}");
 
                 if (eventType != EventType.Heartbeat)
                 {
@@ -249,19 +255,27 @@ namespace Wechaty.PuppetHostie
             {
                 if (options.Token == "")
                 {
-                    throw new Exception("wechaty-puppet-hostie: token not found. See: <https://github.com/wechaty/wechaty-puppet-hostie#1-wechaty_puppet_hostie_token>");
+                    throw new ArgumentException("wechaty-puppet-hostie: token not found. See: <https://github.com/wechaty/wechaty-puppet-hostie#1-wechaty_puppet_hostie_token>");
                 }
 
                 await StartGrpcClient();
 
                 await grpcClient.StartAsync(new StartRequest());
 
-                StartGrpcStream();
+                _ = StartGrpcStreamAsync();
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex.StackTrace);
-                throw ex;
+                logger.LogError(ex, $"StartGrpcClient() exception,Grpc Retry Surplus Count {GRPCReconnectionCount}");
+                if (GRPCReconnectionCount == 0)
+                {
+                    throw new Exception(ex.StackTrace);
+                }
+                GRPCReconnectionCount -= 1;
+                Thread.Sleep(3000);
+                await StopGrpcClient();
+                Thread.Sleep(2000);
+                await StartGrpc();
             }
         }
 
