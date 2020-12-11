@@ -103,6 +103,7 @@ namespace Wechaty.Getting.Start
                 {
                     var room = await bot.Room.Find(new RoomQueryFilter() { Id = "19182933822@chatroom" });
                     await message.Forward(room);
+                    Thread.Sleep(1000);
                 });
             }
             if ((message.Room != null && message.Room.Id == "19182933822@chatroom") || message.Talker.Id == "wxid_lucnxixqb97522")
