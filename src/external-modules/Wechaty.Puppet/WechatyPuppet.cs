@@ -690,7 +690,7 @@ namespace Wechaty
             }
             catch (Exception ex)
             {
-                Logger.LogError(ex, "messagePayload exception", messageId);
+                Logger.LogError(ex, $"messagePayload() exception,messageId:{messageId}");
                 return null;
             }
         }
