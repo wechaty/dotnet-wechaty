@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wechaty.Module.Common;
 using Wechaty.Module.EventEmitter;
-using Wechaty.Module.FileBox;
+using Wechaty.Module.Filebox;
 using Wechaty.Schemas;
 
 namespace Wechaty.User

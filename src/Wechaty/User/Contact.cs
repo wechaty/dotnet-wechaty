@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Wechaty.Module.FileBox;
+using Wechaty.Module.Filebox;
 using Wechaty.Schemas;
 
 namespace Wechaty.User

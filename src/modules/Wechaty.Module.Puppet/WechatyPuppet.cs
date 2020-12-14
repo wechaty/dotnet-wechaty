@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wechaty.Module.EventEmitter;
-using Wechaty.Module.FileBox;
+using Wechaty.Module.Filebox;
 using Wechaty.Module.MemoryCard;
 using Wechaty.Module.ReactiveQueue;
 using Wechaty.Module.Watchdog;

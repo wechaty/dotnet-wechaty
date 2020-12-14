@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wechaty.Module.FileBox</AssemblyName>
-    <RootNamespace>Wechaty.Module.FileBox</RootNamespace>
+    <RootNamespace>Wechaty.Module.Filebox</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

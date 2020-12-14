@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Wechaty.Module.Common;
-using Wechaty.Module.FileBox;
+using Wechaty.Module.Filebox;
 
 namespace Wechaty.User
 {

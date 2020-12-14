@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Wechaty.Module.FileBox
+namespace Wechaty.Module.Filebox
 {
     public class FileBoxJsonObjectUrl : FileBoxJsonObject
     {

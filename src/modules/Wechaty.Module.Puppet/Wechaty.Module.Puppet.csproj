@@ -9,6 +9,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Wechaty.Module.EventEmitter\Wechaty.Module.EventEmitter.csproj" />
     <ProjectReference Include="..\Wechaty.Module.FileBox\Wechaty.Module.FileBox.csproj" />
     <ProjectReference Include="..\Wechaty.Module.MemoryCard\Wechaty.Module.MemoryCard.csproj" />
     <ProjectReference Include="..\Wechaty.Module.ReactiveQueue\Wechaty.Module.ReactiveQueue.csproj" />

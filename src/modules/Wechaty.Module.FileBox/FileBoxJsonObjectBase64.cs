@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Wechaty.Module.FileBox
+namespace Wechaty.Module.Filebox
 {
     public class FileBoxJsonObjectBase64 : FileBoxJsonObject
     {

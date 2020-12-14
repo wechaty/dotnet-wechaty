@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
-using Wechaty.Module.FileBox;
+using Wechaty.Module.Filebox;
 using Wechaty.Schemas;
 using Wechaty.User;
 

@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\modules\Wechaty.Module.Common\Wechaty.Module.Common.csproj" />
-    <ProjectReference Include="..\modules\Wechaty.Module.FileBox\Wechaty.Module.FileBox.csproj" />
     <ProjectReference Include="..\modules\Wechaty.Module.PuppetHostie\Wechaty.Module.PuppetHostie.csproj" />
     <ProjectReference Include="..\modules\Wechaty.Module.Puppet\Wechaty.Module.Puppet.csproj" />
   </ItemGroup>

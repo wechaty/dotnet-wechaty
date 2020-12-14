@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
 using Newtonsoft.Json;
-using Wechaty.Module.FileBox;
+using Wechaty.Module.Filebox;
 
 namespace Wechaty.Module.PuppetHostie
 {
