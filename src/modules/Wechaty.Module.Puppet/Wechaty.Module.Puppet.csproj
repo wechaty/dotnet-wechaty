@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>Wechaty.Puppet</AssemblyName>
+    <RootNamespace>Wechaty</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wechaty.Module.FileBox\Wechaty.Module.FileBox.csproj" />
+    <ProjectReference Include="..\Wechaty.Module.MemoryCard\Wechaty.Module.MemoryCard.csproj" />
+    <ProjectReference Include="..\Wechaty.Module.ReactiveQueue\Wechaty.Module.ReactiveQueue.csproj" />
+    <ProjectReference Include="..\Wechaty.Module.Watchdog\Wechaty.Module.Watchdog.csproj" />
+  </ItemGroup>
+
+</Project>

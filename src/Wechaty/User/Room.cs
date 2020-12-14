@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Wechaty.Common;
-using Wechaty.EventEmitter;
-using Wechaty.Filebox;
+using Wechaty.Module.Common;
+using Wechaty.Module.EventEmitter;
+using Wechaty.Module.FileBox;
 using Wechaty.Schemas;
-using System.Text;
 
 namespace Wechaty.User
 {

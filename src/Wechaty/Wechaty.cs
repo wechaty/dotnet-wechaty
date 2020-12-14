@@ -5,11 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using Microsoft.Extensions.Logging;
-using Wechaty.Common;
-using Wechaty.EventEmitter;
-using Wechaty.Filebox;
-using Wechaty.Memorycard;
-using Wechaty.PuppetHostie;
+using Wechaty.Module.Common;
+using Wechaty.Module.EventEmitter;
+using Wechaty.Module.FileBox;
+using Wechaty.Module.MemoryCard;
+using Wechaty.Module.PuppetHostie;
 using Wechaty.Schemas;
 using Wechaty.User;
 
@@ -376,7 +376,7 @@ namespace Wechaty
                 throw new InvalidOperationException("start life timer exist");
             }
 
-            State.IsOn = EventEmitter.State.PendingSymbol;
+            State.IsOn = Module.EventEmitter.State.PendingSymbol;
 
             try
             {
@@ -422,7 +422,7 @@ namespace Wechaty
             //todo: implement stop
         }
 
-        public Task Ready() => _readyState.Ready(EventEmitter.State.On);
+        public Task Ready() => _readyState.Ready(Module.EventEmitter.State.On);
 
         public async Task Logout()
         {

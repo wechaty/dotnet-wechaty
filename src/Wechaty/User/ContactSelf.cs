@@ -2,8 +2,8 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Wechaty.Common;
-using Wechaty.Filebox;
+using Wechaty.Module.Common;
+using Wechaty.Module.FileBox;
 
 namespace Wechaty.User
 {
