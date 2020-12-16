@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Wechaty.Module.Filebox;
 using Wechaty.Schemas;
 
 namespace Wechaty.User

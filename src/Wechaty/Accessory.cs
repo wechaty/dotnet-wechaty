@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
-using EventEmitter;
 using Microsoft.Extensions.Logging;
+using Wechaty.Module.EventEmitter;
 
 namespace Wechaty
 {

@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
+using Wechaty.Module.Filebox;
 using Wechaty.Schemas;
 using Wechaty.User;
 
@@ -34,7 +34,10 @@ namespace Wechaty.Getting.Start
             bot = new Wechaty(PuppetOptions);
 
             await bot.OnScan(WechatyScanEventListener)
-              .OnLogin(WechatyLoginEventListener)
+              .OnLogin(async (ContactSelf user) =>
+              {
+                  Console.WriteLine($"{user.Name}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！");
+              })
               .OnMessage(WechatyMessageEventListenerAsync)
               .OnHeartbeat(WechatyHeartbeatEventListener)
               .OnRoomInvite(WechatyRoomInviteEventListener)
@@ -52,7 +55,7 @@ namespace Wechaty.Getting.Start
 
         private static void WechatyHeartbeatEventListener(object data)
         {
-            Console.WriteLine(JsonConvert.SerializeObject(data));
+            //Console.WriteLine(JsonConvert.SerializeObject(data));
         }
 
         private static void WechatyScanEventListener(string qrcode, ScanStatus status, string? data)
@@ -70,16 +73,9 @@ namespace Wechaty.Getting.Start
             }
         }
 
-        private static void WechatyMessageEventListenerAsync(User.Message message)
+        private static async void WechatyMessageEventListenerAsync(Message message)
         {
-            Console.WriteLine(message.Text);
-            var room = message.Room;
-
-
-            if (message.Text == "天王盖地虎" || message.Text == "小鸡啄米")
-            {
-                _ = message.Say("宝塔镇河妖");
-            }
+            
         }
 
         #region Room

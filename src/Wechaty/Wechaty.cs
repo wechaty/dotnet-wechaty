@@ -4,8 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using EventEmitter;
 using Microsoft.Extensions.Logging;
+using Wechaty.Module.Common;
+using Wechaty.Module.EventEmitter;
+using Wechaty.Module.Filebox;
+using Wechaty.Module.MemoryCard;
+using Wechaty.Module.PuppetHostie;
 using Wechaty.Schemas;
 using Wechaty.User;
 
@@ -16,9 +20,6 @@ namespace Wechaty
     /// </summary>
     public class Wechaty : EventEmitter<Wechaty>, ISayable
     {
-
-
-
         private const string PUPPET_MEMORY_NAME = "puppet";
 
         /// <summary>
@@ -121,7 +122,15 @@ namespace Wechaty
         public Wechaty(PuppetOptions options)
         {
 
-            ILoggerFactory loggerFactory = new LoggerFactory();
+            //ILoggerFactory loggerFactory = new LoggerFactory();
+
+
+            var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder
+                .AddConsole();
+            });
+
             var logger = new Logger<WechatyPuppet>(loggerFactory);
 
             var grpcPuppet = new GrpcPuppet(options, logger, loggerFactory);
@@ -376,7 +385,7 @@ namespace Wechaty
                 throw new InvalidOperationException("start life timer exist");
             }
 
-            State.IsOn = EventEmitter.State.PendingSymbol;
+            State.IsOn = Module.EventEmitter.State.PendingSymbol;
 
             try
             {
@@ -422,7 +431,7 @@ namespace Wechaty
             //todo: implement stop
         }
 
-        public Task Ready() => _readyState.Ready(EventEmitter.State.On);
+        public Task Ready() => _readyState.Ready(Module.EventEmitter.State.On);
 
         public async Task Logout()
         {
