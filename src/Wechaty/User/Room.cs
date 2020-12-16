@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using EventEmitter;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Wechaty.Module.Common;
+using Wechaty.Module.EventEmitter;
+using Wechaty.Module.Filebox;
 using Wechaty.Schemas;
 
 namespace Wechaty.User
@@ -138,13 +141,13 @@ namespace Wechaty.User
                 Logger.LogTrace($"say({text},{(replyTo != null ? string.Join<Contact>(",", replyTo) : "")})");
             }
 
-            var someText = string.Empty;
+            var someText = new StringBuilder();
             if (replyTo?.Length > 0)
             {
                 var memtionAlias = await Task.WhenAll(replyTo.Select(async c => await Alias(c) ?? c.Name));
                 for (int i = 0; i < memtionAlias.Count(); i++)
                 {
-                    someText += StringBuilder.Append($"@{memtionAlias[i]} ");
+                    someText.Append($"@{memtionAlias[i]} ");
                 }
             }
             var someThing = string.Format("{0}{1}", someText, text);

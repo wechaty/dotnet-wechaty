@@ -9,8 +9,8 @@
     <Compile Include="$(SolutionDir)NullableAttributes.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.6.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.5" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.8.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
   </ItemGroup>
   <!--common properties for package-->
   <PropertyGroup>
@@ -54,7 +54,7 @@
   </ItemGroup>
   
    <!--Workaround for https://github.com/dotnet/sdk/issues/11105--> 
-  <ItemGroup>
+  <!--<ItemGroup>
     <SourceRoot Include="$(NuGetPackageRoot)" Condition="'$(NuGetPackageRoot)' != ''" />
-  </ItemGroup>
+  </ItemGroup>-->
 </Project>

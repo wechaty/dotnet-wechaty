@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Nito.AsyncEx;
+using Wechaty.Module.Common;
+using Wechaty.Module.Filebox;
 using Wechaty.Schemas;
 
 namespace Wechaty.User
@@ -611,7 +613,7 @@ namespace Wechaty.User
             catch (Exception exception)
             {
                 Logger.LogError(exception, $"forward({to}) failed.");
-                throw;
+                Emit("error", exception);
             }
         }
 
@@ -679,7 +681,7 @@ namespace Wechaty.User
         /// Extract the Image File from the Message, so that we can use different image sizes.
         /// </summary>
         /// <returns></returns>
-        public Image ToImage()
+        public Image? ToImage()
         {
             if (Logger.IsEnabled(LogLevel.Trace))
             {
@@ -687,7 +689,9 @@ namespace Wechaty.User
             }
             if (Type != MessageType.Image)
             {
-                throw new InvalidOperationException($"not a image type message. type: {Type}");
+                //throw new InvalidOperationException($"not a image type message. type: {Type}");
+                Emit("error", $"not a image type message. type: {Type}");
+                return null;
             }
             return base.WechatyInstance.Image.Create(Id);
         }

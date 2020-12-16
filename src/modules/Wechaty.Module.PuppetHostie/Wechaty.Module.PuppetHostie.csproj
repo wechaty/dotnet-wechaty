@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>Wechaty.Module.PuppetHostie</AssemblyName>
+    <RootNamespace>Wechaty.Module.PuppetHostie</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Wechaty.Grpc" Version="0.18.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Wechaty.Module.Puppet\Wechaty.Module.Puppet.csproj" />
+  </ItemGroup>
+
+</Project>
