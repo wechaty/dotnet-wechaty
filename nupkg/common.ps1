@@ -8,15 +8,16 @@ $solutions = (
 
 $projects = (
 	# framework
-	"src/Wechaty",
-	"src/external-modules/Wechaty.EventEmitter",
-	"src/external-modules/Wechaty.FileBox",
-	"src/external-modules/Wechaty.MemoryCard",
-	"src/external-modules/Wechaty.ReactiveQueue",
-	"src/external-modules/Wechaty.Watchdog",
-	"src/external-modules/Wechaty.Common",
-	"src/external-modules/Wechaty.Puppet",
-	"src/external-modules/Wechaty.Puppet.Hostie"
+	"src/modules/Wechaty.Module.EventEmitter",
+	"src/modules/Wechaty.Module.Common",
+	"src/modules/Wechaty.Module.FileBox",
+	"src/modules/Wechaty.Module.MemoryCard",
+	"src/modules/Wechaty.Module.Puppet",
+	"src/modules/Wechaty.Module.PuppetHostie",
+	"src/modules/Wechaty.Module.ReactiveQueue",
+	"src/modules/Wechaty.Module.Watchdog",
+	"src/Wechaty"
+
 	
 
 )

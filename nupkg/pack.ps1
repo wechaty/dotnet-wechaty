@@ -1,20 +1,29 @@
 . ".\common.ps1"
 # remove old nuget package
 $packageFolder=Join-Path $packFolder package
-$packages=get-childitem $packageFolder -force
-Foreach($package in $packages)
-{
-	$packagePath=$package.FullName
+
+
+if(Test-Path $packageFolder){
+    $packages=get-childitem $packageFolder -force
+    Foreach($package in $packages)
+    {
+	    $packagePath=$package.FullName
     
-	Remove-Item -Path $packagePath -Recurse -Force
-    Write-Output $packagePath
+	    Remove-Item -Path $packagePath -Recurse -Force
+        Write-Output $packagePath
+    }
+} else {
+    md $packageFolder
 }
+
+
 
 # Rebuild all solutions
 foreach($solution in $solutions) {
     $solutionFolder = Join-Path $rootFolder $solution
     Set-Location $solutionFolder
     & dotnet restore
+   # &  dotnet msbuild /t:pack /p:Configuration=Release /p:SourceLinkCreate=true
 }
 
 # Create all packages
@@ -23,9 +32,20 @@ foreach($project in $projects) {
     $projectFolder = Join-Path $rootFolder $project
 
     # Create nuget pack
+   
     Set-Location $projectFolder
-    Remove-Item -Recurse (Join-Path $projectFolder "bin/Release")
-    & dotnet msbuild /t:pack /p:Configuration=Release /p:SourceLinkCreate=true
+    $localPath=Get-Location
+
+    $releaseFolder= Join-Path $localPath "bin/Release"
+
+    Write-Host  $releaseFolder
+    if(Test-Path $releaseFolder) {
+        Remove-Item -Recurse $releaseFolder
+    }
+    #md $releaseFolder
+
+    Write-Host  $localPath
+    dotnet msbuild /t:pack /p:Configuration=Release /p:SourceLinkCreate=true
 
     if (-Not $?) {
         Write-Host ("Packaging failed for the project: " + $projectFolder)
@@ -36,6 +56,8 @@ foreach($project in $projects) {
     $projectName = $project.Substring($project.LastIndexOf("/") + 1)
     $projectPackPath = Join-Path $projectFolder ("/bin/Release/" + $projectName + ".*.nupkg")
     Move-Item $projectPackPath  $packageFolder
+
+    
 }
 
 # Go back to the pack folder
