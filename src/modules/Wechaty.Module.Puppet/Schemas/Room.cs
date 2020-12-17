@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Wechaty.Schemas
+namespace Wechaty.Module.Puppet.Schemas
 {
     public class RoomMemberQueryFilter : IFilter
     {

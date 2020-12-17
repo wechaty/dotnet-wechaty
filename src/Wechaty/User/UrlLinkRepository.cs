@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using OpenGraphNet;
-using Wechaty.Schemas;
+using Wechaty.Module.Puppet.Schemas;
 
 namespace Wechaty.User
 {

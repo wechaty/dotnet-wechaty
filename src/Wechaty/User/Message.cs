@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Nito.AsyncEx;
 using Wechaty.Module.Common;
 using Wechaty.Module.Filebox;
-using Wechaty.Schemas;
+using Wechaty.Module.Puppet.Schemas;
 
 namespace Wechaty.User
 {

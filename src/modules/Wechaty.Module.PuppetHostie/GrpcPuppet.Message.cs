@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
 using Newtonsoft.Json;
 using Wechaty.Module.Filebox;
-using Wechaty.Schemas;
+using Wechaty.Module.Puppet.Schemas;
 
 namespace Wechaty.Module.PuppetHostie
 {
@@ -34,7 +34,7 @@ namespace Wechaty.Module.PuppetHostie
 
         }
 
-        public override async Task<FileBox> MessageImage(string messageId, Schemas.ImageType imageType)
+        public override async Task<FileBox> MessageImage(string messageId, Puppet.Schemas.ImageType imageType)
         {
             var request = new MessageImageRequest
             {

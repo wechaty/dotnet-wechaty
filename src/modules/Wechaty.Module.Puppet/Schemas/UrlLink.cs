@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Wechaty.Schemas
+namespace Wechaty.Module.Puppet.Schemas
 {
     public class UrlLinkPayload
     {

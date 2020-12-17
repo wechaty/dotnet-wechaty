@@ -7,7 +7,8 @@ using github.wechaty.grpc.puppet;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Wechaty.Schemas;
+using Wechaty.Module.Puppet;
+using Wechaty.Module.Puppet.Schemas;
 using static Wechaty.Puppet;
 
 namespace Wechaty.Module.PuppetHostie
@@ -28,7 +29,7 @@ namespace Wechaty.Module.PuppetHostie
 
         #region GRPC 连接
         protected const string CHATIE_ENDPOINT = "https://api.chatie.io/v0/hosties/";
-        private Puppet.PuppetClient grpcClient = null;
+        private PuppetClient grpcClient = null;
         private Channel channel = null;
 
         /// <summary>

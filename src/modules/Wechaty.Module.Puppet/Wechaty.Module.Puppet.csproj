@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>Wechaty.Puppet</AssemblyName>
-    <RootNamespace>Wechaty</RootNamespace>
+    <AssemblyName>Wechaty.Module.Puppet</AssemblyName>
+    <RootNamespace>Wechaty.Module.Puppet</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

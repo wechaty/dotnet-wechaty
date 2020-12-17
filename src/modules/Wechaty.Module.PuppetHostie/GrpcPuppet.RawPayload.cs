@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
-using Wechaty.Schemas;
+using Wechaty.Module.Puppet.Schemas;
 
 namespace Wechaty.Module.PuppetHostie
 {
@@ -26,11 +26,11 @@ namespace Wechaty.Module.PuppetHostie
                 Avatar = response.Avatar,
                 City = response.City,
                 Friend = response.Friend,
-                Gender = (Schemas.ContactGender)response.Gender,
+                Gender = (Puppet.Schemas.ContactGender)response.Gender,
                 Province = response.Province,
                 Signature = response.Signature,
                 Star = response.Star,
-                Type = (Schemas.ContactType)response.Type,
+                Type = (Puppet.Schemas.ContactType)response.Type,
                 Weixin = response.Weixin,
             };
             return payload;
@@ -61,7 +61,7 @@ namespace Wechaty.Module.PuppetHostie
                     Scene = (int)response.Scene,
                     Stranger = response.Stranger,
                     Ticket = response.Ticket,
-                    Type = (Schemas.FriendshipType)response.Type
+                    Type = (Puppet.Schemas.FriendshipType)response.Type
                 };
             }
             return payload;
@@ -93,7 +93,7 @@ namespace Wechaty.Module.PuppetHostie
                     MentionIdList = response.MentionIds.ToList(),
                     RoomId = response.RoomId,
                     Timestamp = (long)response.Timestamp,
-                    Type = (Schemas.MessageType)response.Type,
+                    Type = (Puppet.Schemas.MessageType)response.Type,
                     ToId = response.ToId
                 };
             }
