@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wechaty.Module.Watchdog</AssemblyName>
     <RootNamespace>Wechaty.Module.Watchdog</RootNamespace>
   </PropertyGroup>

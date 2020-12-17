@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Wechaty.Module.EventEmitter</AssemblyName>
     <RootNamespace>Wechaty.Module.EventEmitter</RootNamespace>
   </PropertyGroup>
