@@ -19,8 +19,8 @@
     <description>dotnet wechaty</description>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <!--Workaround for https://docs.microsoft.com/en-us/nuget/reference/msbuild-targets#packageicon-->
-    <PackageiconUrl>https://wechaty.js.org/img/wechaty-icon.svg</PackageiconUrl>
-    <PackageIcon>wechaty.png</PackageIcon>
+    <PackageiconUrl>https://avatars0.githubusercontent.com/u/21285357</PackageiconUrl>
+    <!--<PackageIcon>wechaty.png</PackageIcon>-->
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://wechaty.js.org</PackageProjectUrl>
@@ -32,11 +32,11 @@
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Version)' == ''">
-    <Version>0.1.2</Version>
+    <Version>0.1.4</Version>
   </PropertyGroup>
-  <ItemGroup>
+  <!--<ItemGroup>
     <None Include="$(SolutionDir)wechaty.png" Pack="true" PackagePath=""/>
-  </ItemGroup>
+  </ItemGroup>-->
   <ItemGroup>
     <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
   </ItemGroup>
@@ -54,7 +54,7 @@
   </ItemGroup>
   
    <!--Workaround for https://github.com/dotnet/sdk/issues/11105--> 
-  <!--<ItemGroup>
+  <ItemGroup>
     <SourceRoot Include="$(NuGetPackageRoot)" Condition="'$(NuGetPackageRoot)' != ''" />
-  </ItemGroup>-->
+  </ItemGroup>
 </Project>
