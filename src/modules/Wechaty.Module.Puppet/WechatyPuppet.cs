@@ -11,9 +11,9 @@ using Wechaty.Module.Filebox;
 using Wechaty.Module.MemoryCard;
 using Wechaty.Module.ReactiveQueue;
 using Wechaty.Module.Watchdog;
-using Wechaty.Schemas;
+using Wechaty.Module.Puppet.Schemas;
 
-namespace Wechaty
+namespace Wechaty.Module.Puppet
 {
     public abstract class WechatyPuppet : EventEmitter<WechatyPuppet>
     {
@@ -28,7 +28,7 @@ namespace Wechaty
 
         protected int Counter { get; }
 
-        protected MemoryCard Memory { get; set; }
+        protected MemoryCard.MemoryCard Memory { get; set; }
 
         protected PuppetOptions Options { get; }
 
@@ -73,7 +73,7 @@ namespace Wechaty
             Options = options;
             Logger = logger;
             State = new StateSwitch(GetType().Name, loggerFactory.CreateLogger<StateSwitch>());
-            Memory = new MemoryCard((MemoryCardOptions?)null, loggerFactory.CreateLogger<MemoryCard>(), loggerFactory);
+            Memory = new MemoryCard.MemoryCard((MemoryCardOptions?)null, loggerFactory.CreateLogger<MemoryCard.MemoryCard>(), loggerFactory);
             //load here is for testing only
             Memory.Load()
                 .ContinueWith(task =>
@@ -139,7 +139,7 @@ namespace Wechaty
 
         public override string ToString() => string.Concat("Puppet#", Counter, "<", GetType().Name, ">", "(", Memory.Name ?? "", ")");
 
-        public void SetMemory(MemoryCard memory)
+        public void SetMemory(MemoryCard.MemoryCard memory)
         {
             if (!string.IsNullOrEmpty(Memory.Name))
             {

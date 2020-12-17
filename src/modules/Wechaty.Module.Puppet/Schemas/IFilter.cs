@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Wechaty.Schemas
+namespace Wechaty.Module.Puppet.Schemas
 {
     internal interface IFilter
     {

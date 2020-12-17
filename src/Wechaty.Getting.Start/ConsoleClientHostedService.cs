@@ -6,8 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Wechaty.Module.Filebox;
-using Wechaty.Schemas;
+using Wechaty.Module.Puppet.Schemas;
 using Wechaty.User;
 
 namespace Wechaty.Getting.Start
@@ -26,7 +25,7 @@ namespace Wechaty.Getting.Start
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            var PuppetOptions = new Schemas.PuppetOptions()
+            var PuppetOptions = new Module.Puppet.Schemas.PuppetOptions()
             {
                 Token = _configuration["WECHATY_PUPPET_HOSTIE_TOKEN"],
                 PuppetService = _configuration["WECHATY_PUPPET"]

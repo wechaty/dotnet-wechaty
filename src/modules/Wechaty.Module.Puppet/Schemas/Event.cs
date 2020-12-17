@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Wechaty.Schemas
+namespace Wechaty.Module.Puppet.Schemas
 {
     public enum ScanStatus
     {

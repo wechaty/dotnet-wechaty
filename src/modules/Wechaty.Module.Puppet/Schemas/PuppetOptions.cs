@@ -1,4 +1,4 @@
-namespace Wechaty.Schemas
+namespace Wechaty.Module.Puppet.Schemas
 {
     public class PuppetOptions
     {

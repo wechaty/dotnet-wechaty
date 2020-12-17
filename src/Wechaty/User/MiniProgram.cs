@@ -1,4 +1,4 @@
-using Wechaty.Schemas;
+using Wechaty.Module.Puppet.Schemas;
 
 namespace Wechaty.User
 {

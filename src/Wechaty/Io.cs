@@ -3,7 +3,7 @@ using System.Net.WebSockets;
 using System.Runtime.Serialization;
 using System.Timers;
 using Wechaty.Module.EventEmitter;
-using Wechaty.Schemas;
+using Wechaty.Module.Puppet.Schemas;
 
 namespace Wechaty
 {
