@@ -23,7 +23,6 @@ foreach($solution in $solutions) {
     $solutionFolder = Join-Path $rootFolder $solution
     Set-Location $solutionFolder
     & dotnet restore
-   # &  dotnet msbuild /t:pack /p:Configuration=Release /p:SourceLinkCreate=true
 }
 
 # Create all packages
@@ -45,7 +44,7 @@ foreach($project in $projects) {
     #md $releaseFolder
 
     Write-Host  $localPath
-    dotnet msbuild /t:pack /p:Configuration=Release /p:SourceLinkCreate=true
+    dotnet msbuild  /p:Configuration=Release /p:SourceLinkCreate=true /t:pack
 
     if (-Not $?) {
         Write-Host ("Packaging failed for the project: " + $projectFolder)
