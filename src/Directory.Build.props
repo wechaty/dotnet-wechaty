@@ -32,8 +32,8 @@
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Version)' == ''">
-    <Version>0.1.5</Version>
+  <PropertyGroup>
+    <Version>0.1.4</Version>
   </PropertyGroup>
   <!--<ItemGroup>
     <None Include="$(SolutionDir)wechaty.png" Pack="true" PackagePath=""/>
