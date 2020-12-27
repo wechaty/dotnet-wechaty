@@ -30,7 +30,33 @@ namespace Wechaty
 
         private readonly StateSwitch _readyState;
 
-        private static readonly List<IWechatPlugin> GlobalPlugins = new List<IWechatPlugin>();
+        //private static readonly List<IWechatPlugin> GlobalPlugins = new List<IWechatPlugin>();
+
+
+        private static List<IWechatPlugin> GlobalPlugins
+        {
+            get
+            {
+                var types = AppDomain.CurrentDomain.GetAssemblies()
+                        .SelectMany(a => a.GetTypes().Where(t => typeof(IWechatPlugin).IsAssignableFrom(t) && !t.IsInterface))
+                        .ToList();
+
+                var type = typeof(IWechatPlugin);
+                //var types = AppDomain.CurrentDomain.GetAssemblies()
+                //    .SelectMany(s => s.GetTypes())
+                //    .Where(p => type.IsAssignableFrom(p))
+                //    .ToList();
+                var plugins = new List<IWechatPlugin>();
+
+                foreach (var pluginType in types)
+                {
+                    var plugin = (IWechatPlugin)Activator.CreateInstance(pluginType);
+
+                    plugins.Add(plugin);
+                }
+                return plugins;
+            }
+        }
 
         private MemoryCard? _memory;
 
@@ -228,16 +254,18 @@ namespace Wechaty
         public Wechaty OnStop(WechatyStartStopEventListener listener) => this.On("stop", listener);
 
 
-        public Wechaty Use(params IWechatPlugin[] plugins)
-        {
-            Array.ForEach(plugins, plugin =>
-            {
-                plugin.Install(this);
-            });
-            return this;
-        }
+        //public Wechaty Use(params IWechatPlugin[] plugins)
+        //{
+        //    Array.ForEach(plugins, plugin =>
+        //    {
+        //        plugin.Install(this);
+        //    });
+        //    return this;
+        //}
 
-        private void InstallGlobalPlugin() => GlobalPlugins.ForEach(plugin => plugin.Install(this));
+        //private void InstallGlobalPlugin() => GlobalPlugins.ForEach(plugin => plugin.Install(this));
+
+        private void InstallGlobalPlugin() => GlobalPlugins.ForEach(plugin => plugin.Execute(this));
 
         private async Task InitPuppet()
         {
@@ -305,7 +333,7 @@ namespace Wechaty
                     {
                         EmitError(ex);
                     }
-                   
+
                 }).OnReady(payload =>
                 {
                     _ = Emit("ready");
