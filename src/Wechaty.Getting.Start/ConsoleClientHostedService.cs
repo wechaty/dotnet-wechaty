@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Wechaty.Module.Puppet.Schemas;
 using Wechaty.User;
+using Wechaty.Plugin.ScanEvent;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Wechaty.Getting.Start
 {
@@ -20,6 +22,12 @@ namespace Wechaty.Getting.Start
             _configuration = configuration;
         }
 
+        public void ConfigureService(IServiceCollection services)
+        {
+
+
+        }
+
 
         private static Wechaty bot;
 
@@ -30,12 +38,22 @@ namespace Wechaty.Getting.Start
                 Token = _configuration["WECHATY_PUPPET_HOSTIE_TOKEN"],
                 PuppetService = _configuration["WECHATY_PUPPET"]
             };
+
+            var serviceCollection = new ServiceCollection()
+                .AddSingleton<IWechatPlugin, ScanPlugin>();
+
+            var plugins = serviceCollection.BuildServiceProvider().GetServices<IWechatPlugin>().ToArray();
+
+          
+
             bot = new Wechaty(PuppetOptions);
+
+            //bot.Use(plugins);
 
             await bot.OnScan(WechatyScanEventListener)
               .OnLogin(async (ContactSelf user) =>
               {
-                  Console.WriteLine($"{user.Name}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！");
+                  //Console.WriteLine($"{user.Name}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！");
               })
               .OnMessage(WechatyMessageEventListenerAsync)
               .OnHeartbeat(WechatyHeartbeatEventListener)
@@ -45,11 +63,13 @@ namespace Wechaty.Getting.Start
               .OnRoomTopic(WechatyRoomTopicEventListener)
               .Start();
 
+
+
         }
 
         public static void WechatyLoginEventListener(ContactSelf user)
         {
-            Console.WriteLine($"{user.Name}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！");
+            //Console.WriteLine($"{user.Name}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！");
         }
 
         private static void WechatyHeartbeatEventListener(object data)
@@ -74,7 +94,7 @@ namespace Wechaty.Getting.Start
 
         private static async void WechatyMessageEventListenerAsync(Message message)
         {
-            
+
         }
 
         #region Room
