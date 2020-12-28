@@ -48,7 +48,13 @@ namespace Wechaty.Getting.Start
 
             bot = new Wechaty(PuppetOptions);
 
-            //bot.Use(plugins);
+            ScanPlugin scanPlugin = new ScanPlugin();
+            DingDongPlugin dingDongPlugin = new DingDongPlugin("hello world ！");
+
+
+
+            bot.Use(plugins)
+               .Use(dingDongPlugin);
 
             await bot.OnScan(WechatyScanEventListener)
               .OnLogin(async (ContactSelf user) =>
