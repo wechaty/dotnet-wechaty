@@ -254,18 +254,18 @@ namespace Wechaty
         public Wechaty OnStop(WechatyStartStopEventListener listener) => this.On("stop", listener);
 
 
-        //public Wechaty Use(params IWechatPlugin[] plugins)
-        //{
-        //    Array.ForEach(plugins, plugin =>
-        //    {
-        //        plugin.Install(this);
-        //    });
-        //    return this;
-        //}
+        public Wechaty Use(params IWechatPlugin[] plugins)
+        {
+            Array.ForEach(plugins, plugin =>
+            {
+                plugin.Install(this);
+            });
+            return this;
+        }
 
         //private void InstallGlobalPlugin() => GlobalPlugins.ForEach(plugin => plugin.Install(this));
 
-        private void InstallGlobalPlugin() => GlobalPlugins.ForEach(plugin => plugin.Execute(this));
+        private void InstallGlobalPlugin() => GlobalPlugins.ForEach(plugin => plugin.Install(this));
 
         private async Task InitPuppet()
         {

@@ -5,10 +5,10 @@ namespace Wechaty
 {
     public interface IWechatPlugin
     {
-        //IDisposable Install(Wechaty bot);
-
-        Task Execute(Wechaty bot);
-        
+        public string Name { get; }
+        public string Description { get; }
+        public string Version { get; }
+        Task Install(Wechaty bot);
 
     }
 }
