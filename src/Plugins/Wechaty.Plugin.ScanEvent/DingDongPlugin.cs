@@ -7,32 +7,24 @@ namespace Wechaty.Plugin.ScanEvent
     {
         public string Name => "DingDong Plugin";
 
-        public string Description => "ding dong heartbeat plugin";
+        public string Description => "ding dong  plugin";
 
-        public string Version => "v 1.0.0";
+        public string Version => "v1.0.0";
 
-        public DingDongPlugin()
+        public Task Install(Wechaty bot)
         {
-
-        }
-
-        private string messageText { get; set; }
-
-        public DingDongPlugin(string _message)
-        {
-            messageText = _message;
-        }
-
-        public async Task Install(Wechaty bot)
-        {
-            var p = bot.OnMessage((Message message) =>
-            {
-                if (message.Text=="ding")
-                {
-                    message.Say(messageText);
-                }
-            });
-
+            _ = bot.OnMessage( (message) =>
+                  {
+                      if (message.Text == "ding")
+                      {
+                          message.Say("dong");
+                      }
+                      if (message.Text == "dong")
+                      {
+                          message.Say("ding");
+                      }
+                  });
+            return Task.CompletedTask;
         }
     }
 }

@@ -30,33 +30,31 @@ namespace Wechaty
 
         private readonly StateSwitch _readyState;
 
-        //private static readonly List<IWechatPlugin> GlobalPlugins = new List<IWechatPlugin>();
+        private static readonly List<IWechatPlugin> GlobalPlugins = new List<IWechatPlugin>();
 
 
-        private static List<IWechatPlugin> GlobalPlugins
-        {
-            get
-            {
-                var types = AppDomain.CurrentDomain.GetAssemblies()
-                        .SelectMany(a => a.GetTypes().Where(t => typeof(IWechatPlugin).IsAssignableFrom(t) && !t.IsInterface))
-                        .ToList();
+        /// <summary>
+        ///  Automatic plug-in registration
+        /// </summary>
+        //private static List<IWechatPlugin> GlobalPlugins
+        //{
+        //    get
+        //    {
+        //        var types = AppDomain.CurrentDomain.GetAssemblies()
+        //                .SelectMany(a => a.GetTypes().Where(t => typeof(IWechatPlugin).IsAssignableFrom(t) && t.IsClass))
+        //                .ToList();
 
-                var type = typeof(IWechatPlugin);
-                //var types = AppDomain.CurrentDomain.GetAssemblies()
-                //    .SelectMany(s => s.GetTypes())
-                //    .Where(p => type.IsAssignableFrom(p))
-                //    .ToList();
-                var plugins = new List<IWechatPlugin>();
+        //        var plugins = new List<IWechatPlugin>();
 
-                foreach (var pluginType in types)
-                {
-                    var plugin = (IWechatPlugin)Activator.CreateInstance(pluginType);
+        //        foreach (var pluginType in types)
+        //        {
+        //            var plugin = (IWechatPlugin)Activator.CreateInstance(pluginType);
 
-                    plugins.Add(plugin);
-                }
-                return plugins;
-            }
-        }
+        //            plugins.Add(plugin);
+        //        }
+        //        return plugins;
+        //    }
+        //}
 
         private MemoryCard? _memory;
 
@@ -262,8 +260,6 @@ namespace Wechaty
             });
             return this;
         }
-
-        //private void InstallGlobalPlugin() => GlobalPlugins.ForEach(plugin => plugin.Install(this));
 
         private void InstallGlobalPlugin() => GlobalPlugins.ForEach(plugin => plugin.Install(this));
 

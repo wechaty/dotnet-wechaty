@@ -38,29 +38,30 @@ namespace Wechaty.Getting.Start
                 Token = _configuration["WECHATY_PUPPET_HOSTIE_TOKEN"],
                 PuppetService = _configuration["WECHATY_PUPPET"]
             };
-
-            var serviceCollection = new ServiceCollection()
-                .AddSingleton<IWechatPlugin, ScanPlugin>();
-
-            var plugins = serviceCollection.BuildServiceProvider().GetServices<IWechatPlugin>().ToArray();
-
-          
-
             bot = new Wechaty(PuppetOptions);
 
-            ScanPlugin scanPlugin = new ScanPlugin();
-            DingDongPlugin dingDongPlugin = new DingDongPlugin("hello world ！");
+
+            // Automatic plug-in registration
+            //var serviceCollection = new ServiceCollection()
+            //    .AddSingleton<IWechatPlugin, ScanPlugin>()
+            //    .AddSingleton<IWechatPlugin, DingDongPlugin>();
+            //var plugins = serviceCollection.BuildServiceProvider().GetServices<IWechatPlugin>().ToArray();
 
 
-
-            bot.Use(plugins)
+            // Manual plug-in registration
+            var scanPlugin = new ScanPlugin();
+            var dingDongPlugin = new DingDongPlugin();
+            bot.Use(scanPlugin)
                .Use(dingDongPlugin);
 
-            await bot.OnScan(WechatyScanEventListener)
-              .OnLogin(async (ContactSelf user) =>
-              {
-                  //Console.WriteLine($"{user.Name}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！");
-              })
+
+
+            await bot
+              //.OnScan(WechatyScanEventListener)
+              //.OnLogin(async (ContactSelf user) =>
+              //{
+              //    //Console.WriteLine($"{user.Name}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！");
+              //})
               .OnMessage(WechatyMessageEventListenerAsync)
               .OnHeartbeat(WechatyHeartbeatEventListener)
               .OnRoomInvite(WechatyRoomInviteEventListener)
@@ -68,9 +69,6 @@ namespace Wechaty.Getting.Start
               .OnRoomLeave(WechatyRoomLeaveEventListener)
               .OnRoomTopic(WechatyRoomTopicEventListener)
               .Start();
-
-
-
         }
 
         public static void WechatyLoginEventListener(ContactSelf user)
@@ -83,20 +81,20 @@ namespace Wechaty.Getting.Start
             //Console.WriteLine(JsonConvert.SerializeObject(data));
         }
 
-        private static void WechatyScanEventListener(string qrcode, ScanStatus status, string? data)
-        {
-            Console.WriteLine(qrcode);
-            const string QrcodeServerUrl = "https://wechaty.github.io/qrcode/";
-            if (status == ScanStatus.Waiting || status == ScanStatus.Timeout)
-            {
-                var qrcodeImageUrl = QrcodeServerUrl + qrcode;
-                Console.WriteLine(qrcodeImageUrl);
-            }
-            else if (status == ScanStatus.Scanned)
-            {
-                Console.WriteLine(data);
-            }
-        }
+        //private static void WechatyScanEventListener(string qrcode, ScanStatus status, string? data)
+        //{
+        //    Console.WriteLine(qrcode);
+        //    const string QrcodeServerUrl = "https://wechaty.github.io/qrcode/";
+        //    if (status == ScanStatus.Waiting || status == ScanStatus.Timeout)
+        //    {
+        //        var qrcodeImageUrl = QrcodeServerUrl + qrcode;
+        //        Console.WriteLine(qrcodeImageUrl);
+        //    }
+        //    else if (status == ScanStatus.Scanned)
+        //    {
+        //        Console.WriteLine(data);
+        //    }
+        //}
 
         private static async void WechatyMessageEventListenerAsync(Message message)
         {

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Wechaty;
 using Wechaty.Module.Puppet.Schemas;
 using Wechaty.User;
@@ -8,28 +9,33 @@ namespace Wechaty.Plugin.ScanEvent
 {
     public class ScanPlugin : IWechatPlugin
     {
-        public string Name => throw new NotImplementedException();
+        public string Name => "QRCodeTerminal";
 
-        public string Description => throw new NotImplementedException();
+        public string Description => "wechaty scan QRCodeTerminal";
 
-        public string Version => throw new NotImplementedException();
+        public string Version => "V1.0.0";
 
-        public async Task Install(Wechaty bot)
+        public Task Install(Wechaty bot)
         {
+            bot.OnScan((string qrcode, ScanStatus status, string? data) =>
+                 {
+                     const string QrcodeServerUrl = "https://wechaty.github.io/qrcode/";
+                     if (status == ScanStatus.Waiting || status == ScanStatus.Timeout)
+                     {
+                         var qrcodeImageUrl = QrcodeServerUrl + qrcode;
+                         Console.WriteLine(qrcodeImageUrl);
+                     }
+                     else if (status == ScanStatus.Scanned)
+                     {
+                         Console.WriteLine(data);
+                     }
+                 })
+               .OnLogin((ContactSelf user) =>
+               {
+                   Console.WriteLine($"{user.Name}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！");
+               });
 
-            var wechaty = bot.OnScan((string qrcode, ScanStatus status, string? data) =>
-              {
-              })
-             .OnLogin((ContactSelf user) =>
-             {
-                 Console.WriteLine($"{user.Name}在{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}上线了！小仙仙在哪啊");
-             })
-             .OnMessage((Message message) =>
-             {
-                 Console.WriteLine(message.Text);
-                 Console.WriteLine("小仙仙何在????");
-             });
-
+            return Task.CompletedTask;
         }
 
     }
