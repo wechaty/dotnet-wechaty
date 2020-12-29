@@ -5,10 +5,21 @@ namespace Wechaty
 {
     public interface IWechatPlugin
     {
+        /// <summary>
+        /// plugin name
+        /// </summary>
         public string Name { get; }
-        public string Description { get; }
-        public string Version { get; }
-        Task Install(Wechaty bot);
 
+        /// <summary>
+        /// plugin description
+        /// </summary>
+        public string Description { get; }
+
+        /// <summary>
+        /// plugin verson
+        /// </summary>
+        public string Version { get; }
+
+        Task Install(Wechaty bot);
     }
 }
