@@ -5,11 +5,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Wechaty.Module.Puppet.Schemas;
-using Wechaty.User;
-using Wechaty.Plugin.ScanEvent;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Wechaty.Plugin;
+using Wechaty.User;
 
 namespace Wechaty.Getting.Start
 {
@@ -49,9 +48,9 @@ namespace Wechaty.Getting.Start
 
 
             // Manual plug-in registration
-            var scanPlugin = new ScanPlugin();
+            var qrCodeTerminalPlugin = new QRCodeTerminalPlugin();
             var dingDongPlugin = new DingDongPlugin();
-            bot.Use(scanPlugin)
+            bot.Use(qrCodeTerminalPlugin)
                .Use(dingDongPlugin);
 
 
