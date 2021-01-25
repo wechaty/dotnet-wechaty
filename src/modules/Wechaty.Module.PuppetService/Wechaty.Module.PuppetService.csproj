@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>Wechaty.Module.PuppetHostie</AssemblyName>
-    <RootNamespace>Wechaty.Module.PuppetHostie</RootNamespace>
+    <AssemblyName>Wechaty.Module.PuppetService</AssemblyName>
+    <RootNamespace>Wechaty.Module.PuppetService</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

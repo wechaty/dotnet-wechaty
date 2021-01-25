@@ -11,7 +11,7 @@ using Wechaty.Module.Filebox;
 using Wechaty.Module.MemoryCard;
 using Wechaty.Module.Puppet;
 using Wechaty.Module.Puppet.Schemas;
-using Wechaty.Module.PuppetHostie;
+using Wechaty.Module.PuppetService;
 using Wechaty.User;
 
 namespace Wechaty

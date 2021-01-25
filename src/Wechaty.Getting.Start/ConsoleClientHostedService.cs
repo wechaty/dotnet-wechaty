@@ -34,8 +34,7 @@ namespace Wechaty.Getting.Start
         {
             var PuppetOptions = new Module.Puppet.Schemas.PuppetOptions()
             {
-                Token = _configuration["WECHATY_PUPPET_HOSTIE_TOKEN"],
-                PuppetService = _configuration["WECHATY_PUPPET"]
+                Token = _configuration["WECHATY_PUPPET_SERVICE_TOKEN"],
             };
             bot = new Wechaty(PuppetOptions);
 

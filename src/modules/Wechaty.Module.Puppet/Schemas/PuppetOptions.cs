@@ -6,7 +6,7 @@ namespace Wechaty.Module.Puppet.Schemas
         public string Endpoint { get; set; }
         public long Timeout { get; set; }
         public string Token { get; set; }
-        public string PuppetService { get; set; }
+        //public string PuppetService { get; set; }
 
     }
 }
