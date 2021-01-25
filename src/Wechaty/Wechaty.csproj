@@ -6,8 +6,7 @@
     <PackageReference Include="OpenGraph-Net" Version="3.2.4" />
     <PackageReference Include="Polly" Version="7.2.1" />
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\modules\Wechaty.Module.PuppetHostie\Wechaty.Module.PuppetHostie.csproj" />
+    <ProjectReference Include="..\modules\Wechaty.Module.PuppetService\Wechaty.Module.PuppetService.csproj" />
   </ItemGroup>
 </Project>

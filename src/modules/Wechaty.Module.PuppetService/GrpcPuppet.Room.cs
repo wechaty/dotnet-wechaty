@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
 using Wechaty.Module.Filebox;
 
-namespace Wechaty.Module.PuppetHostie
+namespace Wechaty.Module.PuppetService
 {
     public partial class GrpcPuppet
     {

@@ -11,7 +11,7 @@ using Wechaty.Module.Puppet;
 using Wechaty.Module.Puppet.Schemas;
 using static Wechaty.Puppet;
 
-namespace Wechaty.Module.PuppetHostie
+namespace Wechaty.Module.PuppetService
 {
     public partial class GrpcPuppet : WechatyPuppet
     {
