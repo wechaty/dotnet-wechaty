@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Wechaty.Module.Puppet.Schemas;
 using Wechaty.User;
 
@@ -11,7 +12,8 @@ namespace Wechaty
     public delegate void WechatyHeartbeatEventListener(object data);
     public delegate void WechatyLoginEventListener(ContactSelf user);
     public delegate void WechatyLogoutEventListener(ContactSelf user, string? reason);
-    public delegate void WechatyMessageEventListener(Message message);
+    //public delegate void WechatyMessageEventListener(Message message);
+    public delegate Task WechatyMessageEventListener(Message message);
     public delegate void WechatyReadyEventListener(Wechaty wechaty);
     public delegate void WechatyRoomInviteEventListener(RoomInvitation roomInvitation);
     public delegate void WechatyRoomJoinEventListener(Room room, IReadOnlyList<Contact>  inviteeList, Contact inviter, DateTime? date);

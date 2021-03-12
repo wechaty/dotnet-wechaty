@@ -35,6 +35,7 @@ namespace Wechaty.Getting.Start
             var PuppetOptions = new Module.Puppet.Schemas.PuppetOptions()
             {
                 Token = _configuration["WECHATY_PUPPET_SERVICE_TOKEN"],
+                Endpoint=_configuration["WECHATY_PUPPET_SERVICE_EndPoint"]
             };
             bot = new Wechaty(PuppetOptions);
 
@@ -94,9 +95,12 @@ namespace Wechaty.Getting.Start
         //    }
         //}
 
-        private static async void WechatyMessageEventListenerAsync(Message message)
+        private async Task WechatyMessageEventListenerAsync(Message message)
         {
-
+            if (message.Text == "ding")
+            {
+                await message.Say("dong");
+            }
         }
 
         #region Room

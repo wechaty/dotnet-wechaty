@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Wechaty.Module.EventEmitter
 {
@@ -60,7 +61,7 @@ namespace Wechaty.Module.EventEmitter
 
         public static ListenerWrapper GetListenerWrapper([DisallowNull] Delegate listener)
         {
-            if (listener.Method.ReturnType != typeof(void))
+            if (listener.Method.ReturnType != typeof(void) && listener.Method.ReturnType!=typeof(Task))
             {
                 throw new ArgumentException("listener must be return void.");
             }
