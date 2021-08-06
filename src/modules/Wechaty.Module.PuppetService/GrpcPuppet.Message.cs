@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
 using Newtonsoft.Json;
@@ -45,6 +46,24 @@ namespace Wechaty.Module.PuppetService
             var response = await grpcClient.MessageImageAsync(request);
             var fileBox = response.Filebox;
             return FileBox.FromJson(fileBox);
+        }
+
+        public override async Task<byte[]> MessageImageStream(string messageId, Puppet.Schemas.ImageType imageType, CancellationToken cancellationToken = default)
+        {
+            var request = new MessageImageStreamRequest
+            {
+                Id = messageId,
+                Type = (github.wechaty.grpc.puppet.ImageType)imageType
+            };
+
+            var response = grpcClient.MessageImageStream(request);
+            var bytes = new List<byte>();
+            while (await response.ResponseStream.MoveNext(cancellationToken))
+            {
+                bytes.AddRange(response.ResponseStream.Current.FileBoxChunk.Data.ToByteArray());
+            }
+
+            return bytes.ToArray();
         }
 
         public override async Task<MiniProgramPayload> MessageMiniProgram(string messageId)
