@@ -475,29 +475,71 @@ namespace Wechaty
             throw new NotImplementedException();
         }
 
-        public Task<Message> Say(string text, params Contact[]? replyTo)
+        public async Task<Message?> Say(string text, params Contact[]? replyTo)
         {
-            throw new NotImplementedException();
+            var msgId = await Puppet.MessageSendText(Id, text, replyTo?.Select(c => c.Id));
+            if (msgId != null)
+            {
+                var result = WechatyInstance.Message.Load(msgId);
+                await result.Ready;
+                return result;
+            }
+            return null;
         }
-
-        public Task<Message> Say(Contact contact, params Contact[]? replyTo)
+        public async Task<Message?> Say(Message message)
         {
-            throw new NotImplementedException();
+            var msgId = await Puppet.MessageForward(Id, message.Id);
+            if (msgId != null)
+            {
+                var result = WechatyInstance.Message.Load(msgId);
+                await result.Ready;
+                return result;
+            }
+            return null;
         }
-
-        public Task<Message> Say(FileBox fileBox, params Contact[]? replyTo)
+        public async Task<Message?> Say(string id, Contact contact)
         {
-            throw new NotImplementedException();
+            var msgId = await Puppet.MessageSendContact(id, contact.Id);
+            if (msgId != null)
+            {
+                var result = WechatyInstance.Message.Load(msgId);
+                await result.Ready;
+                return result;
+            }
+            return null;
         }
-
-        public Task<Message> Say(MiniProgram miniProgram, params Contact[]? replyTo)
+        public async Task<Message?> Say(string id,FileBox fileBox)
         {
-            throw new NotImplementedException();
+            var msgId = await Puppet.MessageSendFile(id, fileBox);
+            if (msgId != null)
+            {
+                var result = WechatyInstance.Message.Load(msgId);
+                await result.Ready;
+                return result;
+            }
+            return null;
         }
-
-        public Task<Message> Say(UrlLink urlLink, params Contact[]? replyTo)
+        public async Task<Message?> Say(string id,UrlLink urlLink)
         {
-            throw new NotImplementedException();
+            var msgId = await Puppet.MessageSendUrl(id, urlLink.Payload);
+            if (msgId != null)
+            {
+                var result = WechatyInstance.Message.Load(msgId);
+                await result.Ready;
+                return result;
+            }
+            return null;
+        }
+        public async Task<Message?> Say(string id, MiniProgram miniProgram)
+        {
+            var msgId = await Puppet.MessageSendMiniProgram(id, miniProgram.Payload);
+            if (msgId != null)
+            {
+                var result = WechatyInstance.Message.Load(msgId);
+                await result.Ready;
+                return result;
+            }
+            return null;
         }
 
         public void Ding()

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
@@ -611,6 +612,7 @@ namespace Wechaty.Module.Puppet
         public abstract Task<string> MessageContact(string messageId);
         public abstract Task<FileBox> MessageFile(string messageId);
         public abstract Task<FileBox> MessageImage(string messageId, ImageType imageType);
+        public abstract Task<byte[]> MessageImageStream(string messageId, ImageType imageType, CancellationToken cancellationToken);
         public abstract Task<MiniProgramPayload> MessageMiniProgram(string messageId);
         public abstract Task<UrlLinkPayload> MessageUrl(string messageId);
 
