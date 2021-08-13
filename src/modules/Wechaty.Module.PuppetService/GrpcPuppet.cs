@@ -88,8 +88,9 @@ namespace Wechaty.Module.PuppetService
 
                 var endPoint = Options.Endpoint;
 
-                AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-                AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
+                // https://docs.microsoft.com/en-us/aspnet/core/grpc/troubleshoot?view=aspnetcore-5.0
+                //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+                //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
 
                 if (string.IsNullOrEmpty(endPoint))
                 {
@@ -101,12 +102,37 @@ namespace Wechaty.Module.PuppetService
                     endPoint = model.IP + ":" + model.Port;
                 }
 
-                var options = new List<ChannelOption>()
+                //var channelCredentials = new SslCredentials(CA.SSL_ROOT_CERT,
+                //    new KeyCertificatePair(CA.SSL_SERVER_CERT, CA.SSL_SERVER_KEY)
+                //    );
+
+                var credentials = CallCredentials.FromInterceptor((context, metadata) =>
                 {
-                    new ChannelOption("GRPC_ARG_KEEPALIVE_TIMEOUT_MS",_keepAliveTimeoutMs),
-                    new ChannelOption("grpc.default_authority", Options.Token)
+                    metadata.Add("Authorization", $"Wechaty __token__");
+                    return Task.CompletedTask;
+                });
+                var channelCredentials = ChannelCredentials.Create(new SslCredentials(CA.SSL_ROOT_CERT), credentials);
+
+                var ssl = new SslCredentials();
+                var channOptions = new List<ChannelOption>
+                {
+                    //new ChannelOption("grpc.ssl_target_name_override","wechaty-puppet-service"),
+                    new ChannelOption(ChannelOptions.DefaultAuthority,Options.Token),
+                    //new ChannelOption("Authorization",$"Wechaty __token__"),
                 };
-                channel = new Channel(endPoint, ChannelCredentials.Insecure, options);
+                channel = new Channel(endPoint, channelCredentials,channOptions);
+
+
+                //var options = new List<ChannelOption>()
+                //{
+                //    new ChannelOption("GRPC_ARG_KEEPALIVE_TIMEOUT_MS",_keepAliveTimeoutMs),
+                //    new ChannelOption("grpc.default_authority", Options.Token),
+                //    new ChannelOption("Authorization",$"Wechaty __token__"),
+                //    new ChannelOption("grpc.ssl_target_name_override","wechaty-puppet-service"),
+
+                //};
+                //channel = new Channel(endPoint, ChannelCredentials.Insecure, options);
+                //channel = new Channel(endPoint, channelCredentials, options);
 
                 grpcClient = new PuppetClient(channel);
 
