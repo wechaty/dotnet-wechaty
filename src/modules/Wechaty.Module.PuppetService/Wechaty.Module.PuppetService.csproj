@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Wechaty.Grpc" Version="0.18.9" />
+    <PackageReference Include="Wechaty.Grpc" Version="0.19.1" />
   </ItemGroup>
 
   <ItemGroup>
