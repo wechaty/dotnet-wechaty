@@ -35,6 +35,7 @@ namespace Wechaty.Getting.Start
             var PuppetOptions = new Module.Puppet.Schemas.PuppetOptions()
             {
                 Token = _configuration["WECHATY_PUPPET_SERVICE_TOKEN"],
+                Endpoint="https://localhost:9010"
             };
             bot = new Wechaty(PuppetOptions);
 
