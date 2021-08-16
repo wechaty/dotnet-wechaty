@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>Wechaty.Module.PuppetService</AssemblyName>
     <RootNamespace>Wechaty.Module.PuppetService</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Wechaty.Grpc" Version="0.19.1" />
+    <PackageReference Include="Wechaty.Grpc" Version="0.19.2" />
   </ItemGroup>
 
   <ItemGroup>

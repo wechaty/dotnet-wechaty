@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
 using Grpc.Core;
+using Grpc.Net.Client;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Wechaty.Module.Puppet;
@@ -30,7 +32,7 @@ namespace Wechaty.Module.PuppetService
         #region GRPC 连接
         protected const string CHATIE_ENDPOINT = "https://api.chatie.io/v0/hosties/";
         private PuppetClient grpcClient = null;
-        private Channel channel = null;
+        private GrpcChannel channel = null;
 
         /// <summary>
         /// This channel argument controls the amount of time (in milliseconds) the sender of the keepalive ping waits for an acknowledgement.
@@ -88,10 +90,6 @@ namespace Wechaty.Module.PuppetService
 
                 var endPoint = Options.Endpoint;
 
-                // https://docs.microsoft.com/en-us/aspnet/core/grpc/troubleshoot?view=aspnetcore-5.0
-                //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-                //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2Support", true);
-
                 if (string.IsNullOrEmpty(endPoint))
                 {
                     var model = await DiscoverHostieIp(Options.Token);
@@ -102,37 +100,30 @@ namespace Wechaty.Module.PuppetService
                     endPoint = model.IP + ":" + model.Port;
                 }
 
-                //var channelCredentials = new SslCredentials(CA.SSL_ROOT_CERT,
-                //    new KeyCertificatePair(CA.SSL_SERVER_CERT, CA.SSL_SERVER_KEY)
-                //    );
 
                 var credentials = CallCredentials.FromInterceptor((context, metadata) =>
-                {
-                    metadata.Add("Authorization", $"Wechaty __token__");
-                    return Task.CompletedTask;
-                });
-                var channelCredentials = ChannelCredentials.Create(new SslCredentials(CA.SSL_ROOT_CERT), credentials);
+                 {
+                     if (!string.IsNullOrEmpty(Options.Token))
+                     {
+                         metadata.Add("Authorization", $"Wechaty {Options.Token}");
+                     }
+                     return Task.CompletedTask;
+                 });
 
-                var ssl = new SslCredentials();
-                var channOptions = new List<ChannelOption>
+                var options = new GrpcChannelOptions
                 {
-                    //new ChannelOption("grpc.ssl_target_name_override","wechaty-puppet-service"),
-                    new ChannelOption(ChannelOptions.DefaultAuthority,Options.Token),
-                    //new ChannelOption("Authorization",$"Wechaty __token__"),
+
+                    Credentials = ChannelCredentials.Create(new SslCredentials(), credentials),
+                    //Credentials = ChannelCredentials.Create(GetSslCredentials(), credentials),
+                    //Credentials = GetSslCredentials(),
+                    HttpHandler = new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    }
                 };
-                channel = new Channel(endPoint, channelCredentials,channOptions);
 
 
-                //var options = new List<ChannelOption>()
-                //{
-                //    new ChannelOption("GRPC_ARG_KEEPALIVE_TIMEOUT_MS",_keepAliveTimeoutMs),
-                //    new ChannelOption("grpc.default_authority", Options.Token),
-                //    new ChannelOption("Authorization",$"Wechaty __token__"),
-                //    new ChannelOption("grpc.ssl_target_name_override","wechaty-puppet-service"),
-
-                //};
-                //channel = new Channel(endPoint, ChannelCredentials.Insecure, options);
-                //channel = new Channel(endPoint, channelCredentials, options);
+                channel = GrpcChannel.ForAddress(Options.Endpoint, options);
 
                 grpcClient = new PuppetClient(channel);
 
@@ -141,6 +132,22 @@ namespace Wechaty.Module.PuppetService
             {
                 throw ex;
             }
+        }
+
+        private static SslCredentials? _credentials;
+
+        private static SslCredentials GetSslCredentials()
+        {
+            if (_credentials == null)
+            {
+                _credentials = new SslCredentials(
+                   File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Certs", "ca.crt")),
+                    new KeyCertificatePair(
+                          File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Certs", "client.crt")),
+                         File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Certs", "client.key"))));
+            }
+
+            return _credentials;
         }
 
         /// <summary>
