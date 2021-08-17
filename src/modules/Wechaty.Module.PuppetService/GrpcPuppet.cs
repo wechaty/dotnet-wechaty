@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
@@ -97,40 +99,47 @@ namespace Wechaty.Module.PuppetService
                     {
                         throw new Exception("no endpoint");
                     }
-                    endPoint = model.IP + ":" + model.Port;
+                    endPoint = "https://" + model.IP + ":" + model.Port;
+
                 }
 
-
                 var credentials = CallCredentials.FromInterceptor((context, metadata) =>
-                 {
-                     if (!string.IsNullOrEmpty(Options.Token))
-                     {
-                         metadata.Add("Authorization", $"Wechaty {Options.Token}");
-                     }
-                     return Task.CompletedTask;
-                 });
-
-                var options = new GrpcChannelOptions
                 {
+                    if (!string.IsNullOrEmpty(Options.Token))
+                    {
+                        metadata.Add("Authorization", $"Wechaty {Options.Token}");
+                    }
+                    return Task.CompletedTask;
+                });
+                var channelCredentials = ChannelCredentials.Create(new SslCredentials(), credentials);
 
-                    Credentials = ChannelCredentials.Create(new SslCredentials(), credentials),
-                    //Credentials = ChannelCredentials.Create(GetSslCredentials(), credentials),
-                    //Credentials = GetSslCredentials(),
+
+                if (!endPoint.ToUpper().StartsWith("HTTPS://"))
+                {
+                    throw new ApplicationException($"endpoint please set as HTTPS protocol,eg https://localhost");
+                }
+
+                //var cert = new X509Certificate2(@"D:\coding\github\wechaty\dotnet\dotnet-wechaty\src\Wechaty.Getting.Start\Certs\client.pfx", "1111");
+
+                //var handler = new HttpClientHandler();
+                //handler.ClientCertificates.Add(cert);
+                //using var httpClient = new HttpClient(handler);
+
+                channel = GrpcChannel.ForAddress(endPoint, new GrpcChannelOptions
+                {
+                    //HttpClient = httpClient,
+                    Credentials = channelCredentials,
                     HttpHandler = new HttpClientHandler
                     {
                         ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                    }
-                };
-
-
-                channel = GrpcChannel.ForAddress(Options.Endpoint, options);
+                    },
+                });
 
                 grpcClient = new PuppetClient(channel);
-
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
