@@ -32,6 +32,20 @@ Wechaty is a RPA SDK for Wechat **Individual** Account that can help you create 
 
 See more at [Wiki:Voice Of Developer](https://github.com/wechaty/wechaty/wiki/Voice%20Of%20Developer)
 
+## History
+
+[dotnet-wechaty Versions](.\docs\history.md)
+
+>   version: 0.2.0
+>   1. ***sdk升级到`net 5.0`***
+>   1. ***Wechaty.Grpc `0.20.0`***
+>   2. 更新`grpc`客户端nuget包为`Grpc.Net.Client` 
+>   3. [Grpc.Net.Client](https://github.com/grpc/grpc-dotnet) Nuget Package
+>   4. [Microsoft docs for grpc](https://docs.microsoft.com/zh-cn/aspnet/core/grpc/?view=aspnetcore-5.0)
+
+
+
+
 ## Join Us
 
 Wechaty is used in many ChatBot projects by thousands of developers. If you want to talk with other developers, just scan the following QR Code in WeChat with secret code _dotnet wechaty_, join our **Wechaty dotnet Developers' Home**.
