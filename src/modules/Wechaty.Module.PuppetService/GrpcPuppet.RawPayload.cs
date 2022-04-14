@@ -88,13 +88,13 @@ namespace Wechaty.Module.PuppetService
                 {
                     Id = messageId,
                     Filename = response.Filename,
-                    FromId = response.FromId,
+                    FromId = response.TalkerId,
                     Text = response.Text,
                     MentionIdList = response.MentionIds.ToList(),
                     RoomId = response.RoomId,
-                    Timestamp = (long)response.Timestamp,
+                    Timestamp = (long)response.TimestampDeprecated,
                     Type = (Puppet.Schemas.MessageType)response.Type,
-                    ToId = response.ToId
+                    ToId = response.ListenerId
                 };
             }
             return payload;
@@ -125,7 +125,7 @@ namespace Wechaty.Module.PuppetService
                     MemberCount = (int)response.MemberCount,
                     MemberIdList = response.MemberIds.ToList(),
                     ReceiverId = response.ReceiverId,
-                    Timestamp = (long)response.Timestamp,
+                    Timestamp = (long)response.TimestampUint64Deprecated,
                     Topic = response.Topic
                 };
             }

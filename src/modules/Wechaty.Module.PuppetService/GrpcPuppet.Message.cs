@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using github.wechaty.grpc.puppet;
 using Newtonsoft.Json;
 using Wechaty.Module.Filebox;
-using Wechaty.Module.Puppet.Schemas;
 
 namespace Wechaty.Module.PuppetService
 {
@@ -30,7 +29,7 @@ namespace Wechaty.Module.PuppetService
             };
 
             var response = await grpcClient.MessageFileAsync(request);
-            var filebox = response.Filebox;
+            var filebox = response.FileBox;
             return FileBox.FromJson(filebox);
 
         }
@@ -44,9 +43,11 @@ namespace Wechaty.Module.PuppetService
             };
 
             var response = await grpcClient.MessageImageAsync(request);
-            var fileBox = response.Filebox;
+            var fileBox = response.FileBox;
             return FileBox.FromJson(fileBox);
         }
+
+
 
         public override async Task<byte[]> MessageImageStream(string messageId, Puppet.Schemas.ImageType imageType, CancellationToken cancellationToken = default)
         {
@@ -66,17 +67,32 @@ namespace Wechaty.Module.PuppetService
             return bytes.ToArray();
         }
 
-        public override async Task<MiniProgramPayload> MessageMiniProgram(string messageId)
+        //public override async Task<MiniProgramPayload> MessageMiniProgram(string messageId)
+        //{
+        //    var request = new MessageMiniProgramRequest
+        //    {
+        //        Id = messageId
+        //    };
+
+        //    var response = await grpcClient.MessageMiniProgramAsync(request);
+        //    var payload = response.MiniProgram;
+        //    return payload;
+        //}
+
+        public override async Task<Puppet.Schemas.MiniProgramPayload> MessageMiniProgram(string messageId)
         {
             var request = new MessageMiniProgramRequest
             {
                 Id = messageId
             };
-
             var response = await grpcClient.MessageMiniProgramAsync(request);
-            var payload = JsonConvert.DeserializeObject<MiniProgramPayload>(response.MiniProgram);
+            var str = JsonConvert.SerializeObject(response.MiniProgram);
+            var payload = JsonConvert.DeserializeObject<Puppet.Schemas.MiniProgramPayload>(str);
             return payload;
         }
+
+
+
 
         public override async Task<bool> MessageRecall(string messageId)
         {
@@ -110,19 +126,33 @@ namespace Wechaty.Module.PuppetService
             var request = new MessageSendFileRequest
             {
                 ConversationId = conversationId,
-                Filebox = JsonConvert.SerializeObject(file.ToJson())
+                FileBox = JsonConvert.SerializeObject(file.ToJson())
             };
 
             var response = await grpcClient.MessageSendFileAsync(request);
             return response?.Id;
         }
 
-        public override async Task<string?> MessageSendMiniProgram(string conversationId, MiniProgramPayload miniProgramPayload)
+        //public override async Task<string?> MessageSendMiniProgram(string conversationId, MiniProgramPayload miniProgramPayload)
+        //{
+        //    var request = new MessageSendMiniProgramRequest
+        //    {
+        //        ConversationId = conversationId,
+        //        MiniProgram = miniProgramPayload
+        //    };
+
+        //    var response = await grpcClient.MessageSendMiniProgramAsync(request);
+        //    return response?.Id;
+        //}
+
+        public override async Task<string?> MessageSendMiniProgram(string conversationId, Puppet.Schemas.MiniProgramPayload miniProgramPayload)
         {
+            var str = JsonConvert.SerializeObject(miniProgramPayload);
+
             var request = new MessageSendMiniProgramRequest
             {
                 ConversationId = conversationId,
-                MiniProgram = JsonConvert.SerializeObject(miniProgramPayload)
+                MiniProgram = JsonConvert.DeserializeObject<MiniProgramPayload>(str)
             };
 
             var response = await grpcClient.MessageSendMiniProgramAsync(request);
@@ -155,29 +185,59 @@ namespace Wechaty.Module.PuppetService
             return response?.Id;
         }
 
-        public override async Task<string?> MessageSendUrl(string conversationId, UrlLinkPayload urlLinkPayload)
+        //public override async Task<string?> MessageSendUrl(string conversationId, UrlLinkPayload urlLinkPayload)
+        //{
+        //    var request = new MessageSendUrlRequest()
+        //    {
+        //        ConversationId = conversationId,
+        //        UrlLink = JsonConvert.SerializeObject(urlLinkPayload)
+        //    };
+
+        //    var response = await grpcClient.MessageSendUrlAsync(request);
+        //    return response?.Id;
+        //}
+
+        public override async Task<string?> MessageSendUrl(string conversationId, Puppet.Schemas.UrlLinkPayload urlLinkPayload)
         {
+
+            var str = JsonConvert.SerializeObject(urlLinkPayload);
             var request = new MessageSendUrlRequest()
             {
                 ConversationId = conversationId,
-                UrlLink = JsonConvert.SerializeObject(urlLinkPayload)
+                UrlLink = JsonConvert.DeserializeObject<UrlLinkPayload>(str)
             };
 
             var response = await grpcClient.MessageSendUrlAsync(request);
             return response?.Id;
         }
 
-        public override async Task<UrlLinkPayload> MessageUrl(string messageId)
+        //public override async Task<UrlLinkPayload> MessageUrl(string messageId)
+        //{
+        //    var request = new MessageUrlRequest()
+        //    {
+        //        Id = messageId
+        //    };
+
+        //    var response = await grpcClient.MessageUrlAsync(request);
+        //    var payload = JsonConvert.DeserializeObject<UrlLinkPayload>(response.UrlLink);
+        //    return payload;
+        //}
+
+
+        public override async Task<Puppet.Schemas.UrlLinkPayload> MessageUrl(string messageId)
         {
             var request = new MessageUrlRequest()
             {
                 Id = messageId
             };
-
             var response = await grpcClient.MessageUrlAsync(request);
-            var payload = JsonConvert.DeserializeObject<UrlLinkPayload>(response.UrlLink);
-            return payload;
+
+            var str = JsonConvert.SerializeObject(response.UrlLink);
+
+            return JsonConvert.DeserializeObject<Puppet.Schemas.UrlLinkPayload>(str);
+
         }
+
         #endregion
     }
 }
