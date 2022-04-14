@@ -617,6 +617,7 @@ namespace Wechaty.User
             }
         }
 
+
         /// <summary>
         /// Message sent date
         /// </summary>

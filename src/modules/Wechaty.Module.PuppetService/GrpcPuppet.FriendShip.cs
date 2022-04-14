@@ -38,7 +38,7 @@ namespace Wechaty.Module.PuppetService
 
         public override async Task<string?> FriendshipSearchWeixin(string weixin)
         {
-            var request = new FriendshipSearchWeixinRequest()
+            var request = new FriendshipSearchHandleRequest()
             { Weixin = weixin };
 
             var respnse = await grpcClient.FriendshipSearchWeixinAsync(request);

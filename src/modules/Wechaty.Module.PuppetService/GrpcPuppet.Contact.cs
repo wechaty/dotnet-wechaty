@@ -46,7 +46,7 @@ namespace Wechaty.Module.PuppetService
             };
 
             var response = await grpcClient.ContactAvatarAsync(request);
-            var filebox = response.Filebox;
+            var filebox = response.FileBox;
             return FileBox.FromJson(filebox);
         }
 
@@ -55,7 +55,7 @@ namespace Wechaty.Module.PuppetService
             var request = new ContactAvatarRequest
             {
                 Id = contactId,
-                Filebox= JsonConvert.SerializeObject(file)
+                FileBox= JsonConvert.SerializeObject(file)
             };
             await grpcClient.ContactAvatarAsync(request);
         }

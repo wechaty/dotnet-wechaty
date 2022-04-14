@@ -51,7 +51,7 @@ namespace Wechaty.Module.PuppetService
 
             var response = await grpcClient.RoomAvatarAsync(request);
             
-            return FileBox.FromJson(response.Filebox);
+            return FileBox.FromJson(response.FileBox);
         }
 
         // TODO 可以合并为一个接口
